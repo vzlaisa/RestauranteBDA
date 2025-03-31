@@ -37,9 +37,33 @@ public class Comanda implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private Enum estado;
     
+    @Column(name = "Total Venta", nullable = false)
+    private double total;
+    
     @Column(name = "id_mesa")
     private Mesa mesa;
+    
+    private Cliente cliente;
 
+    public Comanda() {
+    }
+
+    public Comanda(LocalDateTime fechaHora, Enum estado, Mesa mesa, Cliente cliente) {
+        this.fechaHora = fechaHora;
+        this.estado = estado;
+        this.mesa = mesa;
+        this.cliente = cliente;
+    }
+
+    public Comanda(Long id, LocalDateTime fechaHora, Enum estado, Mesa mesa, Cliente cliente) {
+        this.id = id;
+        this.fechaHora = fechaHora;
+        this.estado = estado;
+        this.mesa = mesa;
+        this.cliente = cliente;
+    }
+
+    
     public Long getId() {
         return id;
     }
@@ -48,7 +72,23 @@ public class Comanda implements Serializable {
         this.id = id;
     }
 
+    public double getTotal() {
+        return total;
+    }
 
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    
     @Override
     public String toString() {
         return "entidades.Comanda[ id=" + id + " ]";

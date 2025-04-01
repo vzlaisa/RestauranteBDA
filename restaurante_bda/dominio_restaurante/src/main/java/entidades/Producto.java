@@ -17,6 +17,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,6 +27,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "productos")
+@NamedQuery(
+        name = "Producto.getNombres",
+        query = "SELECT p.nombre FROM Producto p"
+)
 public class Producto implements Serializable {
 
     @Id
@@ -43,7 +48,7 @@ public class Producto implements Serializable {
     private TipoProducto tipo;
     
     // Usar remove ya que es una relación fuerte (composición)
-    @OneToMany(mappedBy = "ingrediente", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY) // CHECAR MAPPEDBY Y ORPHAN REMOVAL
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY) // CHECAR MAPPEDBY Y ORPHAN REMOVAL
     private List<ProductosIngredientes> productosIngredientes;
     
     // FALTA AGREGAR LA RELACIÓN CON LAS COMANDAS

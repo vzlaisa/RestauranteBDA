@@ -4,6 +4,9 @@
  */
 package coordinadores;
 
+import modulo_ingredientes.AdministrarIngredientesFrm;
+import modulo_ingredientes.IncrementarStockIngredienteFrm;
+import modulo_ingredientes.RegistrarIngredienteFrm;
 import modulo_productos.RegistrarProductoFrm;
 import presentacion.Menu;
 
@@ -18,6 +21,9 @@ public class CoordinadorAplicacion {
     // Pantallas
     private Menu menu;
     private RegistrarProductoFrm registrarProductoFrm;
+    private RegistrarIngredienteFrm registrarIngredienteFrm;
+    private AdministrarIngredientesFrm administrarIngredientesFrm;
+    private IncrementarStockIngredienteFrm incrementarStockIngredienteFrm;
     
     private CoordinadorAplicacion() {
         
@@ -37,6 +43,27 @@ public class CoordinadorAplicacion {
         }
         
         registrarProductoFrm.setVisible(true);
+    }
+    
+    public void mostrarRegistrarIngredienteFrm() {
+        if (this.registrarIngredienteFrm == null) {
+            this.registrarIngredienteFrm = new RegistrarIngredienteFrm();
+        }
+        registrarIngredienteFrm.setVisible(true);
+    }
+    
+    public void mostrarIncrementarStockIngredienteFrm() {
+        if (this.incrementarStockIngredienteFrm == null) {
+            this.incrementarStockIngredienteFrm = new IncrementarStockIngredienteFrm();
+        }
+        incrementarStockIngredienteFrm.setVisible(true);
+    }
+    
+    public void mostrarAdministrarIngredientes() {
+        if (this.administrarIngredientesFrm == null) {
+            this.administrarIngredientesFrm = new AdministrarIngredientesFrm();
+        }
+        administrarIngredientesFrm.setVisible(true);
     }
     
     public void mostrarMenu() {

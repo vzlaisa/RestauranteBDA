@@ -106,6 +106,11 @@ public class Menu extends javax.swing.JFrame {
 
         btnAdministrarIngredientes.setBackground(new java.awt.Color(242, 240, 221));
         btnAdministrarIngredientes.setText("Administrar ingredientes");
+        btnAdministrarIngredientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdministrarIngredientesActionPerformed(evt);
+            }
+        });
 
         btnRegistrarProducto.setBackground(new java.awt.Color(242, 240, 221));
         btnRegistrarProducto.setText("Registrar nuevo producto");
@@ -273,6 +278,11 @@ public class Menu extends javax.swing.JFrame {
     private void btnAdministrarComandasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministrarComandasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAdministrarComandasActionPerformed
+
+    private void btnAdministrarIngredientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministrarIngredientesActionPerformed
+        this.dispose();
+        coordinadorAplicacion.mostrarAdministrarIngredientes();
+    }//GEN-LAST:event_btnAdministrarIngredientesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdministrarComandas;

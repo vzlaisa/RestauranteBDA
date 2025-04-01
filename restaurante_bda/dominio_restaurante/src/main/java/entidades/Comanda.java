@@ -4,8 +4,10 @@
  */
 package entidades;
 
+import enums.EstadoComanda;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +15,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,16 +35,17 @@ public class Comanda implements Serializable {
     
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_hora", nullable = false)
-    private LocalDateTime fechaHora;
+    private Date fechaHora;
     
     @Column(name = "estado", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Enum estado;
+    private EstadoComanda estado;
     
-    @Column(name = "Total Venta", nullable = false)
+    @Column(name = "total_venta", nullable = false)
     private double total;
     
-    @Column(name = "id_mesa")
+    @ManyToOne
+    @JoinColumn(name = "id_mesa")
     private Mesa mesa;
     
     private Cliente cliente;
@@ -48,14 +53,14 @@ public class Comanda implements Serializable {
     public Comanda() {
     }
 
-    public Comanda(LocalDateTime fechaHora, Enum estado, Mesa mesa, Cliente cliente) {
+    public Comanda(Date fechaHora, EstadoComanda estado, Mesa mesa, Cliente cliente) {
         this.fechaHora = fechaHora;
         this.estado = estado;
         this.mesa = mesa;
         this.cliente = cliente;
     }
 
-    public Comanda(Long id, LocalDateTime fechaHora, Enum estado, Mesa mesa, Cliente cliente) {
+    public Comanda(Long id, Date fechaHora, EstadoComanda estado, Mesa mesa, Cliente cliente) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.estado = estado;

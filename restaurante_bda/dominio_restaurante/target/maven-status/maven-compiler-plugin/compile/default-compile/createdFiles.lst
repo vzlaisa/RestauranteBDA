@@ -1,0 +1,11 @@
+entidades\Mesa.class
+DTOs\IngredienteDTO.class
+entidades\Producto.class
+entidades\Cliente.class
+entidades\Ingrediente.class
+entidades\Comanda.class
+enums\TipoProducto.class
+com\mycompany\dominio_restaurante\Dominio_restaurante.class
+entidades\ProductosIngredientes.class
+enums\EstadoComanda.class
+enums\UnidadMedida.class

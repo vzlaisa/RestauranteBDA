@@ -1,0 +1,5 @@
+com\mycompany\persistencia_restaurante\Persistencia_restaurante.class
+interfaces\IIngredienteDAO.class
+conexion\Conexion.class
+exception\PersistenciaException.class
+DAO\IngredienteDAO.class

@@ -13,11 +13,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.criteria.Fetch;
 
 /**
  * Clase que representa la entidad Ingrediente en la base de datos.
@@ -42,7 +44,7 @@ public class Ingrediente implements Serializable {
     @Column(name = "cantidad_stock", nullable = false)
     private Integer cantidadStock;
     
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ingrediente", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<ProductosIngredientes> productosIngredientes;
 
     public Ingrediente() {

@@ -48,6 +48,7 @@ public class Comanda implements Serializable {
     @JoinColumn(name = "id_mesa")
     private Mesa mesa;
     
+    
     private Cliente cliente;
 
     public Comanda() {

@@ -549,10 +549,10 @@ public class RegistrarProductoFrm extends JFrame {
 
             JOptionPane.showMessageDialog(this, "No se registró el producto.", "Cancelación confirmada", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
-
-            this.dispose();
-            coordinadorAplicacion.mostrarMenu();
         }
+        
+        this.dispose();
+        coordinadorAplicacion.mostrarMenu();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

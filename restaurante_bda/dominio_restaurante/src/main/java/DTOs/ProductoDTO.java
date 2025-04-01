@@ -5,6 +5,7 @@
 package DTOs;
 
 import enums.TipoProducto;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ public class ProductoDTO {
     private List<ProductosIngredientesDTO> ingredientes;
 
     public ProductoDTO() {
+        this.ingredientes = new ArrayList<>();
     }
 
     public ProductoDTO(String nombre, Double precio, TipoProducto tipo, List<ProductosIngredientesDTO> ingredientes) {
@@ -25,6 +27,13 @@ public class ProductoDTO {
         this.precio = precio;
         this.tipo = tipo;
         this.ingredientes = ingredientes;
+    }
+    
+    public ProductoDTO(String nombre, Double precio, TipoProducto tipo) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.tipo = tipo;
+        this.ingredientes = new ArrayList<>();
     }
 
     public String getNombre() {

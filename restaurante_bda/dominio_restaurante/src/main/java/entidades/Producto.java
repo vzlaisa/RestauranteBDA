@@ -61,6 +61,13 @@ public class Producto implements Serializable {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
+        this.productosIngredientes = productosIngredientes;
+    }
+
+    public Producto(String nombre, Double precio, TipoProducto tipo) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.tipo = tipo;
         this.productosIngredientes = new ArrayList<>();
     }
     

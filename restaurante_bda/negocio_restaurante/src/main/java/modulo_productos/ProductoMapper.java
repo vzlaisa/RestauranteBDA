@@ -27,7 +27,11 @@ public class ProductoMapper {
                 productoDTO.getNombre(),
                 productoDTO.getPrecio(),
                 productoDTO.getTipo(),
-                null // CAMBIAR A LISTA DE PRODUCTOS INGREDIENTE DTO
+                null
         );
+        
+        // EN QUE PUEDE AFECTAR QUE EN MI CONSTRUCTOR AGREGUE LA LISTA AQUI?
+        // Ahorita no, pero si en un futuro se quisiera editar el producto, aquí se le crea una lista de ProductosIngredientes vacía.
+        // Afectaria en algo? O la persistencia detecta que si tiene y solo lo actualiza, pero los ProductosIngredientes queda igusl?
     }
 }

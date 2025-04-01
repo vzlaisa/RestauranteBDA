@@ -48,6 +48,6 @@ public class ProductosIngredientesDTO {
 
     @Override
     public String toString() {
-        return "ProductosIngredientesDTO{" + "cantidad=" + cantidad + ", producto=" + producto + ", ingrediente=" + ingrediente + '}';
+        return "ProductosIngredientesDTO{" + "cantidad=" + cantidad + ", ingrediente=" + ingrediente + '}';
     } 
 }

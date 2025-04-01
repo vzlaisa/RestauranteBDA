@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,8 +42,11 @@ public class Producto implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private TipoProducto tipo;
     
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL)
+    // Usar remove ya que es una relación fuerte (composición)
+    @OneToMany(mappedBy = "ingrediente", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY) // CHECAR MAPPEDBY Y ORPHAN REMOVAL
     private List<ProductosIngredientes> productosIngredientes;
+    
+    // FALTA AGREGAR LA RELACIÓN CON LAS COMANDAS
 
     public Producto() {
         this.productosIngredientes = new ArrayList<>();

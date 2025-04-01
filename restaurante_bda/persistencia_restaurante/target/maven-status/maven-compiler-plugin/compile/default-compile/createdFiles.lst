@@ -1,5 +1,7 @@
 com\mycompany\persistencia_restaurante\Persistencia_restaurante.class
+modulo_productos\IProductoDAO.class
+DAO\IngredienteDAO.class
 interfaces\IIngredienteDAO.class
 conexion\Conexion.class
 exception\PersistenciaException.class
-DAO\IngredienteDAO.class
+modulo_productos\ProductoDAO.class

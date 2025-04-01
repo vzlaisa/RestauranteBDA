@@ -1,3 +1,8 @@
 Clientes\ClienteBO.class
-Clientes\IClienteBO.class
+modulo_productos\ProductoMapper.class
+dependencyInjector\DependencyInjector.class
 com\mycompany\negocio_restaurante\Negocio_restaurante.class
+exception\NegocioException.class
+Clientes\IClienteBO.class
+modulo_productos\IProductoBO.class
+modulo_productos\ProductoBO.class

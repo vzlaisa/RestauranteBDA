@@ -8,6 +8,18 @@
     </parent>
     <artifactId>persistencia_restaurante</artifactId>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>dominio_restaurante</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
     <properties>
         <maven.compiler.release>23</maven.compiler.release>
         <exec.mainClass>com.mycompany.persistencia_restaurante.Persistencia_restaurante</exec.mainClass>

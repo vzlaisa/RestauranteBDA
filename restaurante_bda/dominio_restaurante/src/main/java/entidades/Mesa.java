@@ -5,11 +5,13 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -27,6 +29,9 @@ public class Mesa implements Serializable {
     
     @Column(name = "numero", nullable = false, length = 10, unique = true)
     private String numero;
+    
+    @OneToMany(mappedBy = "mesa")
+    private List<Comanda> comandas;
 
     public Mesa() {
     }

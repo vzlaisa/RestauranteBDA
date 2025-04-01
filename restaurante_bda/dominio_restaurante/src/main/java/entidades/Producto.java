@@ -4,7 +4,11 @@
  */
 package entidades;
 
+import enums.TipoProducto;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +16,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -34,16 +39,20 @@ public class Producto implements Serializable {
     
     @Column(name = "tipo", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Enum tipo;
-
+    private TipoProducto tipo;
     
+    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL)
+    private List<ProductosIngredientes> productosIngredientes;
+
     public Producto() {
+        this.productosIngredientes = new ArrayList<>();
     }
 
-    public Producto(String nombre, Double precio, Enum tipo) {
+    public Producto(String nombre, Double precio, TipoProducto tipo, List<ProductosIngredientes> productosIngredientes) {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
+        this.productosIngredientes = new ArrayList<>();
     }
     
     public Long getId() {
@@ -70,17 +79,25 @@ public class Producto implements Serializable {
         this.precio = precio;
     }
 
-    public Enum getTipo() {
+    public TipoProducto getTipo() {
         return tipo;
     }
 
-    public void setTipo(Enum tipo) {
+    public void setTipo(TipoProducto tipo) {
         this.tipo = tipo;
+    }
+
+    public List<ProductosIngredientes> getProductosIngredientes() {
+        return productosIngredientes;
+    }
+
+    public void setProductosIngredientes(List<ProductosIngredientes> productosIngredientes) {
+        this.productosIngredientes = productosIngredientes;
     }
 
     @Override
     public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", productosIngredientes=" + productosIngredientes + '}';
     }
-    
+      
 }

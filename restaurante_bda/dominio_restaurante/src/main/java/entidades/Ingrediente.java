@@ -4,7 +4,11 @@
  */
 package entidades;
 
+import enums.UnidadMedida;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +16,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -32,18 +37,23 @@ public class Ingrediente implements Serializable {
     
     @Column(name = "unidad_medida", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Enum unidadMedida;
+    private UnidadMedida unidadMedida;
     
     @Column(name = "cantidad_stock", nullable = false)
     private Integer cantidadStock;
+    
+    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL)
+    private List<ProductosIngredientes> productosIngredientes;
 
     public Ingrediente() {
+        this.productosIngredientes = new ArrayList<>();
     }
 
-    public Ingrediente(String nombre, Enum unidadMedida, Integer cantidadStock) {
+    public Ingrediente(String nombre, UnidadMedida unidadMedida, Integer cantidadStock, List<ProductosIngredientes> productosIngredientes) {
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.cantidadStock = cantidadStock;
+        this.productosIngredientes = new ArrayList<>();
     }
     
     public Long getId() {
@@ -62,11 +72,11 @@ public class Ingrediente implements Serializable {
         this.nombre = nombre;
     }
 
-    public Enum getUnidadMedida() {
+    public UnidadMedida getUnidadMedida() {
         return unidadMedida;
     }
 
-    public void setUnidadMedida(Enum unidadMedida) {
+    public void setUnidadMedida(UnidadMedida unidadMedida) {
         this.unidadMedida = unidadMedida;
     }
 
@@ -77,12 +87,18 @@ public class Ingrediente implements Serializable {
     public void setCantidadStock(Integer cantidadStock) {
         this.cantidadStock = cantidadStock;
     }
-    
+
+    public List<ProductosIngredientes> getProductosIngredientes() {
+        return productosIngredientes;
+    }
+
+    public void setProductosIngredientes(List<ProductosIngredientes> productosIngredientes) {
+        this.productosIngredientes = productosIngredientes;
+    }
 
     @Override
     public String toString() {
-        return "Ingrediente{" + "id=" + id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", cantidadStock=" + cantidadStock + '}';
+        return "Ingrediente{" + "id=" + id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", cantidadStock=" + cantidadStock + ", productosIngredientes=" + productosIngredientes + '}';
     }
-
-    
+      
 }

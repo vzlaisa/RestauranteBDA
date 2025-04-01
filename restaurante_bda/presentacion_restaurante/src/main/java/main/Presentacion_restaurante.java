@@ -4,6 +4,8 @@
 
 package main;
 
+import coordinadores.CoordinadorAplicacion;
+
 /**
  *
  * @author rocha
@@ -11,6 +13,6 @@ package main;
 public class Presentacion_restaurante {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        CoordinadorAplicacion.getInstancia().mostrarMenu();
     }
 }

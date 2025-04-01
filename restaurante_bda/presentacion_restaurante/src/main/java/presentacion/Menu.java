@@ -4,17 +4,25 @@
  */
 package presentacion;
 
+import coordinadores.CoordinadorAplicacion;
+
 /**
  *
  * @author dario
  */
 public class Menu extends javax.swing.JFrame {
-
+    
+    private CoordinadorAplicacion coordinadorAplicacion;
+    
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
+        
+        this.setTitle("Registrar Producto");
+        this.setLocationRelativeTo(null);
+        this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();
     }
 
     /**
@@ -33,18 +41,18 @@ public class Menu extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnRegistrarComanda = new javax.swing.JButton();
+        btnAdministrarComandas = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnAdministrarIngredientes = new javax.swing.JButton();
+        btnRegistrarProducto = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        btnRegistrarCliente = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        btnBuscardorClientes = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
+        btnRegistrarMesas = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -66,36 +74,46 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(19, 129, 2));
-        jLabel2.setText("Restuarante");
+        jLabel2.setText("Restaurante");
 
         jPanel2.setBackground(new java.awt.Color(54, 51, 51));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Menu de opciones");
+        jLabel3.setText("Menú de opciones");
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Comandas");
 
-        jButton1.setBackground(new java.awt.Color(242, 240, 221));
-        jButton1.setText("Registrar nueva comanda");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrarComanda.setBackground(new java.awt.Color(242, 240, 221));
+        btnRegistrarComanda.setText("Registrar nueva comanda");
+        btnRegistrarComanda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnRegistrarComandaActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(242, 240, 221));
-        jButton2.setText("Adiministrar comandas");
+        btnAdministrarComandas.setBackground(new java.awt.Color(242, 240, 221));
+        btnAdministrarComandas.setText("Administrar comandas");
+        btnAdministrarComandas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdministrarComandasActionPerformed(evt);
+            }
+        });
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Ingredientes");
 
-        jButton3.setBackground(new java.awt.Color(242, 240, 221));
-        jButton3.setText("Administrar ingredientes");
+        btnAdministrarIngredientes.setBackground(new java.awt.Color(242, 240, 221));
+        btnAdministrarIngredientes.setText("Administrar ingredientes");
 
-        jButton4.setBackground(new java.awt.Color(242, 240, 221));
-        jButton4.setText("Registrar nuevo producto");
+        btnRegistrarProducto.setBackground(new java.awt.Color(242, 240, 221));
+        btnRegistrarProducto.setText("Registrar nuevo producto");
+        btnRegistrarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarProductoActionPerformed(evt);
+            }
+        });
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Productos");
@@ -103,20 +121,20 @@ public class Menu extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Clientes");
 
-        jButton5.setBackground(new java.awt.Color(242, 240, 221));
-        jButton5.setText("Registrar nuevo cliente");
+        btnRegistrarCliente.setBackground(new java.awt.Color(242, 240, 221));
+        btnRegistrarCliente.setText("Registrar nuevo cliente");
 
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Reportes");
 
-        jButton6.setBackground(new java.awt.Color(242, 240, 221));
-        jButton6.setText("Buscador de clientes");
+        btnBuscardorClientes.setBackground(new java.awt.Color(242, 240, 221));
+        btnBuscardorClientes.setText("Buscador de clientes");
 
-        jButton7.setBackground(new java.awt.Color(242, 240, 221));
-        jButton7.setText("Generar reporte");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnReportes.setBackground(new java.awt.Color(242, 240, 221));
+        btnReportes.setText("Generar reporte");
+        btnReportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnReportesActionPerformed(evt);
             }
         });
 
@@ -136,13 +154,13 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnRegistrarComanda)
+                            .addComponent(btnAdministrarComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAdministrarIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRegistrarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRegistrarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscardorClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(16, 16, 16))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(79, 79, 79)
@@ -166,32 +184,33 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnRegistrarComanda)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnAdministrarComandas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(btnAdministrarIngredientes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
+                .addComponent(btnRegistrarProducto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
+                .addComponent(btnRegistrarCliente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
+                .addComponent(btnBuscardorClientes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton7)
+                .addComponent(btnReportes)
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        jButton8.setBackground(new java.awt.Color(207, 207, 207));
-        jButton8.setText("Registrar mesas");
+        btnRegistrarMesas.setBackground(new java.awt.Color(242, 240, 221));
+        btnRegistrarMesas.setText("Registrar mesas");
+        btnRegistrarMesas.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -202,7 +221,7 @@ public class Menu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton8)
+                        .addComponent(btnRegistrarMesas)
                         .addGap(19, 19, 19))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -220,7 +239,7 @@ public class Menu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(131, 131, 131)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnRegistrarMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
 
@@ -238,28 +257,32 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnRegistrarComandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarComandaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnRegistrarComandaActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_btnReportesActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnRegistrarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarProductoActionPerformed
+        this.dispose();
+        coordinadorAplicacion.mostrarRegistrarProductoFrm();
+    }//GEN-LAST:event_btnRegistrarProductoActionPerformed
 
+    private void btnAdministrarComandasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministrarComandasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAdministrarComandasActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
+    private javax.swing.JButton btnAdministrarComandas;
+    private javax.swing.JButton btnAdministrarIngredientes;
+    private javax.swing.JButton btnBuscardorClientes;
+    private javax.swing.JButton btnRegistrarCliente;
+    private javax.swing.JButton btnRegistrarComanda;
+    private javax.swing.JButton btnRegistrarMesas;
+    private javax.swing.JButton btnRegistrarProducto;
+    private javax.swing.JButton btnReportes;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

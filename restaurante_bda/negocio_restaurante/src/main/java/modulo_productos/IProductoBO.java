@@ -5,14 +5,21 @@
 package modulo_productos;
 
 import DTOs.ProductoDTO;
+import DTOs.ProductoEditadoDTO;
 import exception.NegocioException;
 
 /**
+ * Interfaz de la capa de negocio para la gestión de productos.
  *
- * @author rocha
+ * Esta interfaz define los métodos necesarios para registrar, eliminar y
+ * actualizar productos. Se encarga de establecer las validaciones necesarias y
+ * de definir la comunicación con la capa de acceso a datos (DAO) para la
+ * persistencia en la base de datos.
+ *
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public interface IProductoBO {
-    
+
     /**
      * Registra un nuevo producto.
      *
@@ -26,4 +33,27 @@ public interface IProductoBO {
      * hubo un error al intentar registrar el producto.
      */
     public ProductoDTO registrarProducto(ProductoDTO productoNuevo) throws NegocioException;
+
+    /**
+     * Elimina un producto de la base de datos utilizando su nombre.
+     *
+     * @param nombre Nombre del producto a eliminar.
+     * @return true si el producto fue eliminado correctamente, false en caso
+     * contrario.
+     * @throws NegocioException Si el nombre es nulo o vacío, si el producto no
+     * existe, o si ocurre un error durante la eliminación.
+     */
+    public boolean eliminarProducto(String nombre) throws NegocioException;
+
+    /**
+     * Actualiza un producto en la base de datos con los datos proporcionados en
+     * el DTO.
+     *
+     * @param productoEditado El DTO con los nuevos datos del producto a
+     * actualizar.
+     * @return El DTO del producto actualizado.
+     * @throws NegocioException Si hay un error en la validación o en el proceso
+     * de actualización.
+     */
+    public ProductoDTO actualizarProducto(ProductoEditadoDTO productoEditado) throws NegocioException;
 }

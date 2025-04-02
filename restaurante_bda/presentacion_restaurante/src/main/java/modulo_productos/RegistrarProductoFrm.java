@@ -143,11 +143,10 @@ public class RegistrarProductoFrm extends JFrame {
         lbBuscarIngrediente.setText("Ingrese el nombre del ingrediente");
 
         lbUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbUnidadMedida.setText("Seleccione la unidad de medida");
+        lbUnidadMedida.setText("Filtrar por unidad de medida");
 
         cbUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cbUnidadMedida.setMaximumRowCount(5);
-        cbUnidadMedida.setEnabled(false);
 
         listBuscarIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         listBuscarIngrediente.setMinimumSize(new java.awt.Dimension(13, 20));
@@ -240,12 +239,12 @@ public class RegistrarProductoFrm extends JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbUnidadMedida)
                             .addComponent(scBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbSeleccionarIngredientes)
                             .addComponent(lbBuscarIngrediente)
-                            .addComponent(txtBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbUnidadMedida))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(scTablaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -265,41 +264,44 @@ public class RegistrarProductoFrm extends JFrame {
                     .addComponent(lbDatosGenerales)
                     .addComponent(lbSeleccionarIngredientes))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNombreProducto)
-                    .addComponent(lbBuscarIngrediente)
-                    .addComponent(lbTablaIngredientes))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNombre)
-                            .addComponent(txtBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lbPrecio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)
-                                .addComponent(lbCategoria))
-                            .addComponent(scBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lbNombreProducto)
+                            .addComponent(lbTablaIngredientes))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbUnidadMedida))
-                        .addGap(4, 4, 4)
-                        .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(110, 110, 110))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(scTablaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(43, 43, 43))))
+                        .addGap(43, 43, 43))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                                .addGap(12, 12, 12)
+                                .addComponent(lbPrecio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(24, 24, 24)
+                                .addComponent(lbCategoria)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(83, 83, 83))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lbUnidadMedida)
+                                .addGap(4, 4, 4)
+                                .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lbBuscarIngrediente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(scBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(110, 110, 110))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -407,15 +409,15 @@ public class RegistrarProductoFrm extends JFrame {
             }
         });
 
-        // Listener para el combobox de unidades
-        cbUnidadMedida.addActionListener(evt -> {
-            // Verifica si el combobox tiene un ítem válido seleccionado
-            if (cbUnidadMedida.getSelectedIndex() != 0) { // Si tiene seleccionado una opción válida
-                btnAgregar.setEnabled(true); // Habilita el botón de agregar ingrediente
-            } else {
-                btnAgregar.setEnabled(false); // Deshabilita el botón si el combobox no tiene una selección válida
-            }
-        });
+//        // Listener para el combobox de unidades
+//        cbUnidadMedida.addActionListener(evt -> {
+//            // Verifica si el combobox tiene un ítem válido seleccionado
+//            if (cbUnidadMedida.getSelectedIndex() != 0) { // Si tiene seleccionado una opción válida
+//                btnAgregar.setEnabled(true); // Habilita el botón de agregar ingrediente
+//            } else {
+//                btnAgregar.setEnabled(false); // Deshabilita el botón si el combobox no tiene una selección válida
+//            }
+//        });
     }
 
     /**
@@ -554,6 +556,8 @@ public class RegistrarProductoFrm extends JFrame {
         this.dispose();
         coordinadorAplicacion.mostrarMenu();
     }
+    
+    // PRIMERO VA A SELECCIONAR UNA UNIDAD, LA LISTA SE CARGA CON LOS DE ESA UNIDAD. SI NO SELECCIONA UNIDAD, MUESTRA TODOS LOS PRODUCTOS
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

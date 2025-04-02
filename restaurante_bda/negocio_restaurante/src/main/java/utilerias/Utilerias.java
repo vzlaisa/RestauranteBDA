@@ -16,7 +16,7 @@ public class Utilerias {
      * @param str Cadena de texto a validar.
      * @return true si la cadena es nula o está vacía, false en caso contrario.
      */
-    public static boolean isNullOrEmpty(String str) {
+    public static boolean isNullOrBlank(String str) {
         return str == null || str.trim().isBlank();
     }
 }

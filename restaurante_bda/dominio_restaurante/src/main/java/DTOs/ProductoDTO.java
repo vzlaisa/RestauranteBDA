@@ -9,26 +9,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * DTO que representa un producto.
  *
- * @author rocha
+ * Esta clase contiene todos los datos para un producto. Se utiliza para
+ * transferir los datos de un producto entre la capa de negocio y la capa de
+ * presentación o de acceso a datos.
+ *
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class ProductoDTO {
+
     private String nombre;
     private Double precio;
     private TipoProducto tipo;
     private List<ProductosIngredientesDTO> ingredientes;
-
+    
+    /**
+     * Constructor por defecto. Inicializa la lista de ProductosIngredientes.
+     */
     public ProductoDTO() {
         this.ingredientes = new ArrayList<>();
     }
-
+    
     public ProductoDTO(String nombre, Double precio, TipoProducto tipo, List<ProductosIngredientesDTO> ingredientes) {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
         this.ingredientes = ingredientes;
     }
-    
+
     public ProductoDTO(String nombre, Double precio, TipoProducto tipo) {
         this.nombre = nombre;
         this.precio = precio;

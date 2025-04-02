@@ -8,6 +8,7 @@ enums\EstadoComanda.class
 enums\UnidadMedida.class
 entidades\Mesa.class
 entidades\Producto.class
+DTOs\ProductoEditadoDTO.class
 entidades\Cliente.class
 DTOs\ProductoDTO.class
 entidades\ProductosIngredientes.class

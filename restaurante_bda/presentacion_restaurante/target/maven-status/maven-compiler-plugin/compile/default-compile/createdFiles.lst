@@ -2,7 +2,9 @@ presentacion\Menu$3.class
 main\Presentacion_restaurante.class
 modulo_ingredientes\RegistrarIngredienteFrm$3.class
 modulo_ingredientes\RegistrarIngredienteFrm$5.class
+modulo_clientes\ConsultarClientes$1.class
 modulo_ingredientes\AdministrarIngredientesFrm$1.class
+presentacion\IncioSistema$1.class
 modulo_productos\RegistrarProductoFrm$3.class
 validaciones\Validaciones.class
 modulo_ingredientes\RegistrarIngredienteFrm$1.class
@@ -11,7 +13,9 @@ modulo_productos\RegistrarProductoFrm$ButtonRenderer.class
 modulo_productos\RegistrarProductoFrm$4.class
 modulo_ingredientes\IncrementarStockIngredienteFrm$2.class
 coordinadores\CoordinadorAplicacion.class
+modulo_clientes\RegistrarClientes.class
 modulo_ingredientes\AdministrarIngredientesFrm$3.class
+modulo_clientes\RegistrarClientes$2.class
 modulo_productos\RegistrarProductoFrm$1.class
 modulo_ingredientes\RegistrarIngredienteFrm$4.class
 utilerias\Utilerias.class
@@ -25,10 +29,13 @@ modulo_ingredientes\AdministrarIngredientesFrm$2.class
 modulo_ingredientes\BuscadorIngredientesPanel.class
 presentacion\Menu.class
 modulo_ingredientes\AdministrarIngredientesFrm.class
+modulo_clientes\RegistrarClientes$1.class
 modulo_productos\RegistrarProductoFrm$2.class
 modulo_ingredientes\IncrementarStockIngredienteFrm.class
 presentacion\Menu$1.class
+presentacion\IncioSistema.class
 presentacion\Menu$4.class
 modulo_ingredientes\IncrementarStockIngredienteFrm$1.class
 modulo_ingredientes\RegistrarIngredienteFrm.class
 modulo_productos\RegistrarProductoFrm$5.class
+modulo_clientes\ConsultarClientes.class

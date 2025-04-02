@@ -26,8 +26,13 @@ public class Persistencia_restaurante {
     private static IIngredienteDAO ingredienteDAO = IngredienteDAO.getInstancia();
     
     public static void main(String[] args) throws PersistenciaException {
-        registrarProducto();
-        obtenerNombresProductos();
+//        registrarProducto();
+//        obtenerNombresProductos();
+        // obtenerIngredientes();
+        // ingredientesPorNombre();
+        // ingredientesPorUnidad();
+        // ingredienteNombreYUnidad();
+        eliminarIngrediente();
 //        
 //        try {
 //            Ingrediente ingrediente = new Ingrediente("Pan", UnidadMedida.PIEZAS, 20, null);
@@ -68,6 +73,74 @@ public class Persistencia_restaurante {
            
         } catch (PersistenciaException e) {
             throw new PersistenciaException("Error al registrar ingrediente: " + e.getMessage());
+        }
+    }
+    
+    private static void obtenerIngredientes() throws PersistenciaException {
+        try {
+            List<Ingrediente> ingredientes = ingredienteDAO.obtenerIngredientes();
+            for (Ingrediente i : ingredientes) {
+                System.out.println("Nombre: " + i.getNombre() + " - Unidad: " + i.getUnidadMedida()
+                        + " - Stock: " + i.getCantidadStock());
+            }
+            
+        } catch (PersistenciaException e) {
+            throw new PersistenciaException("Error al obtener ingredientes: " + e.getMessage());
+        }
+    }
+    
+    private static void ingredientesPorNombre() throws PersistenciaException {
+        try {
+            List<Ingrediente> ingredientes = ingredienteDAO.ingredientesPorNombre("Lechuga");
+            for (Ingrediente i : ingredientes) {
+                System.out.println("Nombre: " + i.getNombre() + " - Unidad: " + i.getUnidadMedida()
+                        + " - Stock: " + i.getCantidadStock());
+            }
+            
+            if (ingredientes.isEmpty()) {
+                System.out.println("No hay ingredientes.");
+            }
+        } catch (PersistenciaException e) {
+            throw new PersistenciaException("Error al obtener ingredientes: " + e.getMessage());
+        }
+    }
+    
+    private static void ingredientesPorUnidad() throws PersistenciaException {
+        try {
+            List<Ingrediente> ingredientes = ingredienteDAO.ingredientesPorUnidadMedida(UnidadMedida.PIEZAS);
+            for (Ingrediente i : ingredientes) {
+                System.out.println("Nombre: " + i.getNombre() + " - Unidad: " + i.getUnidadMedida()
+                        + " - Stock: " + i.getCantidadStock());
+            }
+            
+            if (ingredientes.isEmpty()) {
+                System.out.println("No hay ingredientes");
+            }
+        } catch (PersistenciaException e) {
+            throw new PersistenciaException("Error al obtener ingredientes: " + e.getMessage());
+        }
+    }
+    
+    private static void ingredienteNombreYUnidad() throws PersistenciaException {
+        try {
+            Ingrediente ingrediente = ingredienteDAO.obtenerIngredientePorNombreYUnidad("Pan", UnidadMedida.PIEZAS);
+            if (ingrediente != null) {
+                System.out.println("Ingrediente encontrado.");
+            }
+        } catch (PersistenciaException e) {
+            throw new PersistenciaException("Error al obtener ingrediente: " + e.getMessage());
+        }
+    }
+    
+    private static void eliminarIngrediente() throws PersistenciaException {
+        try {
+            Long idIngrediente = 4L;
+            boolean ingredienteEliminado = ingredienteDAO.eliminarIngrediente(idIngrediente);
+            if (ingredienteEliminado) {
+                System.out.println("Ingrediente eliminado.");
+            }
+        } catch (PersistenciaException e) {
+            throw new PersistenciaException("Error al eliminar ingrediente: " + e.getMessage());
         }
     }
 }

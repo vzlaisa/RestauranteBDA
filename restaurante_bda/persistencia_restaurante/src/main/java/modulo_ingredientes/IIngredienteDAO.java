@@ -5,6 +5,7 @@
 package modulo_ingredientes;
 
 import entidades.Ingrediente;
+import enums.UnidadMedida;
 import exception.PersistenciaException;
 
 /**
@@ -13,6 +14,8 @@ import exception.PersistenciaException;
  */
 public interface IIngredienteDAO {
     
-    Ingrediente registrarIngrediente(Ingrediente ingrediente) throws PersistenciaException;
+    public Ingrediente registrarIngrediente(Ingrediente ingrediente) throws PersistenciaException;
+    
+    public boolean obtenerIngredientesNombreYUnidad(String nombre, UnidadMedida unidad) throws PersistenciaException;
     
 }

@@ -4,8 +4,14 @@
  */
 package coordinadores;
 
+import DTOs.IngredienteDTO;
+import exception.NegocioException;
 import modulo_ingredientes.AdministrarIngredientesFrm;
+import modulo_ingredientes.IIngredienteBO;
+import modulo_ingredientes.IIngredienteDAO;
 import modulo_ingredientes.IncrementarStockIngredienteFrm;
+import modulo_ingredientes.IngredienteBO;
+import modulo_ingredientes.IngredienteDAO;
 import modulo_ingredientes.RegistrarIngredienteFrm;
 import modulo_productos.RegistrarProductoFrm;
 import presentacion.Menu;
@@ -18,6 +24,9 @@ public class CoordinadorAplicacion {
     // Instancia única estática del coordinador
     private static CoordinadorAplicacion instance;
     
+    private IIngredienteDAO ingredienteDAO;
+    private IIngredienteBO ingredienteBO;
+    
     // Pantallas
     private Menu menu;
     private RegistrarProductoFrm registrarProductoFrm;
@@ -26,7 +35,7 @@ public class CoordinadorAplicacion {
     private IncrementarStockIngredienteFrm incrementarStockIngredienteFrm;
     
     private CoordinadorAplicacion() {
-        
+        this.ingredienteBO = new IngredienteBO(ingredienteDAO);
     }
     
     // Método para obtener una única instancia
@@ -72,5 +81,10 @@ public class CoordinadorAplicacion {
         }
         
         menu.setVisible(true);
+    }
+    
+    // Método para registrar un ingrediente nuevo
+    public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws NegocioException {
+        return ingredienteBO.registrarIngrediente(ingrediente);
     }
 }

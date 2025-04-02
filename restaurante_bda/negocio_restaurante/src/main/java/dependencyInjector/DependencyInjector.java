@@ -4,6 +4,10 @@
  */
 package dependencyInjector;
 
+import modulo_ingredientes.IIngredienteBO;
+import modulo_ingredientes.IIngredienteDAO;
+import modulo_ingredientes.IngredienteBO;
+import modulo_ingredientes.IngredienteDAO;
 import modulo_productos.IProductoBO;
 import modulo_productos.IProductoDAO;
 import modulo_productos.ProductoBO;
@@ -31,5 +35,20 @@ public class DependencyInjector {
         
         // Regresar la instancia del BO
         return productoBO;
+    }
+    
+    /**
+     * Crea y devuelve una instancia de la capa de negocio (BO) para ingredientes.
+     * Obtiene una instancia lista para realizar operaciones como registrar, actualizar, eliminar o consultar ingredientes.
+     * 
+     * @return Instancia de IIngredienteBO con su DAO asociado.
+     */
+    public static IIngredienteBO crearIngredienteBO() {
+        // Obtener instancia del DAO.
+        IIngredienteDAO ingredienteDAO = IngredienteDAO.getInstancia();
+        // Inyectar el DAO como dependencia al BO
+        IIngredienteBO ingredienteBO = new IngredienteBO(ingredienteDAO);
+        // Regresar instancia del BO
+        return ingredienteBO;
     }
 }

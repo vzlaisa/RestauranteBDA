@@ -22,6 +22,7 @@ excepciones\PresentacionException.class
 presentacion\Menu$2.class
 modulo_ingredientes\IncrementarStockIngredienteFrm$3.class
 modulo_ingredientes\AdministrarIngredientesFrm$2.class
+modulo_ingredientes\BuscadorIngredientesPanel.class
 presentacion\Menu.class
 modulo_ingredientes\AdministrarIngredientesFrm.class
 modulo_productos\RegistrarProductoFrm$2.class

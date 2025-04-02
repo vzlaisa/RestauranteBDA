@@ -51,11 +51,10 @@ public class Ingrediente implements Serializable {
         this.productosIngredientes = new ArrayList<>();
     }
 
-    public Ingrediente(String nombre, UnidadMedida unidadMedida, Integer cantidadStock, List<ProductosIngredientes> productosIngredientes) {
+    public Ingrediente(String nombre, UnidadMedida unidadMedida, Integer cantidadStock) {
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.cantidadStock = cantidadStock;
-        this.productosIngredientes = new ArrayList<>();
     }
     
     public Long getId() {
@@ -100,7 +99,7 @@ public class Ingrediente implements Serializable {
 
     @Override
     public String toString() {
-        return "Ingrediente{" + "id=" + id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", cantidadStock=" + cantidadStock + ", productosIngredientes=" + productosIngredientes + '}';
+        return "Ingrediente{" + "id=" + id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", cantidadStock=" + cantidadStock + '}';
     }
       
 }

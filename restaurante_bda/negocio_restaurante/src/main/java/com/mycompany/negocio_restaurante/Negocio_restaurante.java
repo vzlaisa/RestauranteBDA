@@ -11,6 +11,7 @@ import dependencyInjector.DependencyInjector;
 import enums.TipoProducto;
 import enums.UnidadMedida;
 import exception.NegocioException;
+import modulo_ingredientes.IIngredienteBO;
 import modulo_productos.IProductoBO;
 
 /**
@@ -19,9 +20,11 @@ import modulo_productos.IProductoBO;
  */
 public class Negocio_restaurante {
     private static IProductoBO productoBO = DependencyInjector.crearProductoBO();
+    private static IIngredienteBO ingredienteBO = DependencyInjector.crearIngredienteBO();
     
     public static void main(String[] args) throws NegocioException {
-        registrarProducto();
+        // registrarProducto();
+        registrarIngrediente();
     }
     
     private static void registrarProducto() throws NegocioException {
@@ -35,9 +38,17 @@ public class Negocio_restaurante {
             System.out.println(productoRegistrado);
         } catch (NegocioException e) {
             throw new NegocioException("Error al registrar ingrediente: " + e.getMessage());
+        } 
+    }
+    
+    private static void registrarIngrediente() throws NegocioException {
+        IngredienteDTO ingrediente = new IngredienteDTO("Queso", UnidadMedida.PIEZAS, 10);
+        
+        try {
+            IngredienteDTO ingredienteRegistrado = ingredienteBO.registrarIngrediente(ingrediente);
+            System.out.println(ingredienteRegistrado);
+        } catch (NegocioException e) {
+            throw new NegocioException("Error al registrar ingrediente: " + e.getMessage());
         }
-        
-        
-        
     }
 }

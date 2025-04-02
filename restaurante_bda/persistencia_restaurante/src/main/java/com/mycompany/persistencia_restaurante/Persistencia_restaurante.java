@@ -40,7 +40,7 @@ public class Persistencia_restaurante {
     
     private static void registrarProducto() throws PersistenciaException {
         try {
-            Ingrediente ingrediente = new Ingrediente("Pan", UnidadMedida.PIEZAS, 20, null); // Ingrediente deberia de tener la lista en su constructor?
+            Ingrediente ingrediente = new Ingrediente("Pan", UnidadMedida.PIEZAS, 20); // Ingrediente deberia de tener la lista en su constructor?
             ingredienteDAO.registrarIngrediente(ingrediente);
             
             Producto producto = new Producto("Sandwich 2", 30.0, TipoProducto.PLATILLO);

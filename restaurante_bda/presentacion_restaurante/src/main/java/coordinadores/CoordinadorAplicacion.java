@@ -5,6 +5,7 @@
 package coordinadores;
 
 import DTOs.IngredienteDTO;
+import dependencyInjector.DependencyInjector;
 import exception.NegocioException;
 import modulo_ingredientes.AdministrarIngredientesFrm;
 import modulo_ingredientes.IIngredienteBO;
@@ -24,7 +25,6 @@ public class CoordinadorAplicacion {
     // Instancia única estática del coordinador
     private static CoordinadorAplicacion instance;
     
-    private IIngredienteDAO ingredienteDAO;
     private IIngredienteBO ingredienteBO;
     
     // Pantallas
@@ -35,7 +35,7 @@ public class CoordinadorAplicacion {
     private IncrementarStockIngredienteFrm incrementarStockIngredienteFrm;
     
     private CoordinadorAplicacion() {
-        this.ingredienteBO = new IngredienteBO(ingredienteDAO);
+        this.ingredienteBO = DependencyInjector.crearIngredienteBO();
     }
     
     // Método para obtener una única instancia

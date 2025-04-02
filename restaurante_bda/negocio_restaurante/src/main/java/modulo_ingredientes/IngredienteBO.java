@@ -71,14 +71,14 @@ public class IngredienteBO implements IIngredienteBO {
             
             return IngredienteMapper.toDTO(ingredienteRegistrado);
         } catch (PersistenciaException e) {
-            throw new NegocioException("Error al registrar ingrediente.");
+            throw new NegocioException("Error al registrar ingrediente: " + e.getMessage());
         }
         
     }
     
     // Método auxiliar que valida si el ingrediente ya existe dentro de la base de datos
     private boolean ingredienteExiste(String nombre, UnidadMedida unidad) throws NegocioException {
-        if (nombre == null || nombre.trim().isEmpty() && unidad == null) {
+        if (nombre == null || nombre.trim().isEmpty() || unidad == null) {
             throw new NegocioException("Es necesario el nombre y la unidad de medida del ingrediente.");
         }
         

@@ -188,6 +188,8 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
             guardar();
         } catch (NegocioException ex) {
             Logger.getLogger(RegistrarIngredienteFrm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PresentacionException ex) {
+            Logger.getLogger(RegistrarIngredienteFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -235,7 +237,7 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
      * Guardar registro de ingrediente. Método para el botón de "Guardar", que
      * muestra un mensaje de confirmación antes de guardar el nuevo ingrediente.
      */
-    private void guardar() throws NegocioException {
+    private void guardar() throws NegocioException, PresentacionException {
         int opcion = JOptionPane.showConfirmDialog(this,
                 "¿Está seguro que desea registrar el ingrediente?", "Confirmar registro",
                 JOptionPane.YES_NO_OPTION);
@@ -245,11 +247,11 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
         
         // Generar DTO del ingrediente
         try {
+            validarCamposIngrediente();
+            
             String nombre = txtNombre.getText().trim();
             UnidadMedida unidad = UnidadMedida.valueOf(cbUnidadMedida.getSelectedItem().toString());
             int cantidadStock = Integer.parseInt(txtCantidadStock.getText().trim());
-            
-            validarCamposIngrediente();
             
             // Crear DTO
             IngredienteDTO ingredienteDTO = new IngredienteDTO(nombre, unidad, cantidadStock);
@@ -261,12 +263,9 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
                     "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
         } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al registar ingrediente: " + e.getMessage(),
-                    "Error en registro", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            // si algo sale + mal
-            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado.", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error en registro", JOptionPane.ERROR_MESSAGE);
+        } catch (PresentacionException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error en registro", JOptionPane.ERROR_MESSAGE);
         }
  
     }

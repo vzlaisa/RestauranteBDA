@@ -28,6 +28,13 @@ public class IngredienteDAO implements IIngredienteDAO {
         return instanceIngredienteDAO;
     }
 
+    /**
+     * Registra un nuevo ingrediente en la base de datos.
+     * 
+     * @param ingrediente Objeto ingrediente a registrar.
+     * @return El objeto ingrediente creado.
+     * @throws PersistenciaException En caso de que hubo un error al registrar el ingrediente.
+     */
     @Override
     public Ingrediente registrarIngrediente(Ingrediente ingrediente) throws PersistenciaException {
         if (ingrediente  == null) {
@@ -53,6 +60,15 @@ public class IngredienteDAO implements IIngredienteDAO {
         }
     }
     
+    /**
+     * Valida si un ingrediente con el mismo nombre y unidad existe dentro
+     * de la base de datos.
+     * 
+     * @param nombre Nombre del ingrediente.
+     * @param unidad Unidad de medida del ingrediente.
+     * @return True si se encontró coincidencia, false en caso contrario.
+     * @throws PersistenciaException En caso de que hubo un error al validar.
+     */
     @Override
     public boolean obtenerIngredientesNombreYUnidad(String nombre, UnidadMedida unidad) throws PersistenciaException {
         EntityManager em = Conexion.crearConexion();
@@ -62,10 +78,38 @@ public class IngredienteDAO implements IIngredienteDAO {
                     .setParameter("nombre", nombre)
                     .setParameter("unidad", unidad)
                     .getSingleResult();
-            
-            return ingrediente > 0; // Devuelve true si el ingrediente existe
+            return ingrediente > 0; // Devuelve true si se encontró más de un ingrediente que coincidiera con la búsqueda
         } catch (Exception e) {
             throw new PersistenciaException("Error al validar producto por nombre y unidad: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Elimina un ingrediente dentro de la base de datos.
+     * 
+     * @param id ID del ingrediente.
+     * @return True si se eliminó el ingrediente, false en caso contrario.
+     * @throws PersistenciaException En caso de que hubo un error al eliminar el ingrediente.
+     */
+    @Override
+    public boolean eliminarIngrediente(Long id) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Ingrediente ingrediente = em.find(Ingrediente.class, id);
+            
+            if (ingrediente == null) {
+                throw new PersistenciaException("Ingrediente no encontrado.");
+            }
+            
+            em.getTransaction().begin();
+            em.remove(ingrediente);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new PersistenciaException("Error al eliminar el ingrediente: " + e.getMessage());
         } finally {
             em.close();
         }

@@ -16,6 +16,8 @@ public interface IIngredienteDAO {
     
     public Ingrediente registrarIngrediente(Ingrediente ingrediente) throws PersistenciaException;
     
+    public boolean eliminarIngrediente(Long id) throws PersistenciaException;
+    
     public boolean obtenerIngredientesNombreYUnidad(String nombre, UnidadMedida unidad) throws PersistenciaException;
     
 }

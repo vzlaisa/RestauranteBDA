@@ -5,6 +5,8 @@
 package presentacion;
 
 import coordinadores.CoordinadorAplicacion;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,18 +15,58 @@ import coordinadores.CoordinadorAplicacion;
 public class Menu extends javax.swing.JFrame {
     
     private CoordinadorAplicacion coordinadorAplicacion;
-    
+    private int tipoUsuario;
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
-        
         this.setTitle("Registrar Producto");
         this.setLocationRelativeTo(null);
         this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();
     }
-
+    
+    public void setTipoUsuario(int tipoUsuario){
+        this.tipoUsuario= tipoUsuario;
+        configurarPermisos();
+    }
+    
+    private void configurarPermisos(){
+        if (tipoUsuario==2) {
+            btnRegistrarComanda.setEnabled(true);
+            btnAdministrarComandas.setEnabled(true);
+            btnAdministrarIngredientes.setEnabled(false);
+            btnRegistrarProducto.setEnabled(false);
+            btnRegistrarCliente.setEnabled(false);
+            btnConsultarClientes.setEnabled(false);
+            btnReportes.setEnabled(false);
+            btnRegistrarMesas.setEnabled(false);
+            
+            agregarMensajeSinAcceso(btnAdministrarIngredientes);
+            agregarMensajeSinAcceso(btnRegistrarProducto);
+            agregarMensajeSinAcceso(btnRegistrarCliente);
+            agregarMensajeSinAcceso(btnConsultarClientes);
+            agregarMensajeSinAcceso(btnReportes);
+            agregarMensajeSinAcceso(btnRegistrarMesas);
+        } else { // Administrador
+            btnRegistrarComanda.setEnabled(true);
+            btnAdministrarComandas.setEnabled(true);
+            btnAdministrarIngredientes.setEnabled(true);
+            btnRegistrarProducto.setEnabled(true);
+            btnRegistrarCliente.setEnabled(true);
+            btnConsultarClientes.setEnabled(true);
+            btnReportes.setEnabled(true);
+            btnRegistrarMesas.setEnabled(true);
+        }
+    }
+     private void agregarMensajeSinAcceso(JButton boton) {
+    boton.addActionListener(e -> {
+        JOptionPane.showMessageDialog(this, 
+            "No tiene permisos para acceder a esta función", 
+            "Acceso denegado", 
+            JOptionPane.WARNING_MESSAGE);
+    });
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,7 +92,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btnRegistrarCliente = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        btnBuscardorClientes = new javax.swing.JButton();
+        btnConsultarClientes = new javax.swing.JButton();
         btnReportes = new javax.swing.JButton();
         btnRegistrarMesas = new javax.swing.JButton();
 
@@ -128,12 +170,22 @@ public class Menu extends javax.swing.JFrame {
 
         btnRegistrarCliente.setBackground(new java.awt.Color(242, 240, 221));
         btnRegistrarCliente.setText("Registrar nuevo cliente");
+        btnRegistrarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarClienteActionPerformed(evt);
+            }
+        });
 
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Reportes");
 
-        btnBuscardorClientes.setBackground(new java.awt.Color(242, 240, 221));
-        btnBuscardorClientes.setText("Buscador de clientes");
+        btnConsultarClientes.setBackground(new java.awt.Color(242, 240, 221));
+        btnConsultarClientes.setText("Buscador de clientes");
+        btnConsultarClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarClientesActionPerformed(evt);
+            }
+        });
 
         btnReportes.setBackground(new java.awt.Color(242, 240, 221));
         btnReportes.setText("Generar reporte");
@@ -164,7 +216,7 @@ public class Menu extends javax.swing.JFrame {
                             .addComponent(btnAdministrarIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnRegistrarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnRegistrarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscardorClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnConsultarClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(16, 16, 16))))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -205,7 +257,7 @@ public class Menu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRegistrarCliente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscardorClientes)
+                .addComponent(btnConsultarClientes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -284,10 +336,22 @@ public class Menu extends javax.swing.JFrame {
         coordinadorAplicacion.mostrarAdministrarIngredientes();
     }//GEN-LAST:event_btnAdministrarIngredientesActionPerformed
 
+    private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarClienteActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        coordinadorAplicacion.mostrarRegistrarClientes();
+    }//GEN-LAST:event_btnRegistrarClienteActionPerformed
+
+    private void btnConsultarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarClientesActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        coordinadorAplicacion.mostrarConsultarClientes();
+    }//GEN-LAST:event_btnConsultarClientesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdministrarComandas;
     private javax.swing.JButton btnAdministrarIngredientes;
-    private javax.swing.JButton btnBuscardorClientes;
+    private javax.swing.JButton btnConsultarClientes;
     private javax.swing.JButton btnRegistrarCliente;
     private javax.swing.JButton btnRegistrarComanda;
     private javax.swing.JButton btnRegistrarMesas;

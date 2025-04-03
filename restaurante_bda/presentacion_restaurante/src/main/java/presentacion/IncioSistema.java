@@ -15,6 +15,8 @@ public class IncioSistema extends javax.swing.JFrame {
      */
     public IncioSistema() {
         initComponents();
+        setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -49,10 +51,20 @@ public class IncioSistema extends javax.swing.JFrame {
         btnMesero.setBackground(new java.awt.Color(242, 240, 221));
         btnMesero.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnMesero.setText("Mesero");
+        btnMesero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMeseroActionPerformed(evt);
+            }
+        });
 
         btnAdiminstrador.setBackground(new java.awt.Color(242, 240, 221));
         btnAdiminstrador.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnAdiminstrador.setText("Administrador");
+        btnAdiminstrador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdiminstradorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -114,6 +126,22 @@ public class IncioSistema extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAdiminstradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdiminstradorActionPerformed
+        // TODO add your handling code here:
+        Menu menu= new Menu();
+        menu.setTipoUsuario(1);
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAdiminstradorActionPerformed
+
+    private void btnMeseroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeseroActionPerformed
+        // TODO add your handling code here:
+        Menu menu= new Menu();
+        menu.setTipoUsuario(2);
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnMeseroActionPerformed
 
     /**
      * @param args the command line arguments

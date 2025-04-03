@@ -1,13 +1,14 @@
 utilerias\Utilerias.class
-Clientes\ClienteBO.class
 modulo_productos\ProductoMapper.class
+modulo_clientes\ClienteBO.class
 modulo_ingredientes\IngredienteBO.class
 modulo_ingredientes\IngredienteMapper.class
 modulo_ingredientes\IIngredienteBO.class
 exception\NegocioException.class
 modulo_productos\IProductoBO.class
+modulo_clientes\IClienteBO.class
+modulo_clientes\ClienteMapper.class
 dependencyInjector\DependencyInjector.class
 modulo_productos\ProductosIngredientesMapper.class
 com\mycompany\negocio_restaurante\Negocio_restaurante.class
-Clientes\IClienteBO.class
 modulo_productos\ProductoBO.class

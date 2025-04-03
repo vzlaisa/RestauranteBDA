@@ -4,9 +4,14 @@
  */
 package coordinadores;
 
+import DTOs.ClienteDTO;
 import DTOs.IngredienteDTO;
 import dependencyInjector.DependencyInjector;
 import exception.NegocioException;
+import java.util.List;
+import modulo_clientes.ConsultarClientes;
+import modulo_clientes.IClienteBO;
+import modulo_clientes.RegistrarClientes;
 import modulo_ingredientes.AdministrarIngredientesFrm;
 import modulo_ingredientes.IIngredienteBO;
 import modulo_ingredientes.IIngredienteDAO;
@@ -26,6 +31,7 @@ public class CoordinadorAplicacion {
     private static CoordinadorAplicacion instance;
     
     private IIngredienteBO ingredienteBO;
+    private IClienteBO clienteBO;
     
     // Pantallas
     private Menu menu;
@@ -33,9 +39,12 @@ public class CoordinadorAplicacion {
     private RegistrarIngredienteFrm registrarIngredienteFrm;
     private AdministrarIngredientesFrm administrarIngredientesFrm;
     private IncrementarStockIngredienteFrm incrementarStockIngredienteFrm;
+    private RegistrarClientes registrarClientes;
+    private ConsultarClientes consultarClientes;
     
     private CoordinadorAplicacion() {
         this.ingredienteBO = DependencyInjector.crearIngredienteBO();
+        this.clienteBO = DependencyInjector.crearClienteBO();
     }
     
     // Método para obtener una única instancia
@@ -75,6 +84,21 @@ public class CoordinadorAplicacion {
         administrarIngredientesFrm.setVisible(true);
     }
     
+    public void mostrarRegistrarClientes() {
+        if (registrarClientes == null) {
+            registrarClientes = new RegistrarClientes();
+        }
+        registrarClientes.setVisible(true);
+    }
+    
+    public void mostrarConsultarClientes() {
+        if (consultarClientes == null) {
+            consultarClientes = new ConsultarClientes();
+        }
+        
+       consultarClientes.setVisible(true);
+    }
+    
     public void mostrarMenu() {
         if (this.menu == null) {
             this.menu = new Menu();
@@ -87,4 +111,17 @@ public class CoordinadorAplicacion {
     public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws NegocioException {
         return ingredienteBO.registrarIngrediente(ingrediente);
     }
+
+          // Métodos para operaciones con clientes
+          public ClienteDTO registrarClientes(ClienteDTO clienteDTO) throws NegocioException {
+              return clienteBO.registrarCliente(clienteDTO);
+          }
+
+          public List<ClienteDTO> buscarClientes(String criterio) throws NegocioException {
+              return clienteBO.buscarClientes(criterio);
+          }
+
+          public ClienteDTO obtenerClientePorTelefono(String telefono) throws NegocioException {
+              return clienteBO.obtenerClientePorTelefono(telefono);
+          }
 }

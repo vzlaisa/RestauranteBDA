@@ -144,7 +144,7 @@
                                   <Component id="btnAdministrarIngredientes" alignment="1" min="-2" pref="164" max="-2" attributes="0"/>
                                   <Component id="btnRegistrarProducto" alignment="1" min="-2" pref="164" max="-2" attributes="0"/>
                                   <Component id="btnRegistrarCliente" alignment="1" min="-2" pref="164" max="-2" attributes="0"/>
-                                  <Component id="btnBuscardorClientes" alignment="1" min="-2" pref="164" max="-2" attributes="0"/>
+                                  <Component id="btnConsultarClientes" alignment="1" min="-2" pref="164" max="-2" attributes="0"/>
                                   <Component id="btnReportes" alignment="1" min="-2" pref="164" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
@@ -195,7 +195,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnRegistrarCliente" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnBuscardorClientes" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnConsultarClientes" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -300,6 +300,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar nuevo cliente"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegistrarClienteActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
@@ -309,13 +312,16 @@
                 <Property name="text" type="java.lang.String" value="Reportes"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="btnBuscardorClientes">
+            <Component class="javax.swing.JButton" name="btnConsultarClientes">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="dd" green="f0" red="f2" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Buscador de clientes"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConsultarClientesActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnReportes">
               <Properties>

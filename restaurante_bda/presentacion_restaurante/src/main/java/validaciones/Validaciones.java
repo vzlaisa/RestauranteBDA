@@ -118,4 +118,23 @@ public class Validaciones {
     private static boolean isNullOrBlank(String texto) {
         return texto == null || texto.isBlank();
     }
+        public static void validarTelefono(String telefono) throws PresentacionException {
+        if (telefono == null || telefono.trim().isEmpty()) {
+            throw new PresentacionException("El teléfono es obligatorio");
+        }
+        String telefonoLimpio = telefono.replaceAll("[^0-9]", "");
+        if (telefonoLimpio.length() != 10) {
+            throw new PresentacionException("El teléfono debe tener 10 dígitos numéricos");
+        }
+    }
+    
+    public static void validarEmail(String email) throws PresentacionException {
+        if (email != null && !email.isEmpty() && 
+            !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            throw new PresentacionException("El correo electrónico no es válido");
+        }
+    }
 }
+
+
+

@@ -1,6 +1,11 @@
+entidades\Mesa_.class
+entidades\Producto_.class
+entidades\Comanda_.class
 DTOs\IngredienteDTO.class
+entidades\Cliente_.class
 DTOs\ProductosIngredientesDTO.class
 entidades\Ingrediente.class
+DTOs\ClienteDTO.class
 entidades\Comanda.class
 enums\TipoProducto.class
 com\mycompany\dominio_restaurante\Dominio_restaurante.class
@@ -10,5 +15,7 @@ entidades\Mesa.class
 entidades\Producto.class
 DTOs\ProductoEditadoDTO.class
 entidades\Cliente.class
+entidades\Ingrediente_.class
+entidades\ProductosIngredientes_.class
 DTOs\ProductoDTO.class
 entidades\ProductosIngredientes.class

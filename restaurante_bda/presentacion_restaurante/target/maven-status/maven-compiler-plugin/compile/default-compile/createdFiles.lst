@@ -25,7 +25,6 @@ modulo_ingredientes\RegistrarIngredienteFrm.class
 modulo_productos\RegistrarProductoFrm$5.class
 modulo_ingredientes\ActualizarStockIngredienteFrm$3.class
 modulo_clientes\ConsultarClientes.class
-modulo_ingredientes\BuscadorIngredientesPanel$4.class
 modulo_ingredientes\EliminarIngredienteFrm$1.class
 modulo_ingredientes\ActualizarStockIngredienteFrm.class
 presentacion\Menu$3.class
@@ -42,7 +41,6 @@ modulo_productos\RegistrarProductoFrm$1.class
 modulo_ingredientes\RegistrarIngredienteFrm$4.class
 utilerias\Utilerias.class
 modulo_ingredientes\PruebaBuscador.class
-modulo_ingredientes\BuscadorIngredientesPanel$5.class
 modulo_productos\RegistrarProductoFrm.class
 modulo_ingredientes\EliminarIngredienteFrm.class
 modulo_ingredientes\RegistrarIngredienteFrm$2.class

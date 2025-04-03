@@ -187,7 +187,7 @@ public class IngredienteBO implements IIngredienteBO {
         }
         // Validar que la cantidad de stock no sea nula
         if (nuevoStock == null) {
-            throw new NegocioException("La cantidad stock debe ser obligatoria.");
+            throw new NegocioException("No hubo cambios.");
         }
         // Validar que la cantidad del stock sea mayor a 0
         if (nuevoStock <= 0) {

@@ -187,6 +187,10 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
         return txtNombreIngrediente;
     }
 
+    public List<String> getIngredientes() {
+        return ingredientes;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JComboBox<String> cbUnidadMedida;

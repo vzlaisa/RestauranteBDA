@@ -67,7 +67,7 @@ public class AdministrarIngredientesFrm extends javax.swing.JFrame {
         btnAumentarStock.setBackground(new java.awt.Color(0, 0, 0));
         btnAumentarStock.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnAumentarStock.setForeground(new java.awt.Color(255, 255, 255));
-        btnAumentarStock.setText("Incrementar Stock");
+        btnAumentarStock.setText("Actualizar Stock");
         btnAumentarStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAumentarStockActionPerformed(evt);

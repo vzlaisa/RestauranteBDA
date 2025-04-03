@@ -32,7 +32,8 @@ public class Persistencia_restaurante {
         // ingredientesPorNombre();
         // ingredientesPorUnidad();
         // ingredienteNombreYUnidad();
-        eliminarIngrediente();
+        // eliminarIngrediente();
+        actualizarIngrediente();
 //        
 //        try {
 //            Ingrediente ingrediente = new Ingrediente("Pan", UnidadMedida.PIEZAS, 20, null);
@@ -141,6 +142,18 @@ public class Persistencia_restaurante {
             }
         } catch (PersistenciaException e) {
             throw new PersistenciaException("Error al eliminar ingrediente: " + e.getMessage());
+        }
+    }
+    
+    private static void actualizarIngrediente() throws PersistenciaException {
+        try {
+            Long idIngrediente = 5L;
+            boolean ingredienteActualizado = ingredienteDAO.actualizarStock(idIngrediente, 700);
+            if (ingredienteActualizado) {
+                System.out.println("Ingrediente actualizado.");
+            }
+        } catch (PersistenciaException e) {
+            throw new PersistenciaException("Error al actualizar stock: " + e.getMessage());
         }
     }
 }

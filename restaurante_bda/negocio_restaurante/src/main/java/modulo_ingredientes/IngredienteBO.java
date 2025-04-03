@@ -9,11 +9,9 @@ import entidades.Ingrediente;
 import enums.UnidadMedida;
 import exception.NegocioException;
 import exception.PersistenciaException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import utilerias.Utilerias;
 
 /**
  *
@@ -73,7 +71,7 @@ public class IngredienteBO implements IIngredienteBO {
             
             return IngredienteMapper.toDTO(ingredienteRegistrado);
         } catch (PersistenciaException e) {
-            throw new NegocioException("Error al registrar ingrediente: " + e.getMessage());
+            throw new NegocioException("No se pudo registrar el ingrediente.", e);
         }
         
     }
@@ -108,7 +106,7 @@ public class IngredienteBO implements IIngredienteBO {
             // Eliminar ingrediente con método de la DAO
             return ingredienteDAO.eliminarIngrediente(idIngrediente);
         } catch (PersistenciaException e) {
-            throw new NegocioException("Error al eliminar ingrediente: " + e.getMessage());
+            throw new NegocioException("No se pudo eliminar el ingrediente.", e);
         }
     }
     
@@ -134,7 +132,7 @@ public class IngredienteBO implements IIngredienteBO {
             List<Ingrediente> ingredientes = ingredienteDAO.obtenerIngredientes();
             return IngredienteMapper.toDTOList(ingredientes);
         } catch (PersistenciaException e) { 
-            throw new NegocioException("Error al obtener ingredientes: " + e.getMessage());
+            throw new NegocioException("No se obtuvieron ingredientes", e);
         }
     }
 
@@ -145,7 +143,7 @@ public class IngredienteBO implements IIngredienteBO {
             List<Ingrediente> ingredientes = ingredienteDAO.ingredientesPorNombre(nombre);
             return IngredienteMapper.toDTOList(ingredientes);
         } catch (PersistenciaException e) { 
-            throw new NegocioException("Error al obtener ingredientes con nombre " + nombre + ": " + e.getMessage());
+            throw new NegocioException("No se obtuvieron ingredientes.", e);
         }
     }
 
@@ -162,7 +160,7 @@ public class IngredienteBO implements IIngredienteBO {
             List<Ingrediente> ingredientes = ingredienteDAO.ingredientesPorUnidadMedida(unidad);
             return IngredienteMapper.toDTOList(ingredientes);
         } catch (PersistenciaException e) { 
-            throw new NegocioException("Error al obtener ingredientes con unidad " + unidad + ": " + e.getMessage());
+            throw new NegocioException("No se obtuvieron ingredientes.", e);
         }
     }
 
@@ -177,9 +175,35 @@ public class IngredienteBO implements IIngredienteBO {
                 return Collections.emptyList();
             }
         } catch (PersistenciaException e) {
-            throw new NegocioException("Error al obtener ingrediente: " + e.getMessage());
+            throw new NegocioException("No se obtuvo ingrediente.", e);
         }
     }
-    
-   
+
+    @Override
+    public boolean actualizarIngrediente(String nombre, UnidadMedida unidad, Integer nuevoStock) throws NegocioException {
+        // Validar que se hayan ingresado los datos
+        if (nombre == null || nombre.trim().isEmpty() || unidad == null) {
+            throw new NegocioException("Es necesario el nombre y unidad de medida del ingrediente");
+        }
+        // Validar que la cantidad de stock no sea nula
+        if (nuevoStock == null) {
+            throw new NegocioException("La cantidad stock debe ser obligatoria.");
+        }
+        // Validar que la cantidad del stock sea mayor a 0
+        if (nuevoStock <= 0) {
+            throw new NegocioException("El stock del ingrediente debe ser mayor a 0.");
+        }
+        
+        try {
+            Long idIngrediente = ingredienteDAO.obtenerIdPorNombreYUnidad(nombre, unidad);
+            // Valida que se haya encontrado un ingrediente
+            if (idIngrediente == null) {
+                throw new NegocioException("El ingrediente con nombre " + nombre + " y unidad " + unidad + " no existe.");
+            } 
+            return ingredienteDAO.actualizarStock(idIngrediente, nuevoStock);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("No se actualizó el ingrediente.", e);
+        }
+    }
+
 }

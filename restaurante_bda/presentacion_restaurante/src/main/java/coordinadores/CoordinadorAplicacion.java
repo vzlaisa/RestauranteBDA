@@ -5,8 +5,10 @@
 package coordinadores;
 
 import DTOs.IngredienteDTO;
+import DTOs.ProductoDTO;
 import dependencyInjector.DependencyInjector;
 import enums.UnidadMedida;
+import excepciones.PresentacionException;
 import exception.NegocioException;
 import java.util.List;
 import modulo_ingredientes.AdministrarIngredientesFrm;
@@ -17,6 +19,7 @@ import modulo_ingredientes.EliminarIngredienteFrm;
 import modulo_ingredientes.IngredienteBO;
 import modulo_ingredientes.IngredienteDAO;
 import modulo_ingredientes.RegistrarIngredienteFrm;
+import modulo_productos.IProductoBO;
 import modulo_productos.RegistrarProductoFrm;
 import presentacion.Menu;
 
@@ -29,6 +32,7 @@ public class CoordinadorAplicacion {
     private static CoordinadorAplicacion instance;
     
     private IIngredienteBO ingredienteBO;
+    private IProductoBO productoBO;
     
     // Pantallas
     private Menu menu;
@@ -95,11 +99,32 @@ public class CoordinadorAplicacion {
     }
     
     // Método para registrar un ingrediente nuevo
-    public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws NegocioException {
-        return ingredienteBO.registrarIngrediente(ingrediente);
+    public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws PresentacionException {
+        try {
+            return ingredienteBO.registrarIngrediente(ingrediente);
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage(), e);
+        }
+        
     }
     
-    public List<IngredienteDTO> filtrarIngredientes(String nombre, UnidadMedida unidad) throws NegocioException {
-        return ingredienteBO.filtroBuscarIngredientes(nombre, unidad);
+    public List<IngredienteDTO> filtrarIngredientes(String nombre, UnidadMedida unidad) throws PresentacionException {
+        try {
+            return ingredienteBO.filtroBuscarIngredientes(nombre, unidad);
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage(), e);
+        }
+    }
+    
+    public ProductoDTO registrarProducto(ProductoDTO producto) throws PresentacionException {
+        if (producto == null) {
+            throw new PresentacionException("El producto no puede ser nulo.");
+        }
+        
+        try {
+            return productoBO.registrarProducto(producto);
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage(), e);
+        }
     }
 }

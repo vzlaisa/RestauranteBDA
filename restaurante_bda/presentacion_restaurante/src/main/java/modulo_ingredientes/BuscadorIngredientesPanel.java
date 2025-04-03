@@ -7,6 +7,7 @@ package modulo_ingredientes;
 import DTOs.IngredienteDTO;
 import coordinadores.CoordinadorAplicacion;
 import enums.UnidadMedida;
+import excepciones.PresentacionException;
 import exception.NegocioException;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -157,7 +158,7 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
         try {
             List<IngredienteDTO> ingredientes = coordinador.filtrarIngredientes(nombre, unidad);
             actualizarListaIngredientes(ingredientes);
-        } catch (NegocioException e) {
+        } catch (PresentacionException e) {
             JOptionPane.showMessageDialog(this, "Error al buscar ingredientes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

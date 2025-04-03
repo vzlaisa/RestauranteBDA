@@ -4,6 +4,8 @@
  */
 package modulo_productos;
 
+import DTOs.ProductoDTO;
+import DTOs.ProductosIngredientesDTO;
 import coordinadores.CoordinadorAplicacion;
 import enums.TipoProducto;
 import enums.UnidadMedida;
@@ -13,6 +15,8 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -41,7 +45,6 @@ public class RegistrarProductoFrm extends JFrame {
     
     private final DefaultTableModel tableModel;
     private final TableRowSorter<DefaultTableModel> tableSorter; // Filtro para la tabla
-    private DefaultListModel<String> listModel; // Modelo para la lista
     private List<String> ingredientes; // PROVISIONAL
     
     /**
@@ -66,6 +69,7 @@ public class RegistrarProductoFrm extends JFrame {
         tblIngredientes.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox(), true));  // Botón "+"
         
         insertarPanelBuscador();
+        cargarListeners();
         cargarTipos();
     }
 
@@ -293,7 +297,7 @@ public class RegistrarProductoFrm extends JFrame {
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-//        agregarIngrediente();
+        agregarIngrediente();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     // Renderizador para el botón en la tabla (solo apariencia)
@@ -366,16 +370,16 @@ public class RegistrarProductoFrm extends JFrame {
         panelBuscar.repaint();
     }
     
-//    private void cargarListeners() {
-//        // Agregar el listener a la lista
-//        buscadorPanel.getlListaIngredientes().addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                // Habilitar el botón si hay un elemento seleccionado
-//                btnAgregar.setEnabled(!buscadorPanel.getlListaIngredientes().isSelectionEmpty());
-//            }
-//        });
-//    }
+    private void cargarListeners() {
+        // Agregar el listener a la lista
+        buscadorPanel.getlListaIngredientes().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                // Habilitar el botón si hay un elemento seleccionado
+                btnAgregar.setEnabled(!buscadorPanel.getlListaIngredientes().isSelectionEmpty());
+            }
+        });
+    }
 
     /**
      * Cargar los tipos de producto al combobox. Este método agrega los tipos de
@@ -397,9 +401,34 @@ public class RegistrarProductoFrm extends JFrame {
      * seleccionado a la tabla de ingredientes. Hace uso del método estático de
      * Utilerías.
      */
-//    private void agregarIngrediente() {
-//        Utilerias.agregarElementoDesdeBoton(buscadorPanel.getlListaIngredientes(), buscadorPanel.getCbUnidadMedida(), tableModel, this);
-//    }
+    private void agregarIngrediente() {
+        String elementoSeleccionado = buscadorPanel.getlListaIngredientes().getSelectedValue();
+
+        if (elementoSeleccionado == null || elementoSeleccionado.isEmpty()) {
+            return;
+        }
+        
+        String nombre = "";
+        String unidad = "";
+
+        // Expresión regular para extraer "Nombre" y "UNIDAD"
+        Pattern pattern = Pattern.compile("^(.*?)\\s*\\((.*?)\\)$");
+        Matcher matcher = pattern.matcher(elementoSeleccionado);
+
+        if (matcher.matches()) {
+            nombre = matcher.group(1); // Captura el nombre
+            unidad = matcher.group(2); // Captura la unidad
+        }
+
+        // Buscar el elemento en la tabla y actualizar
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            if (tableModel.getValueAt(i, 0).equals(nombre)) {
+                return;
+            }
+        }
+
+        tableModel.addRow(new Object[]{nombre, unidad, "-", 1, "+"});
+    }
 
     /**
      * Registra un nuevo producto. Este método registra un nuevo producto,
@@ -408,13 +437,29 @@ public class RegistrarProductoFrm extends JFrame {
      * @throws PresentacionException Si un dato ingresado no es válido o si hubo
      * un error al intentar el registro.
      */
-    private void registrarProducto() throws PresentacionException {
+    private ProductoDTO registrarProducto() throws PresentacionException {
         try {
             validarCamposProducto();
-
-            // FALTA LOGICA PARA REGISTRAR EL PRODUCTO. VALIDAR QUE NO ESTE REPETIDO
+            
+            List<ProductosIngredientesDTO> productosIngredientes = new ArrayList<>();
+            
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                ProductosIngredientesDTO productoIngrediente = new ProductosIngredientesDTO(
+                        tableModel.getValueAt(i, 0),
+                        tableModel.getValueAt(i, 1)
+                );
+            }
+            
+            ProductoDTO productoNuevo = new ProductoDTO(
+                    txtNombre.getText(),
+                    Double.valueOf(txtPrecio.getText()),
+                    TipoProducto.valueOf(cbTipo.getSelectedItem().toString().toUpperCase()),
+                    null
+            );
+            
+            return coordinadorAplicacion.registrarProducto(productoNuevo);
         } catch (PresentacionException e) {
-            throw new PresentacionException("Error al registrar producto: " + e.getMessage(), e);
+            throw new PresentacionException(e.getMessage(), e);
         }
     }
 
@@ -438,7 +483,7 @@ public class RegistrarProductoFrm extends JFrame {
         this.txtNombre.setText("");
         this.txtPrecio.setText("");
         this.cbTipo.setSelectedIndex(0);
-        this.listModel.clear();
+        this.buscadorPanel.getTxtNombreIngrediente().setText("");
         this.tableModel.setRowCount(0);
     }
 
@@ -459,7 +504,7 @@ public class RegistrarProductoFrm extends JFrame {
             JOptionPane.showMessageDialog(this, "Producto registrado con éxito.", "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
         } catch (PresentacionException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al registrar producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -468,8 +513,7 @@ public class RegistrarProductoFrm extends JFrame {
      * @return True si encontró al menos un campo con información, false en caso contrario.
      */
     private boolean camposIngresados() {
-//        return !txtNombre.getText().isBlank() || !txtPrecio.getText().isBlank() || cbTipo.getSelectedIndex() != 0 || cbUnidadMedida.getSelectedIndex() != 0 || tableModel.getRowCount() != 0;
-        return true;
+        return !txtNombre.getText().isBlank() || !txtPrecio.getText().isBlank() || cbTipo.getSelectedIndex() != 0 || tableModel.getRowCount() != 0;
     }
 
     /**
@@ -492,8 +536,6 @@ public class RegistrarProductoFrm extends JFrame {
         this.dispose();
         coordinadorAplicacion.mostrarMenu();
     }
-    
-    // PRIMERO VA A SELECCIONAR UNA UNIDAD, LA LISTA SE CARGA CON LOS DE ESA UNIDAD. SI NO SELECCIONA UNIDAD, MUESTRA TODOS LOS PRODUCTOS
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

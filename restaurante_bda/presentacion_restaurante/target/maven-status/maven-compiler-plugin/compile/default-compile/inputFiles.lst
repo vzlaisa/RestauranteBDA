@@ -3,9 +3,11 @@ C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_res
 C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\main\Presentacion_restaurante.java
 C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_clientes\ConsultarClientes.java
 C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_clientes\RegistrarClientes.java
+C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\ActualizarStockIngredienteFrm.java
 C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\AdministrarIngredientesFrm.java
 C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\BuscadorIngredientesPanel.java
-C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\IncrementarStockIngredienteFrm.java
+C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\EliminarIngredienteFrm.java
+C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\PruebaBuscador.java
 C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\RegistrarIngredienteFrm.java
 C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_productos\RegistrarProductoFrm.java
 C:\Users\Ximena\Documents\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\presentacion\IncioSistema.java

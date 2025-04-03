@@ -6,11 +6,14 @@ package coordinadores;
 
 import DTOs.IngredienteDTO;
 import dependencyInjector.DependencyInjector;
+import enums.UnidadMedida;
 import exception.NegocioException;
+import java.util.List;
 import modulo_ingredientes.AdministrarIngredientesFrm;
 import modulo_ingredientes.IIngredienteBO;
 import modulo_ingredientes.IIngredienteDAO;
-import modulo_ingredientes.IncrementarStockIngredienteFrm;
+import modulo_ingredientes.ActualizarStockIngredienteFrm;
+import modulo_ingredientes.EliminarIngredienteFrm;
 import modulo_ingredientes.IngredienteBO;
 import modulo_ingredientes.IngredienteDAO;
 import modulo_ingredientes.RegistrarIngredienteFrm;
@@ -32,7 +35,8 @@ public class CoordinadorAplicacion {
     private RegistrarProductoFrm registrarProductoFrm;
     private RegistrarIngredienteFrm registrarIngredienteFrm;
     private AdministrarIngredientesFrm administrarIngredientesFrm;
-    private IncrementarStockIngredienteFrm incrementarStockIngredienteFrm;
+    private ActualizarStockIngredienteFrm actualizarStockIngredienteFrm;
+    private EliminarIngredienteFrm eliminarIngredienteFrm;
     
     private CoordinadorAplicacion() {
         this.ingredienteBO = DependencyInjector.crearIngredienteBO();
@@ -61,11 +65,18 @@ public class CoordinadorAplicacion {
         registrarIngredienteFrm.setVisible(true);
     }
     
-    public void mostrarIncrementarStockIngredienteFrm() {
-        if (this.incrementarStockIngredienteFrm == null) {
-            this.incrementarStockIngredienteFrm = new IncrementarStockIngredienteFrm();
+    public void mostrarActualizarStockIngredienteFrm() {
+        if (this.actualizarStockIngredienteFrm == null) {
+            this.actualizarStockIngredienteFrm = new ActualizarStockIngredienteFrm();
         }
-        incrementarStockIngredienteFrm.setVisible(true);
+        actualizarStockIngredienteFrm.setVisible(true);
+    }
+    
+    public void mostrarEliminarIngredienteFrm() {
+        if (this.eliminarIngredienteFrm == null) {
+            this.eliminarIngredienteFrm = new EliminarIngredienteFrm();
+        }
+        eliminarIngredienteFrm.setVisible(true);
     }
     
     public void mostrarAdministrarIngredientes() {
@@ -86,5 +97,9 @@ public class CoordinadorAplicacion {
     // Método para registrar un ingrediente nuevo
     public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws NegocioException {
         return ingredienteBO.registrarIngrediente(ingrediente);
+    }
+    
+    public List<IngredienteDTO> filtrarIngredientes(String nombre, UnidadMedida unidad) throws NegocioException {
+        return ingredienteBO.filtroBuscarIngredientes(nombre, unidad);
     }
 }

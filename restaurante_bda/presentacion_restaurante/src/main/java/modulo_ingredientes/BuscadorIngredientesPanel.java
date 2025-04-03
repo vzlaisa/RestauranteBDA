@@ -4,7 +4,21 @@
  */
 package modulo_ingredientes;
 
+import DTOs.IngredienteDTO;
+import coordinadores.CoordinadorAplicacion;
 import enums.UnidadMedida;
+import exception.NegocioException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import utilerias.Utilerias;
 
 /**
  *
@@ -12,11 +26,25 @@ import enums.UnidadMedida;
  */
 public class BuscadorIngredientesPanel extends javax.swing.JPanel {
 
+    private CoordinadorAplicacion coordinador;
+    
+    private DefaultTableModel tableModel;
+    private DefaultListModel<String> listModel; // Modelo para la lista
+    private List<String> ingredientes; // PROVISIONAL
+    
     /**
      * Creates new form BuscadorIngredientesPanel
      */
     public BuscadorIngredientesPanel() {
         initComponents();
+        this.coordinador = CoordinadorAplicacion.getInstancia();
+        
+        this.listModel = new DefaultListModel<>();
+        this.lListaIngredientes.setModel(listModel);
+
+        this.tableModel = (DefaultTableModel) tableIngredienteSeleccionado.getModel();
+        
+        cargarUnidades();
     }
 
     /**
@@ -30,24 +58,59 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         txtNombreIngrediente = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lIngredientesPorNombre = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         cbUnidadMedida = new javax.swing.JComboBox<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        lIngredientesPorUnidad = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lListaIngredientes = new javax.swing.JList<>();
+        btnLimpiar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableIngredienteSeleccionado = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Ingrese nombre del ingrediente");
+        jLabel1.setText("Nombre");
 
-        jScrollPane1.setViewportView(lIngredientesPorNombre);
+        txtNombreIngrediente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreIngredienteActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Seleccione unidad de medida del ingrediente");
+        jLabel2.setText("Unidad de medida");
 
-        jScrollPane2.setViewportView(lIngredientesPorUnidad);
+        jScrollPane3.setViewportView(lListaIngredientes);
+
+        btnLimpiar.setBackground(new java.awt.Color(0, 0, 0));
+        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        tableIngredienteSeleccionado.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nombre", "Unidad medida", "Cantidad stock"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tableIngredienteSeleccionado);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -55,15 +118,19 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(btnLimpiar))
+                    .addComponent(jLabel1)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addComponent(cbUnidadMedida, javax.swing.GroupLayout.Alignment.LEADING, 0, 143, Short.MAX_VALUE)
+                        .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,18 +138,46 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
                 .addGap(33, 33, 33)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(btnLimpiar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtNombreIngredienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreIngredienteActionPerformed
+
+        txtNombreIngrediente.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                buscarIngredientes();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                buscarIngredientes();
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                buscarIngredientes();
+            }
+        });
+    }//GEN-LAST:event_txtNombreIngredienteActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        txtNombreIngrediente.setText("");
+        cbUnidadMedida.setSelectedIndex(0);
+        listModel.clear();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void cargarUnidades() {
         cbUnidadMedida.addItem("No seleccionado");
@@ -94,15 +189,75 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
         cbUnidadMedida.setSelectedIndex(0);
     }
     
+    private void buscarIngredientes() {
+        String nombre = txtNombreIngrediente.getText().trim();
+        UnidadMedida unidad = null;
+
+        String selectedItem = cbUnidadMedida.getSelectedItem().toString();
+        if (!selectedItem.equals("No seleccionado")) {
+            try{
+                unidad = UnidadMedida.valueOf(selectedItem);
+            }catch(IllegalArgumentException e){
+                JOptionPane.showMessageDialog(this, "La Unidad de Medida seleccionada no es valida", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+        }
+
+        try {
+            List<IngredienteDTO> ingredientes = coordinador.filtrarIngredientes(nombre, unidad);
+            actualizarListaIngredientes(ingredientes);
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, "Error al buscar ingredientes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void actualizarListaIngredientes(List<IngredienteDTO> ingredientesFiltrados) {
+        listModel.clear();
+        for (IngredienteDTO ing : ingredientesFiltrados) {
+            listModel.addElement(ing.getNombre() + " (" + ing.getUnidadMedida() + ")");
+        }
+    }
+    
+    private void agregarIngredienteATabla() {
+        String seleccionado = lListaIngredientes.getSelectedValue();
+        if (seleccionado != null) {
+            String[] partes = seleccionado.split(" \\(");
+            if (partes.length == 2) {
+                String nombre = partes[0];
+                try{
+                    UnidadMedida unidad = UnidadMedida.valueOf(partes[1].replace(")", ""));
+
+                    // Buscar en la lista de ingredientes filtrados para obtener la cantidad de stock
+                    try {
+                        List<IngredienteDTO> ingredientesFiltrados = coordinador.filtrarIngredientes(nombre, unidad);
+                        if (!ingredientesFiltrados.isEmpty()) {
+                            IngredienteDTO ingrediente = ingredientesFiltrados.get(0);
+                            tableModel.addRow(new Object[]{ingrediente.getNombre(), ingrediente.getUnidadMedida(), ingrediente.getCantidadStock()});
+                        }
+                    } catch (NegocioException e) {
+                        JOptionPane.showMessageDialog(this, "Error al agregar ingrediente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch(IllegalArgumentException e){
+                    JOptionPane.showMessageDialog(this, "La Unidad de Medida seleccionada no es valida", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Formato de ingrediente seleccionado incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JComboBox<String> cbUnidadMedida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JList<String> lIngredientesPorNombre;
-    private javax.swing.JList<String> lIngredientesPorUnidad;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JList<String> lListaIngredientes;
+    private javax.swing.JTable tableIngredienteSeleccionado;
     private javax.swing.JTextField txtNombreIngrediente;
     // End of variables declaration//GEN-END:variables
 }

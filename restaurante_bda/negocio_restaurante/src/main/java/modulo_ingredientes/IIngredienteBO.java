@@ -19,11 +19,15 @@ public interface IIngredienteBO {
     
     public boolean eliminarIngrediente(String nombre, UnidadMedida unidad) throws NegocioException;
     
-    public List<IngredienteDTO> obtenerIngredientes() throws NegocioException;
+//    public List<IngredienteDTO> obtenerIngredientes() throws NegocioException;
+//    
+//    public List<IngredienteDTO> ingredientesPorNombre(String nombre) throws NegocioException;
+//    
+//    public List<IngredienteDTO> ingredientesPorUnidadMedida(UnidadMedida unidad) throws NegocioException;
+//    
+//    public IngredienteDTO obtenerIngredientePorNombreYUnidad(String nombre, UnidadMedida unidad) throws NegocioException;
+//    
     
-    public List<IngredienteDTO> ingredientesPorNombre(String nombre) throws NegocioException;
-    
-    public List<IngredienteDTO> ingredientesPorUnidadMedida(UnidadMedida unidad) throws NegocioException;
-    
-    public IngredienteDTO obtenerIngredientePorNombreYUnidad(String nombre, UnidadMedida unidad) throws NegocioException;
+    // Método de prueba para usar filtro de búsqueda en presentación
+    public List<IngredienteDTO> filtroBuscarIngredientes(String nombre, UnidadMedida unidad) throws NegocioException;
 }

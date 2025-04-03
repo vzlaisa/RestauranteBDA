@@ -10,13 +10,13 @@ import coordinadores.CoordinadorAplicacion;
  *
  * @author Ximena
  */
-public class IncrementarStockIngredienteFrm extends javax.swing.JFrame {
+public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
 
     private CoordinadorAplicacion coordinadorAplicacion;
     /**
      * Creates new form AumentarStockIngredienteFrm
      */
-    public IncrementarStockIngredienteFrm() {
+    public ActualizarStockIngredienteFrm() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();

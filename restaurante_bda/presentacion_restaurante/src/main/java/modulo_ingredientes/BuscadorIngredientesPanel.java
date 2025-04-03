@@ -174,7 +174,18 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
         cbUnidadMedida.setSelectedIndex(0);
         listModel.clear();
     }
-    
+
+    public JComboBox<String> getCbUnidadMedida() {
+        return cbUnidadMedida;
+    }
+
+    public JList<String> getlListaIngredientes() {
+        return lListaIngredientes;
+    }
+
+    public JTextField getTxtNombreIngrediente() {
+        return txtNombreIngrediente;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpiar;

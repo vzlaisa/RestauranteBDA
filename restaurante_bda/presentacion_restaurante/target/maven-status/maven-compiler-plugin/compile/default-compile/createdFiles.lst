@@ -22,8 +22,6 @@ modulo_ingredientes\AdministrarIngredientesFrm.class
 modulo_productos\RegistrarProductoFrm$2.class
 presentacion\IncioSistema.class
 modulo_ingredientes\RegistrarIngredienteFrm.class
-modulo_productos\RegistrarProductoFrm$5.class
-modulo_ingredientes\ActualizarStockIngredienteFrm$3.class
 modulo_clientes\ConsultarClientes.class
 modulo_ingredientes\EliminarIngredienteFrm$1.class
 modulo_ingredientes\ActualizarStockIngredienteFrm.class

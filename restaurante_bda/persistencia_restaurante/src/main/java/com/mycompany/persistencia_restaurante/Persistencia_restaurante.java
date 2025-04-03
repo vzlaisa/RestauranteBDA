@@ -26,21 +26,24 @@ public class Persistencia_restaurante {
     private static IIngredienteDAO ingredienteDAO = IngredienteDAO.getInstancia();
     
     public static void main(String[] args) throws PersistenciaException {
+//        registrarIngrediente();
 //        registrarProducto();
 //        obtenerNombresProductos();
-        // obtenerIngredientes();
-        // ingredientesPorNombre();
-        // ingredientesPorUnidad();
-        // ingredienteNombreYUnidad();
-        eliminarIngrediente();
-//        
-//        try {
-//            Ingrediente ingrediente = new Ingrediente("Pan", UnidadMedida.PIEZAS, 20, null);
-//            ingredienteDAO.registrarIngrediente(ingrediente);
-//            System.out.println("Ingrediente registrado");
-//        } catch (PersistenciaException e) {
-//            throw new PersistenciaException("Error al registrar ingrediente: " + e.getMessage());
-//        }
+//        obtenerIngredientes();
+//        ingredientesPorNombre();
+//        ingredientesPorUnidad();
+//        ingredienteNombreYUnidad();
+//        eliminarIngrediente();
+    }
+    
+    private static void registrarIngrediente() throws PersistenciaException {
+        try {
+            Ingrediente ingrediente = new Ingrediente("Pan", UnidadMedida.PIEZAS, 20);
+            ingredienteDAO.registrarIngrediente(ingrediente);
+            System.out.println("Ingrediente registrado");
+        } catch (PersistenciaException e) {
+            throw new PersistenciaException("Error al registrar ingrediente: " + e.getMessage());
+        }
     }
     
     private static void registrarProducto() throws PersistenciaException {

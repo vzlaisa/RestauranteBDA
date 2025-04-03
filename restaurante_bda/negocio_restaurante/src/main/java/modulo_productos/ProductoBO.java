@@ -104,7 +104,7 @@ public class ProductoBO implements IProductoBO {
 
             return ProductoMapper.toDTO(productoRegistrado);
         } catch (PersistenciaException e) {
-            throw new NegocioException("ENo se pudo registrar el producto.", e);
+            throw new NegocioException("No se pudo registrar el producto.", e);
         }
     }
 

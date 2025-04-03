@@ -137,8 +137,8 @@ public class IngredienteDAO implements IIngredienteDAO {
     public List<Ingrediente> ingredientesPorNombre(String nombre) throws PersistenciaException {
         EntityManager em = Conexion.crearConexion();
         try {
-            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.nombre = :nombre", Ingrediente.class)
-                    .setParameter("nombre", nombre)
+            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.nombre LIKE :nombre", Ingrediente.class)
+                    .setParameter("nombre", "%" + nombre + "%")
                     .getResultList();
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener ingredientes con el nombre " + nombre + ": " + e.getMessage());
@@ -151,8 +151,8 @@ public class IngredienteDAO implements IIngredienteDAO {
     public List<Ingrediente> ingredientesPorUnidadMedida(UnidadMedida unidad) throws PersistenciaException {
         EntityManager em = Conexion.crearConexion();
         try {
-            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.unidadMedida = :unidad", Ingrediente.class)
-                    .setParameter("unidad", unidad)
+            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.unidadMedida LIKE :unidad", Ingrediente.class)
+                    .setParameter("unidad", "%" + unidad + "%")
                     .getResultList();
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener ingredientes con la unidad de medida " + unidad + ": " + e.getMessage());
@@ -165,9 +165,9 @@ public class IngredienteDAO implements IIngredienteDAO {
     public Ingrediente obtenerIngredientePorNombreYUnidad(String nombre, UnidadMedida unidad) throws PersistenciaException {
         EntityManager em = Conexion.crearConexion();
         try {
-            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.nombre = :nombre AND i.unidadMedida = :unidad", Ingrediente.class)
-                    .setParameter("nombre", nombre)
-                    .setParameter("unidad", unidad)
+            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.nombre LIKE :nombre AND i.unidadMedida LIKE :unidad", Ingrediente.class)
+                    .setParameter("nombre", "%" + nombre + "%")
+                    .setParameter("unidad", "%" + unidad + "%")
                     .getSingleResult();
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener ingrediente con nombre " + nombre

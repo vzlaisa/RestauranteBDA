@@ -122,10 +122,8 @@ public class IngredienteBO implements IIngredienteBO {
             return obtenerIngredientePorNombreYUnidad(nombre, unidad);
         } else if (nombre != null && !nombre.trim().isEmpty()) {
             return ingredientesPorNombre(nombre);
-        } else if (unidad != null) {
-            return ingredientesPorUnidadMedida(unidad);
         } else {
-            return obtenerIngredientes();
+            return ingredientesPorUnidadMedida(unidad);
         }
     }
 
@@ -134,7 +132,7 @@ public class IngredienteBO implements IIngredienteBO {
         try {
             // Buscar lista de ingredientes con el método de la DAO
             List<Ingrediente> ingredientes = ingredienteDAO.obtenerIngredientes();
-            return convertirListaADTO(ingredientes);
+            return IngredienteMapper.toDTOList(ingredientes);
         } catch (PersistenciaException e) { 
             throw new NegocioException("Error al obtener ingredientes: " + e.getMessage());
         }
@@ -145,7 +143,7 @@ public class IngredienteBO implements IIngredienteBO {
         try {
             // Buscar lista de ingredientes con el método de la DAO
             List<Ingrediente> ingredientes = ingredienteDAO.ingredientesPorNombre(nombre);
-            return convertirListaADTO(ingredientes);
+            return IngredienteMapper.toDTOList(ingredientes);
         } catch (PersistenciaException e) { 
             throw new NegocioException("Error al obtener ingredientes con nombre " + nombre + ": " + e.getMessage());
         }
@@ -162,7 +160,7 @@ public class IngredienteBO implements IIngredienteBO {
         try {
             // Buscar lista de ingredientes con el método de la DAO
             List<Ingrediente> ingredientes = ingredienteDAO.ingredientesPorUnidadMedida(unidad);
-            return convertirListaADTO(ingredientes);
+            return IngredienteMapper.toDTOList(ingredientes);
         } catch (PersistenciaException e) { 
             throw new NegocioException("Error al obtener ingredientes con unidad " + unidad + ": " + e.getMessage());
         }
@@ -183,16 +181,5 @@ public class IngredienteBO implements IIngredienteBO {
         }
     }
     
-    // Método auxiliar que convierte listas con entidades comunes a objetos DTO para evitar repetir código
-    private List<IngredienteDTO> convertirListaADTO(List<Ingrediente> ingredientes) throws NegocioException {
-        // Crear nueva lista de tipo IngredienteDTO
-        List<IngredienteDTO> ingredientesDTO = new ArrayList<>();
-        // Recorrer para cada vez que se encuentre un ingrediente en la lista de ingredientes
-        for (Ingrediente i : ingredientes) {
-            // Agregar ingrediente a la lista para convertirlo a DTO
-            ingredientesDTO.add(IngredienteMapper.toDTO(i));
-        }
-        return ingredientesDTO;
-    }
    
 }

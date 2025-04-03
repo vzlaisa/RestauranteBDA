@@ -42,6 +42,7 @@ modulo_productos\RegistrarProductoFrm$1.class
 modulo_ingredientes\RegistrarIngredienteFrm$4.class
 utilerias\Utilerias.class
 modulo_ingredientes\PruebaBuscador.class
+modulo_ingredientes\BuscadorIngredientesPanel$5.class
 modulo_productos\RegistrarProductoFrm.class
 modulo_ingredientes\EliminarIngredienteFrm.class
 modulo_ingredientes\RegistrarIngredienteFrm$2.class
@@ -49,4 +50,3 @@ modulo_ingredientes\BuscadorIngredientesPanel$2.class
 modulo_clientes\RegistrarClientes$1.class
 presentacion\Menu$1.class
 presentacion\Menu$4.class
-modulo_ingredientes\EliminarIngredienteFrm$3.class

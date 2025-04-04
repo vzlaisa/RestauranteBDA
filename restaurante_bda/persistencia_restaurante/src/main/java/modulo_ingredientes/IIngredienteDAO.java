@@ -101,4 +101,6 @@ public interface IIngredienteDAO {
     
     public boolean actualizarStock(Long id, Integer nuevoStock) throws PersistenciaException;
     
+    public Ingrediente actualizar(Ingrediente ingrediente) throws PersistenciaException;
+    
 }

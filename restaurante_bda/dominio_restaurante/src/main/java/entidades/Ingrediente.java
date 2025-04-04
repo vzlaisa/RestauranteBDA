@@ -44,7 +44,7 @@ public class Ingrediente implements Serializable {
     @Column(name = "cantidad_stock", nullable = false)
     private Integer cantidadStock;
     
-    @OneToMany(mappedBy = "ingrediente", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ingrediente", fetch = FetchType.LAZY)
     private List<ProductosIngredientes> productosIngredientes;
 
     public Ingrediente() {
@@ -55,6 +55,7 @@ public class Ingrediente implements Serializable {
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.cantidadStock = cantidadStock;
+        this.productosIngredientes = new ArrayList<>();
     }
     
     public Long getId() {

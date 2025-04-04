@@ -226,4 +226,25 @@ public class IngredienteDAO implements IIngredienteDAO {
             em.close();
         }
     }
+
+    @Override
+    public Ingrediente actualizar(Ingrediente ingrediente) throws PersistenciaException {
+        if (ingrediente == null) {
+            throw new PersistenciaException("El ingrediente no puede ser nulo");
+        }
+        
+        EntityManager em = Conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            Ingrediente ingredienteActualizado = em.merge(ingrediente);
+            em.getTransaction().commit();
+            
+            return ingredienteActualizado;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new PersistenciaException("Error al actualizar ingrediente: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
 }

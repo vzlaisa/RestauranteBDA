@@ -8,15 +8,15 @@ package DTOs;
  *
  * @author rocha
  */
-public class ProductosIngredientesDTO {
+public class ProductoIngredienteDTO {
     private Integer cantidad;
     private ProductoDTO producto;
     private IngredienteDTO ingrediente;
 
-    public ProductosIngredientesDTO() {
+    public ProductoIngredienteDTO() {
     }
 
-    public ProductosIngredientesDTO(Integer cantidad, ProductoDTO producto, IngredienteDTO ingrediente) {
+    public ProductoIngredienteDTO(Integer cantidad, ProductoDTO producto, IngredienteDTO ingrediente) {
         this.cantidad = cantidad;
         this.producto = producto;
         this.ingrediente = ingrediente;

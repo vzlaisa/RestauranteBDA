@@ -8,12 +8,12 @@ package presentacion;
  *
  * @author dario
  */
-public class IncioSistema extends javax.swing.JFrame {
+public class InicioSistema extends javax.swing.JFrame {
 
     /**
      * Creates new form IncioSistema
      */
-    public IncioSistema() {
+    public InicioSistema() {
         initComponents();
         setLocationRelativeTo(null);
         
@@ -127,6 +127,7 @@ public class IncioSistema extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void btnAdiminstradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdiminstradorActionPerformed
         // TODO add your handling code here:
         Menu menu= new Menu();
@@ -177,6 +178,7 @@ public class IncioSistema extends javax.swing.JFrame {
             }
         });
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdiminstrador;

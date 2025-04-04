@@ -10,6 +10,8 @@ import enums.UnidadMedida;
 import exception.PersistenciaException;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -95,6 +97,10 @@ public class IngredienteDAO implements IIngredienteDAO {
      */
     @Override
     public boolean eliminarIngrediente(Long id) throws PersistenciaException {
+        if (id == null) {
+            throw new PersistenciaException("El identificador no puede ser nulo");
+        }
+        
         EntityManager em = Conexion.crearConexion();
         try {
             Ingrediente ingrediente = em.find(Ingrediente.class, id);
@@ -110,6 +116,133 @@ public class IngredienteDAO implements IIngredienteDAO {
         } catch (Exception e) {
             em.getTransaction().rollback();
             throw new PersistenciaException("Error al eliminar el ingrediente: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Ingrediente> obtenerIngredientes() throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        try {
+            return em.createQuery("SELECT i FROM Ingrediente i", Ingrediente.class)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obtener lista de ingredientes: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Ingrediente> ingredientesPorNombre(String nombre) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        try {
+            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.nombre LIKE :nombre", Ingrediente.class)
+                    .setParameter("nombre", "%" + nombre + "%")
+                    .getResultList();
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obtener ingredientes con el nombre " + nombre + ": " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Ingrediente> ingredientesPorUnidadMedida(UnidadMedida unidad) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        try {
+            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.unidadMedida LIKE :unidad", Ingrediente.class)
+                    .setParameter("unidad", "%" + unidad + "%")
+                    .getResultList();
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obtener ingredientes con la unidad de medida " + unidad + ": " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Ingrediente obtenerIngredientePorNombreYUnidad(String nombre, UnidadMedida unidad) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        try {
+            return em.createQuery("SELECT i FROM Ingrediente i WHERE i.nombre LIKE :nombre AND i.unidadMedida LIKE :unidad", Ingrediente.class)
+                    .setParameter("nombre", "%" + nombre + "%")
+                    .setParameter("unidad", "%" + unidad + "%")
+                    .getSingleResult();
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obtener ingrediente con nombre " + nombre
+                    + " y unidad de medida " + unidad + ": " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Ingrediente obtenerIngredientePorId(Long id) throws PersistenciaException {
+        if (id == null) {
+            throw new PersistenciaException("El identificador no puede ser nulo.");
+        }
+        EntityManager em = Conexion.crearConexion();
+        try {
+            return em.find(Ingrediente.class, id);
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obtener ingrediente con ID " + id + ": " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Long obtenerIdPorNombreYUnidad(String nombre, UnidadMedida unidad) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        try {
+            TypedQuery<Long> query = em.createQuery(
+                "SELECT i.id FROM Ingrediente i WHERE i.nombre = :nombre AND i.unidadMedida = :unidad", Long.class);
+            query.setParameter("nombre", nombre);
+            query.setParameter("unidad", unidad);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obtener ID: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public boolean actualizarStock(Long id, Integer nuevoStock) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("UPDATE Ingrediente i SET i.cantidadStock = :nuevoStock WHERE i.id = :id", Ingrediente.class);
+            query.setParameter("id", id);
+            query.setParameter("nuevoStock", nuevoStock);
+            int filasActualizadas = query.executeUpdate();
+            
+            return filasActualizadas > 0;
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al actualizar stock: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Ingrediente actualizar(Ingrediente ingrediente) throws PersistenciaException {
+        if (ingrediente == null) {
+            throw new PersistenciaException("El ingrediente no puede ser nulo");
+        }
+        
+        EntityManager em = Conexion.crearConexion();
+        try {
+            em.getTransaction().begin();
+            Ingrediente ingredienteActualizado = em.merge(ingrediente);
+            em.getTransaction().commit();
+            
+            return ingredienteActualizado;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new PersistenciaException("Error al actualizar ingrediente: " + e.getMessage());
         } finally {
             em.close();
         }

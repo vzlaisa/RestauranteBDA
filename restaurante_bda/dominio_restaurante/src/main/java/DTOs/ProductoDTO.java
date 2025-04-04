@@ -22,7 +22,7 @@ public class ProductoDTO {
     private String nombre;
     private Double precio;
     private TipoProducto tipo;
-    private List<ProductosIngredientesDTO> ingredientes;
+    private List<ProductoIngredienteDTO> ingredientes;
     
     /**
      * Constructor por defecto. Inicializa la lista de ProductosIngredientes.
@@ -31,7 +31,7 @@ public class ProductoDTO {
         this.ingredientes = new ArrayList<>();
     }
     
-    public ProductoDTO(String nombre, Double precio, TipoProducto tipo, List<ProductosIngredientesDTO> ingredientes) {
+    public ProductoDTO(String nombre, Double precio, TipoProducto tipo, List<ProductoIngredienteDTO> ingredientes) {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
@@ -69,11 +69,11 @@ public class ProductoDTO {
         this.tipo = tipo;
     }
 
-    public List<ProductosIngredientesDTO> getIngredientes() {
+    public List<ProductoIngredienteDTO> getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(List<ProductosIngredientesDTO> ingredientes) {
+    public void setIngredientes(List<ProductoIngredienteDTO> ingredientes) {
         this.ingredientes = ingredientes;
     }
 

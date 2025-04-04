@@ -6,6 +6,7 @@ package modulo_clientes;
 
 import DTOs.ClienteDTO;
 import coordinadores.CoordinadorAplicacion;
+import excepciones.DatosInvalidosException;
 import excepciones.PresentacionException;
 import exception.NegocioException;
 import javax.swing.JOptionPane;
@@ -241,14 +242,14 @@ public class RegistrarClientes extends javax.swing.JFrame {
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:                                            
         try {
-            validarCampos();  // Esta llamada ya usa los Field correctos
+            validarCampos(); 
 
             ClienteDTO clienteDTO = new ClienteDTO();
-            clienteDTO.setNombre(Fieldnombre.getText().trim());  // Corregido: Fieldnombre en lugar de txtnombre
-            clienteDTO.setApellidoPaterno(FieldApellidoP.getText().trim());  // FieldApellidoP
-            clienteDTO.setApellidoMaterno(FieldApellidoM.getText().trim());  // FieldApellidoM
-            clienteDTO.setTelefono(FieldTelefono.getText().trim());  // FieldTelefono
-            clienteDTO.setCorreo(FieldCorreo.getText().trim());  // FieldCorreo
+            clienteDTO.setNombre(Fieldnombre.getText().trim());  
+            clienteDTO.setApellidoPaterno(FieldApellidoP.getText().trim());  
+            clienteDTO.setApellidoMaterno(FieldApellidoM.getText().trim()); 
+            clienteDTO.setTelefono(FieldTelefono.getText().trim()); 
+            clienteDTO.setEmail(FieldCorreo.getText().trim());
             clienteDTO.setTipo(RadioClienteF.isSelected() ? "Frecuente" : null);
 
             int confirmacion = JOptionPane.showConfirmDialog(
@@ -273,25 +274,6 @@ public class RegistrarClientes extends javax.swing.JFrame {
                 "Error", 
                 JOptionPane.ERROR_MESSAGE);
         }
-    }
-    
-    private void validarCampos() throws PresentacionException {
-        Validaciones.validarTexto(Fieldnombre.getText().trim(), "nombre");  
-        Validaciones.validarTexto(FieldApellidoP.getText().trim(), "apellido paterno");  
-        Validaciones.validarTelefono(FieldTelefono.getText().trim()); 
-
-        if (!FieldCorreo.getText().trim().isEmpty()) {  
-            Validaciones.validarEmail(FieldCorreo.getText().trim());
-        }
-    }
-    
-    private void limpiarCampos() {
-    Fieldnombre.setText("");
-    FieldApellidoP.setText("");
-    FieldApellidoM.setText("");
-    FieldTelefono.setText("");
-    FieldCorreo.setText("");
-    RadioClienteF.setSelected(false);
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -316,7 +298,27 @@ public class RegistrarClientes extends javax.swing.JFrame {
 
         
     }//GEN-LAST:event_btnCancelarActionPerformed
- 
+    private void validarCampos() throws PresentacionException {
+    try {
+        Validaciones.validarTexto(Fieldnombre.getText().trim(), "nombre");  
+        Validaciones.validarTexto(FieldApellidoP.getText().trim(), "apellido paterno");  
+        Validaciones.validarTelefono(FieldTelefono.getText().trim()); 
+
+        if (!FieldCorreo.getText().trim().isEmpty()) {  
+            Validaciones.validarEmail(FieldCorreo.getText().trim());
+        }
+    } catch (DatosInvalidosException e) {
+        throw new PresentacionException(e.getMessage());
+    }
+   } 
+    private void limpiarCampos() {
+    Fieldnombre.setText("");
+    FieldApellidoP.setText("");
+    FieldApellidoM.setText("");
+    FieldTelefono.setText("");
+    FieldCorreo.setText("");
+    RadioClienteF.setSelected(false);
+     }
     /**
      * @param args the command line arguments
      */

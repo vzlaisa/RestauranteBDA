@@ -70,6 +70,8 @@ public interface IProductoDAO {
      */
     public Long obtenerIdPorNombre(String nombre) throws PersistenciaException;
     
+    public List<Producto> obtenerTodos() throws PersistenciaException;
+    
     /**
      * Obtiene los nombres de todos los productos registrados.
      *

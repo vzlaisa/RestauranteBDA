@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_clientes\ClienteBO.java
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_clientes\ClienteMapper.java
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_ingredientes\IIngredienteBO.java
@@ -12,3 +13,17 @@ C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\negocio
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_productos\ProductoBO.java
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_ingredientes\IngredienteBO.java
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\utilerias\Utilerias.java
+=======
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\Clientes\ClienteBO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\Clientes\IClienteBO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\com\mycompany\negocio_restaurante\Negocio_restaurante.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\dependencyInjector\DependencyInjector.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\exception\NegocioException.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_ingredientes\IIngredienteBO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_ingredientes\IngredienteBO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_ingredientes\IngredienteMapper.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_productos\IProductoBO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_productos\ProductoBO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_productos\ProductoIngredienteMapper.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_productos\ProductoMapper.java
+>>>>>>> 5970af113f593fbd4d9ce9f27181fb85f015f59e

@@ -16,7 +16,7 @@ public class ClienteDTO {
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String telefono;
-    private String correo;
+    private String email;
     private Date fechaRegistro;
     private String tipo;
     private int visitas;
@@ -27,13 +27,13 @@ public class ClienteDTO {
     }
 
     public ClienteDTO(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, 
-                     String telefono, String correo, Date fechaRegistro, String tipo) {
+                     String telefono, String email, Date fechaRegistro, String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
-        this.correo = correo;
+        this.email = email;
         this.fechaRegistro = fechaRegistro;
         this.tipo = tipo;
     }
@@ -83,12 +83,12 @@ public class ClienteDTO {
         this.telefono = telefono;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getFechaRegistro() {

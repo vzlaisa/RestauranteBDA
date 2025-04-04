@@ -6,13 +6,16 @@ package modulo_productos;
 
 import DTOs.ProductoDTO;
 import DTOs.ProductoEditadoDTO;
+import entidades.Ingrediente;
 import entidades.Producto;
+import entidades.ProductoIngrediente;
 import enums.TipoProducto;
+import enums.UnidadMedida;
 import exception.NegocioException;
 import exception.PersistenciaException;
 import java.util.Arrays;
 import java.util.List;
-import utilerias.Utilerias;
+import modulo_ingredientes.IIngredienteDAO;
 
 /**
  * Clase de la capa de negocio para la gestión de productos.
@@ -27,13 +30,16 @@ import utilerias.Utilerias;
 public class ProductoBO implements IProductoBO {
 
     private IProductoDAO productoDAO;
+    private IIngredienteDAO ingredienteDAO;
 
     /**
      * Constructor de la clase. Inicializa la DAO al valor de su parámetro.
      * @param productoDAO DAO para la gestión de persistencia de productos.
+     * @param ingredienteDAO
      */
-    public ProductoBO(IProductoDAO productoDAO) {
+    public ProductoBO(IProductoDAO productoDAO, IIngredienteDAO ingredienteDAO) {
         this.productoDAO = productoDAO;
+        this.ingredienteDAO = ingredienteDAO;
     }
 
     /**
@@ -56,7 +62,7 @@ public class ProductoBO implements IProductoBO {
         }
 
         // Validar que el nombre no sea nulo
-        if (Utilerias.isNullOrBlank(productoNuevo.getNombre())) {
+        if (productoNuevo.getNombre() == null || productoNuevo.getNombre().isBlank()) {
             throw new NegocioException("El nombre del producto es obligatorio.");
         }
 
@@ -95,8 +101,27 @@ public class ProductoBO implements IProductoBO {
 
         // Intentar registrar el producto
         try {
+            Producto producto = ProductoMapper.toEntity(productoNuevo);
+            List<ProductoIngrediente> productosIngredientes = ProductoIngredienteMapper.toEntityList(productoNuevo.getIngredientes());
+
+            for (ProductoIngrediente productoIngrediente : productosIngredientes) {
+                // Obtener el Ingrediente del contexto de persistencia
+                Ingrediente ingrediente = ingredienteDAO.obtenerIngredientePorId(
+                        ingredienteDAO.obtenerIdPorNombreYUnidad(
+                                productoIngrediente.getIngrediente().getNombre(),
+                                UnidadMedida.valueOf(productoIngrediente.getIngrediente().getUnidadMedida().toString())
+                        )
+                );
+
+                // Establecer las relaciones
+                productoIngrediente.setProducto(producto);
+                productoIngrediente.setIngrediente(ingrediente);
+            }
+
+            producto.setProductosIngredientes(productosIngredientes);
+            
             // Registrar el producto mediante la DAO
-            Producto productoRegistrado = productoDAO.registrarProducto(ProductoMapper.toEntity(productoNuevo));
+            Producto productoRegistrado = productoDAO.registrarProducto(producto);
 
             if (productoRegistrado == null || productoRegistrado.getId() == null) {
                 throw new NegocioException("No se pudo registrar el producto.");
@@ -104,7 +129,7 @@ public class ProductoBO implements IProductoBO {
 
             return ProductoMapper.toDTO(productoRegistrado);
         } catch (PersistenciaException e) {
-            throw new NegocioException("ENo se pudo registrar el producto.", e);
+            throw new NegocioException("No se pudo registrar el producto." + e.getMessage(), e);
         }
     }
 
@@ -120,7 +145,7 @@ public class ProductoBO implements IProductoBO {
     @Override
     public boolean eliminarProducto(String nombre) throws NegocioException {
         // Validar que el nombre no sea nulo
-        if (Utilerias.isNullOrBlank(nombre)) {
+        if (nombre == null || nombre.isBlank()) {
             throw new NegocioException("El nombre del producto es obligatorio.");
         }
 
@@ -159,7 +184,7 @@ public class ProductoBO implements IProductoBO {
         }
 
         // Validar que el nombre no sea nulo o vacío
-        if (Utilerias.isNullOrBlank(productoEditado.getNombre())) {
+        if (productoEditado.getNombre() == null || productoEditado.getNombre().isBlank()) {
             throw new NegocioException("El nombre del producto es necesario para actualizar.");
         }
 
@@ -193,7 +218,7 @@ public class ProductoBO implements IProductoBO {
 
             // Settear los datos editados
             producto.setPrecio(productoEditado.getPrecio());
-            producto.setProductosIngredientes(ProductosIngredientesMapper.toEntityList(productoEditado.getIngredientes()));
+            producto.setProductosIngredientes(ProductoIngredienteMapper.toEntityList(productoEditado.getIngredientes()));
 
             // Actualizar el producto mediante la DAO
             return ProductoMapper.toDTO(productoDAO.actualizarProducto(producto));
@@ -214,7 +239,7 @@ public class ProductoBO implements IProductoBO {
      */
     private boolean nombreProductoExiste(String nombre) throws NegocioException {
         // Valida el nombre pasado como argumento
-        if (Utilerias.isNullOrBlank(nombre)) {
+        if (nombre == null || nombre.isBlank()) {
             throw new NegocioException("Es necesario el nombre del producto.");
         }
 

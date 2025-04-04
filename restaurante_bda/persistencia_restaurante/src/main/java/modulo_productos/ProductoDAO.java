@@ -75,7 +75,7 @@ public class ProductoDAO implements IProductoDAO {
             return producto;
         } catch (Exception e) {
             em.getTransaction().rollback();
-            throw new PersistenciaException("No se pudo registrar el producto: " + e.getMessage());
+            throw new PersistenciaException("No se pudo registrar el producto: " + e.getMessage(), e);
         } finally {
             em.close();
         }
@@ -204,6 +204,18 @@ public class ProductoDAO implements IProductoDAO {
             em.close();
         }
     }
+    
+    @Override
+    public List<Producto> obtenerTodos() throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+
+        try {
+            return em.createNamedQuery("Producto.getTodos", Producto.class).getResultList();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new PersistenciaException("No se pudo obtener todos los productos: " + e.getMessage());
+        }
+    }
 
     /**
      * Obtiene los nombres de todos los productos registrados.
@@ -214,14 +226,10 @@ public class ProductoDAO implements IProductoDAO {
      */
     @Override
     public List<String> obtenerNombreProductos() throws PersistenciaException {
-        List<String> nombresProductos;
-
         EntityManager em = Conexion.crearConexion();
 
         try {
-            nombresProductos = em.createNamedQuery("Producto.getNombres", String.class).getResultList();
-
-            return nombresProductos;
+            return em.createNamedQuery("Producto.getNombres", String.class).getResultList();
         } catch (Exception e) {
             em.getTransaction().rollback();
             throw new PersistenciaException("No se pudo obtener los nombres de los productos: " + e.getMessage());

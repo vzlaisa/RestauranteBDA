@@ -4,7 +4,13 @@
  */
 package modulo_clientes;
 
+import DTOs.ClienteDTO;
 import coordinadores.CoordinadorAplicacion;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -20,6 +26,124 @@ public class ConsultarClientes extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();
+    }
+    
+        /*private CoordinadorAplicacion coordinadorAplicacion;
+    private DefaultTableModel modeloTabla;
+    private TableRowSorter<DefaultTableModel> sorter;
+
+    /**
+     * Creates new form ConsultarClientes
+     */
+    /*public ConsultarClientes() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();
+        inicializarTabla();
+        cargarClientes();
+        configurarFiltros();
+    }
+
+    private void inicializarTabla() {
+        modeloTabla = new DefaultTableModel(
+            new Object [] {
+                "Nombre", "Teléfono", "Email", "Fecha Registro", "Tipo"
+            }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hacer que la tabla no sea editable
+            }
+        };
+        
+        TableClientes.setModel(modeloTabla);
+        sorter = new TableRowSorter<>(modeloTabla);
+        TableClientes.setRowSorter(sorter);
+    }
+
+    private void cargarClientes() {
+        try {
+            List<ClienteDTO> clientes = coordinadorAplicacion.buscarClientes("");
+            modeloTabla.setRowCount(0); // Limpiar la tabla
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            
+            for (ClienteDTO cliente : clientes) {
+                modeloTabla.addRow(new Object[]{
+                    cliente.getNombreCompleto(),
+                    cliente.getTelefono(),
+                    cliente.getCorreo(),
+                    sdf.format(cliente.getFechaRegistro()),
+                    cliente.getTipo()
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Aquí podrías mostrar un mensaje de error al usuario
+        }
+    }
+
+private void configurarFiltros() {
+        // Agregar listeners para los campos de filtro
+        FieldNombre.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+        });
+
+        FieldTelefono.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+        });
+
+        FieldCorreo.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filtrarTabla();
+            }
+        });
+    }
+
+    private void filtrarTabla() {
+        String nombre = FieldNombre.getText().toLowerCase();
+        String telefono = FieldTelefono.getText().toLowerCase();
+        String correo = FieldCorreo.getText().toLowerCase();
+
+        RowFilter<DefaultTableModel, Object> rf = RowFilter.andFilter(
+            List.of(
+                RowFilter.regexFilter("(?i)" + nombre, 0), // Filtro por nombre (columna 0)
+                RowFilter.regexFilter(telefono, 1),        // Filtro por teléfono (columna 1)
+                RowFilter.regexFilter("(?i)" + correo, 2)  // Filtro por correo (columna 2)
+            )
+        );
+        
+        sorter.setRowFilter(rf);
     }
 
     /**

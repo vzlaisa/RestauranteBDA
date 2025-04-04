@@ -4,19 +4,41 @@
  */
 package modulo_ingredientes;
 
+import DTOs.IngredienteDTO;
+import coordinadores.CoordinadorAplicacion;
 import enums.UnidadMedida;
+import excepciones.PresentacionException;
+import exception.NegocioException;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
- *
+ * Filtro de búsqueda para ingredientes.
+ * 
  * @author Ximena
  */
 public class BuscadorIngredientesPanel extends javax.swing.JPanel {
 
+    private CoordinadorAplicacion coordinador;
+    
+    private DefaultListModel<String> listModel; // Modelo para la lista
+    private List<String> ingredientes; // PROVISIONAL
+    
     /**
      * Creates new form BuscadorIngredientesPanel
      */
     public BuscadorIngredientesPanel() {
         initComponents();
+        this.coordinador = CoordinadorAplicacion.getInstancia();
+        
+        this.listModel = new DefaultListModel<>();
+        this.lListaIngredientes.setModel(listModel);
+        
+        cargarUnidades();
     }
 
     /**
@@ -30,59 +52,88 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         txtNombreIngrediente = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lIngredientesPorNombre = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         cbUnidadMedida = new javax.swing.JComboBox<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        lIngredientesPorUnidad = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lListaIngredientes = new javax.swing.JList<>();
+        btnLimpiar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Ingrese nombre del ingrediente");
+        jLabel1.setText("Nombre");
 
-        jScrollPane1.setViewportView(lIngredientesPorNombre);
+        txtNombreIngrediente.setPreferredSize(new java.awt.Dimension(64, 26));
+        txtNombreIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreIngredienteKeyReleased(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Seleccione unidad de medida del ingrediente");
+        jLabel2.setText("Unidad de medida");
 
-        jScrollPane2.setViewportView(lIngredientesPorUnidad);
+        cbUnidadMedida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbUnidadMedidaActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setViewportView(lListaIngredientes);
+
+        btnLimpiar.setBackground(new java.awt.Color(0, 0, 0));
+        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+            .addComponent(jLabel1)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLimpiar))
+                    .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNombreIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jLabel2)
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(btnLimpiar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void txtNombreIngredienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreIngredienteKeyReleased
+        buscarIngredientes();
+    }//GEN-LAST:event_txtNombreIngredienteKeyReleased
+
+    private void cbUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbUnidadMedidaActionPerformed
+        buscarIngredientes();
+    }//GEN-LAST:event_cbUnidadMedidaActionPerformed
 
     private void cargarUnidades() {
         cbUnidadMedida.addItem("No seleccionado");
@@ -94,15 +145,60 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
         cbUnidadMedida.setSelectedIndex(0);
     }
     
+    public void buscarIngredientes() {
+        String nombre = txtNombreIngrediente.getText().trim();
+        UnidadMedida unidad = null;
+
+        String selectedItem = cbUnidadMedida.getSelectedItem().toString();
+        if (!selectedItem.equals("No seleccionado")) {
+            unidad = UnidadMedida.valueOf(selectedItem);
+
+        }
+
+        try {
+            List<IngredienteDTO> ingredientes = coordinador.filtrarIngredientes(nombre, unidad);
+            actualizarListaIngredientes(ingredientes);
+        } catch (PresentacionException e) {
+            JOptionPane.showMessageDialog(this, "Error al buscar ingredientes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void actualizarListaIngredientes(List<IngredienteDTO> ingredientesFiltrados) {
+        listModel.clear();
+        for (IngredienteDTO ing : ingredientesFiltrados) {
+            listModel.addElement(ing.getNombre() + " (" + ing.getUnidadMedida() + ")");
+        }
+    }
+    
+    private void limpiar() {
+        txtNombreIngrediente.setText("");
+        cbUnidadMedida.setSelectedIndex(0);
+        listModel.clear();
+    }
+
+    public JComboBox<String> getCbUnidadMedida() {
+        return cbUnidadMedida;
+    }
+
+    public JList<String> getlListaIngredientes() {
+        return lListaIngredientes;
+    }
+
+    public JTextField getTxtNombreIngrediente() {
+        return txtNombreIngrediente;
+    }
+
+    public List<String> getIngredientes() {
+        return ingredientes;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JComboBox<String> cbUnidadMedida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JList<String> lIngredientesPorNombre;
-    private javax.swing.JList<String> lIngredientesPorUnidad;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JList<String> lListaIngredientes;
     private javax.swing.JTextField txtNombreIngrediente;
     // End of variables declaration//GEN-END:variables
 }

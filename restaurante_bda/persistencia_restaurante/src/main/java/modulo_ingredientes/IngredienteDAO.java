@@ -200,7 +200,7 @@ public class IngredienteDAO implements IIngredienteDAO {
             TypedQuery<Long> query = em.createQuery(
                 "SELECT i.id FROM Ingrediente i WHERE i.nombre = :nombre AND i.unidadMedida = :unidad", Long.class);
             query.setParameter("nombre", nombre);
-            query.setParameter("unidadMedida", unidad);
+            query.setParameter("unidad", unidad);
             return query.getSingleResult();
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener ID: " + e.getMessage());

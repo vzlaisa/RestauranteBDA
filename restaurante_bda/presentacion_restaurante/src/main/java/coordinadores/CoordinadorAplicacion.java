@@ -10,6 +10,7 @@ import dependencyInjector.DependencyInjector;
 import enums.UnidadMedida;
 import excepciones.PresentacionException;
 import exception.NegocioException;
+import java.util.ArrayList;
 import java.util.List;
 import modulo_ingredientes.AdministrarIngredientesFrm;
 import modulo_ingredientes.IIngredienteBO;
@@ -44,6 +45,7 @@ public class CoordinadorAplicacion {
     
     private CoordinadorAplicacion() {
         this.ingredienteBO = DependencyInjector.crearIngredienteBO();
+        this.productoBO = DependencyInjector.crearProductoBO();
     }
     
     // Método para obtener una única instancia
@@ -101,6 +103,7 @@ public class CoordinadorAplicacion {
     // Método para registrar un ingrediente nuevo
     public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws PresentacionException {
         try {
+            
             return ingredienteBO.registrarIngrediente(ingrediente);
         } catch (NegocioException e) {
             throw new PresentacionException(e.getMessage(), e);

@@ -12,13 +12,12 @@ import entidades.Producto;
  * @author rocha
  */
 public class ProductoMapper {
-    
+
     public static ProductoDTO toDTO(Producto producto) {
         return new ProductoDTO(
                 producto.getNombre(),
                 producto.getPrecio(),
-                producto.getTipo(),
-                ProductosIngredientesMapper.toDTOList(producto.getProductosIngredientes())
+                producto.getTipo()
         );
     }
     
@@ -26,8 +25,6 @@ public class ProductoMapper {
         return new Producto(
                 productoDTO.getNombre(),
                 productoDTO.getPrecio(),
-                productoDTO.getTipo(),
-                ProductosIngredientesMapper.toEntityList(productoDTO.getIngredientes())
-        );
+                productoDTO.getTipo());
     }
 }

@@ -53,7 +53,7 @@ public class Producto implements Serializable {
     // Usar remove ya que es una relación fuerte (composición)
     // Usar merge para actualizar lista de ingredientes cuando se actualice el producto
     // orphanRemoval como true para eliminar los ProductosIngredientes si se elimina al modificar el producto
-    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY, orphanRemoval = true) // CHECAR ORPHAN REMOVAL
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProductosIngredientes> productosIngredientes;
     
     // FALTA AGREGAR LA RELACIÓN CON LAS COMANDAS

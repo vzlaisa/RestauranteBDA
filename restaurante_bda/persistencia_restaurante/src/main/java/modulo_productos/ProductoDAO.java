@@ -75,7 +75,7 @@ public class ProductoDAO implements IProductoDAO {
             return producto;
         } catch (Exception e) {
             em.getTransaction().rollback();
-            throw new PersistenciaException("No se pudo registrar el producto: " + e.getMessage());
+            throw new PersistenciaException("No se pudo registrar el producto: " + e.getMessage(), e);
         } finally {
             em.close();
         }

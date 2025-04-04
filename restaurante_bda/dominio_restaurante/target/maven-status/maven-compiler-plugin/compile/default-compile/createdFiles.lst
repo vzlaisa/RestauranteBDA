@@ -1,6 +1,7 @@
 DTOs\IngredienteDTO.class
 DTOs\ProductosIngredientesDTO.class
 entidades\Ingrediente.class
+DTOs\IngredienteNombreUnidadDTO.class
 entidades\Comanda.class
 enums\TipoProducto.class
 com\mycompany\dominio_restaurante\Dominio_restaurante.class

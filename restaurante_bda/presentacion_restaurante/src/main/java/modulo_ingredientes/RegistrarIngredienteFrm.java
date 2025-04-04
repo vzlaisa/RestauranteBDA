@@ -7,6 +7,7 @@ package modulo_ingredientes;
 import DTOs.IngredienteDTO;
 import coordinadores.CoordinadorAplicacion;
 import enums.UnidadMedida;
+import excepciones.DatosInvalidosException;
 import excepciones.PresentacionException;
 import exception.NegocioException;
 import java.util.logging.Level;
@@ -87,7 +88,7 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
         });
 
         btnAtras.setBackground(new java.awt.Color(0, 0, 0));
-        btnAtras.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnAtras.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnAtras.setForeground(new java.awt.Color(255, 255, 255));
         btnAtras.setText("Atrás");
         btnAtras.addActionListener(new java.awt.event.ActionListener() {
@@ -97,7 +98,7 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
         });
 
         btnGuardar.setBackground(new java.awt.Color(0, 0, 0));
-        btnGuardar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnGuardar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -120,7 +121,7 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGuardar))
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lNombreIngrediente)
@@ -184,13 +185,7 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCantidadStockActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        try {
-            guardar();
-        } catch (NegocioException ex) {
-            Logger.getLogger(RegistrarIngredienteFrm.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (PresentacionException ex) {
-            Logger.getLogger(RegistrarIngredienteFrm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        guardar();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
@@ -216,7 +211,7 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
      * campos de ingredientes, validando directamente de la clase Validaciones.
      * @throws PresentacionException 
      */
-    private void validarCamposIngrediente() throws PresentacionException {
+    private void validarCamposIngrediente() throws DatosInvalidosException {
         Validaciones.validarTexto(txtNombre.getText().trim(), "nombre");
         Validaciones.validarCombobox(cbUnidadMedida, "unidad de medida");
         Validaciones.validarNumero(txtCantidadStock.getText().trim(), "cantidad en stock");
@@ -237,7 +232,7 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
      * Guardar registro de ingrediente. Método para el botón de "Guardar", que
      * muestra un mensaje de confirmación antes de guardar el nuevo ingrediente.
      */
-    private void guardar() throws NegocioException, PresentacionException {
+    private void guardar() {
         int opcion = JOptionPane.showConfirmDialog(this,
                 "¿Está seguro que desea registrar el ingrediente?", "Confirmar registro",
                 JOptionPane.YES_NO_OPTION);
@@ -262,10 +257,10 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ingrediente registrado con éxito: " + ingredienteRegistrado.getNombre(),
                     "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error en registro", JOptionPane.ERROR_MESSAGE);
         } catch (PresentacionException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error en registro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al registrar ingrediente: " +e.getMessage(), "Error en registro", JOptionPane.ERROR_MESSAGE);
+        } catch (DatosInvalidosException e) {
+            JOptionPane.showMessageDialog(this, "Error por datos no válidos: " + e.getMessage(), "Error en registro", JOptionPane.ERROR_MESSAGE);
         }
  
     }

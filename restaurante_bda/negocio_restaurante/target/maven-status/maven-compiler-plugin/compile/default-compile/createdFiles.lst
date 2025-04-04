@@ -1,4 +1,4 @@
-utilerias\Utilerias.class
+modulo_productos\ProductoIngredienteMapper.class
 modulo_productos\ProductoMapper.class
 modulo_clientes\ClienteBO.class
 modulo_ingredientes\IngredienteBO.class
@@ -9,6 +9,5 @@ modulo_productos\IProductoBO.class
 modulo_clientes\IClienteBO.class
 modulo_clientes\ClienteMapper.class
 dependencyInjector\DependencyInjector.class
-modulo_productos\ProductosIngredientesMapper.class
 com\mycompany\negocio_restaurante\Negocio_restaurante.class
 modulo_productos\ProductoBO.class

@@ -12,30 +12,22 @@ import enums.TipoProducto;
 import enums.UnidadMedida;
 import excepciones.DatosInvalidosException;
 import excepciones.PresentacionException;
-import exception.NegocioException;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableRowSorter;
 import modulo_ingredientes.BuscadorIngredientesPanel;
-import utilerias.Utilerias;
 import validaciones.Validaciones;
 
 /**
@@ -49,7 +41,6 @@ public class RegistrarProductoFrm extends JFrame {
     private BuscadorIngredientesPanel buscadorPanel;
     
     private final DefaultTableModel tableModel;
-    private final TableRowSorter<DefaultTableModel> tableSorter; // Filtro para la tabla
     private List<IngredienteDTO> ingredientes; // Lista con los ingredientes seleccionados
     
     /**
@@ -66,8 +57,6 @@ public class RegistrarProductoFrm extends JFrame {
         tableModel = new DefaultTableModel(new Object[]{"Ingrediente", "Unidad", "-", "Cantidad", "+"}, 0);
         tblIngredientes.setModel(tableModel);
         tblIngredientes.setDefaultEditor(Object.class, null);
-        tableSorter = new TableRowSorter<>(tableModel);
-        tblIngredientes.setRowSorter(tableSorter);
         
         tblIngredientes.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer()); // Hace que las columnas se vean como botones
         tblIngredientes.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());

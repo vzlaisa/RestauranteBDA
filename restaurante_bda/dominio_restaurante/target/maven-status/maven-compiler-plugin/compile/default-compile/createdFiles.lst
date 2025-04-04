@@ -1,5 +1,5 @@
 DTOs\IngredienteDTO.class
-DTOs\ProductosIngredientesDTO.class
+entidades\DetalleComanda.class
 entidades\Ingrediente.class
 DTOs\IngredienteNombreUnidadDTO.class
 entidades\Comanda.class
@@ -8,8 +8,9 @@ com\mycompany\dominio_restaurante\Dominio_restaurante.class
 enums\EstadoComanda.class
 enums\UnidadMedida.class
 entidades\Mesa.class
+entidades\ProductoIngrediente.class
 entidades\Producto.class
 DTOs\ProductoEditadoDTO.class
 entidades\Cliente.class
 DTOs\ProductoDTO.class
-entidades\ProductosIngredientes.class
+DTOs\ProductoIngredienteDTO.class

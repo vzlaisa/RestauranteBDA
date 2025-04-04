@@ -54,6 +54,7 @@ public class Producto implements Serializable {
     // orphanRemoval como true para eliminar los ProductosIngredientes si se elimina el producto
     @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProductoIngrediente> productosIngredientes;
+    // cascada merge ??
     
     // orphanRemoval como false para no perder los detalles de la comanda si se elimina el producto
     @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY, orphanRemoval = false)

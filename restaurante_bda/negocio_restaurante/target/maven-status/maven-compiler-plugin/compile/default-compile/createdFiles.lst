@@ -1,10 +1,10 @@
+modulo_productos\ProductoIngredienteMapper.class
 Clientes\ClienteBO.class
 modulo_productos\ProductoMapper.class
 dependencyInjector\DependencyInjector.class
 modulo_ingredientes\IngredienteBO.class
 modulo_ingredientes\IngredienteMapper.class
 modulo_ingredientes\IIngredienteBO.class
-modulo_productos\ProductosIngredientesMapper.class
 com\mycompany\negocio_restaurante\Negocio_restaurante.class
 exception\NegocioException.class
 Clientes\IClienteBO.class

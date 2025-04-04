@@ -37,6 +37,7 @@ public class ClienteBO implements IClienteBO {
                 clienteDTO.getApellidoMaterno(),
                 clienteDTO.getTelefono(),
                 clienteDTO.getCorreo(),
+                clienteDTO.getFechaRegistro(),
                 clienteDTO.getTipo()
             );
             
@@ -79,7 +80,7 @@ public class ClienteBO implements IClienteBO {
             cliente.getApellidoPaterno(),
             cliente.getApellidoMaterno(),
             cliente.getTelefono(),
-            cliente.getCorreo(),
+            cliente.getEmail(),
             cliente.getFechaRegistro(),
             cliente.getTipo()
         );

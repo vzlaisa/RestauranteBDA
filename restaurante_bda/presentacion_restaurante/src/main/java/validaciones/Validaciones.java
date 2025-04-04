@@ -4,6 +4,7 @@
  */
 package validaciones;
 
+import excepciones.DatosInvalidosException;
 import excepciones.PresentacionException;
 import javax.swing.JComboBox;
 import javax.swing.table.TableModel;
@@ -23,12 +24,12 @@ public class Validaciones {
      *
      * @param texto Texto a validar.
      * @param campo Nombre del campo para generar mensajes de error.
-     * @throws PresentacionException Si el texto es inválido.
+     * @throws DatosInvalidosException Si el texto es inválido.
      */
-    public static void validarTexto(String texto, String campo) throws PresentacionException {
+    public static void validarTexto(String texto, String campo) throws DatosInvalidosException {
         // Verifica si el texto es nulo o está en blanco
         if (isNullOrBlank(texto)) {
-            throw new PresentacionException("El " + campo + " es obligatorio.");
+            throw new DatosInvalidosException("El " + campo + " es obligatorio.");
         }
         
         // Elimina espacios en blanco al inicio y final
@@ -36,7 +37,7 @@ public class Validaciones {
         
         // Verifica que el texto contenga al menos una letra (cualquier carácter de un idioma)
         if (!texto.matches(".*\\p{L}.*")) {
-            throw new PresentacionException("El " + campo + " debe contener al menos una letra.");
+            throw new DatosInvalidosException("El " + campo + " debe contener al menos una letra.");
         }
     }
     
@@ -45,17 +46,17 @@ public class Validaciones {
      *
      * @param texto Texto a validar.
      * @param campo Nombre del campo para generar mensajes de error.
-     * @throws PresentacionException Si el número es inválido o menor o igual a cero.
+     * @throws DatosInvalidosException Si el número es inválido o menor o igual a cero.
      */
-    public static void validarNumero(String texto, String campo) throws PresentacionException {
+    public static void validarNumero(String texto, String campo) throws DatosInvalidosException {
         // Verifica si el texto es nulo o está en blanco
         if (isNullOrBlank(texto)) {
-            throw new PresentacionException("El " + campo + " es obligatorio.");
+            throw new DatosInvalidosException("El " + campo + " es obligatorio.");
         }
         
         // Verifica que el texto sea un número válido
         if (!esNumeroValido(texto)) {
-            throw new PresentacionException("El formato de " + campo + " no es válido.");
+            throw new DatosInvalidosException("El formato de " + campo + " no es válido.");
         }
         
         // Convierte el texto a número para validación adicional
@@ -63,7 +64,7 @@ public class Validaciones {
         
         // Verifica que el número sea mayor a 0
         if (numero <= 0) {
-            throw new PresentacionException("El " + campo + " debe ser mayor a 0.");
+            throw new DatosInvalidosException("El " + campo + " debe ser mayor a 0.");
         }
     }
     
@@ -72,12 +73,12 @@ public class Validaciones {
      *
      * @param combobox JComboBox a validar.
      * @param campo Nombre del campo para generar mensajes de error.
-     * @throws PresentacionException Si la selección no es válida.
+     * @throws DatosInvalidosException Si la selección no es válida.
      */
-    public static void validarCombobox(JComboBox combobox, String campo) throws PresentacionException {
+    public static void validarCombobox(JComboBox combobox, String campo) throws DatosInvalidosException {
         // Valida que la elección del combobox sea válido, es decir, que no sea la default ("No seleccionado")
         if (combobox == null || combobox.getSelectedItem().equals(combobox.getItemAt(0))) {
-            throw new PresentacionException("El " + campo + " es obligatorio.");
+            throw new DatosInvalidosException("El " + campo + " es obligatorio.");
         }
     }
     
@@ -86,11 +87,11 @@ public class Validaciones {
      *
      * @param modelo Modelo de la tabla a validar.
      * @param campo Nombre del campo para generar mensajes de error.
-     * @throws PresentacionException Si no hay filas seleccionadas.
+     * @throws DatosInvalidosException Si no hay filas seleccionadas.
      */
-    public static void validarSeleccionTabla(TableModel modelo, String campo) throws PresentacionException {
+    public static void validarSeleccionTabla(TableModel modelo, String campo) throws DatosInvalidosException {
         if (modelo.getRowCount() < 1) {
-            throw new PresentacionException("Debe seleccionar al menos un " + campo + ".");
+            throw new DatosInvalidosException("Debe seleccionar al menos un " + campo + ".");
         }
     }
     
@@ -118,20 +119,20 @@ public class Validaciones {
     private static boolean isNullOrBlank(String texto) {
         return texto == null || texto.isBlank();
     }
-        public static void validarTelefono(String telefono) throws PresentacionException {
+        public static void validarTelefono(String telefono) throws DatosInvalidosException {
         if (telefono == null || telefono.trim().isEmpty()) {
-            throw new PresentacionException("El teléfono es obligatorio");
+            throw new DatosInvalidosException("El teléfono es obligatorio");
         }
         String telefonoLimpio = telefono.replaceAll("[^0-9]", "");
         if (telefonoLimpio.length() != 10) {
-            throw new PresentacionException("El teléfono debe tener 10 dígitos numéricos");
+            throw new DatosInvalidosException("El teléfono debe tener 10 dígitos numéricos");
         }
     }
     
-    public static void validarEmail(String email) throws PresentacionException {
+    public static void validarEmail(String email) throws DatosInvalidosException {
         if (email != null && !email.isEmpty() && 
             !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new PresentacionException("El correo electrónico no es válido");
+            throw new DatosInvalidosException("El correo electrónico no es válido");
         }
     }
 }

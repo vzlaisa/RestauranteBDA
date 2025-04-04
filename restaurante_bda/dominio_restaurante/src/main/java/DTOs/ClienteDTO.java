@@ -4,6 +4,7 @@
  */
 package DTOs;
 
+import enums.TipoCliente;
 import java.util.Date;
 
 /**
@@ -18,7 +19,7 @@ public class ClienteDTO {
     private String telefono;
     private String correo;
     private Date fechaRegistro;
-    private String tipo;
+    private TipoCliente tipo;
     private int visitas;
     private double gastoTotal;
     private int puntosFidelidad;
@@ -27,7 +28,7 @@ public class ClienteDTO {
     }
 
     public ClienteDTO(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, 
-                     String telefono, String correo, Date fechaRegistro, String tipo) {
+                     String telefono, String correo, Date fechaRegistro, TipoCliente tipo) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -99,11 +100,11 @@ public class ClienteDTO {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public String getTipo() {
+    public TipoCliente getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoCliente tipo) {
         this.tipo = tipo;
     }
 

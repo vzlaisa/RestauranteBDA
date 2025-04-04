@@ -4,16 +4,22 @@
  */
 package entidades;
 
+import enums.TipoCliente;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,6 +31,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "clientes")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Cliente implements Serializable {
 
     @Id
@@ -40,37 +47,51 @@ public class Cliente implements Serializable {
     @Column(name = "apellido_materno", length = 50)
     private String apellidoMaterno;
     
-    @Column(nullable = false, length = 10, unique = true)
+    @Column(name = "telefono", nullable = false, length = 10, unique = true)
     private String telefono;
     
-    @Column(length = 100, unique = true)
-    private String correo;
+    @Column(name = "email", length = 100, unique = true)
+    private String email;
     
     @Column(name = "fecha_registro", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
     
-    @Column(length = 20)
-    private String tipo;
+    @Column (name = "tipoCliente", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private TipoCliente tipo;
     
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", fetch= FetchType.LAZY)
     private List<Comanda> comandas;
 
     public Cliente() {
-        this.fechaRegistro = new Date();
+        this.comandas = new ArrayList<>();
+        
     }
 
-    public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, 
-                  String telefono, String correo, String tipo) {
-        this();
+    public Cliente(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, Date fechaRegistro, TipoCliente tipo, List<Comanda> comandas) {
+        this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
-        this.correo = correo;
+        this.email = email;
+        this.fechaRegistro = fechaRegistro;
         this.tipo = tipo;
+        this.comandas = comandas;
     }
 
+    public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, Date fechaRegistro, TipoCliente tipo) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.telefono = telefono;
+        this.email = email;
+        this.fechaRegistro = fechaRegistro;
+        this.tipo = tipo;
+        this.comandas = new ArrayList<>();
+    }
+    
     // Getters y Setters
     public String getNombreCompleto() {
         return nombre + " " + apellidoPaterno + 
@@ -117,12 +138,12 @@ public class Cliente implements Serializable {
         this.telefono = telefono;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getFechaRegistro() {
@@ -133,11 +154,11 @@ public class Cliente implements Serializable {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public String getTipo() {
+    public TipoCliente getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoCliente tipo) {
         this.tipo = tipo;
     }
 

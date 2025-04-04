@@ -6,7 +6,7 @@ package com.mycompany.persistencia_restaurante;
 
 import entidades.Ingrediente;
 import entidades.Producto;
-import entidades.ProductosIngredientes;
+import entidades.ProductoIngrediente;
 import enums.TipoProducto;
 import enums.UnidadMedida;
 import exception.PersistenciaException;
@@ -44,7 +44,7 @@ public class Persistencia_restaurante {
             ingredienteDAO.registrarIngrediente(ingrediente);
             
             Producto producto = new Producto("Sandwich 2", 30.0, TipoProducto.PLATILLO);
-            ProductosIngredientes productoIngrediente = new ProductosIngredientes(2, producto, ingrediente);
+            ProductoIngrediente productoIngrediente = new ProductoIngrediente(2, producto, ingrediente);
             producto.getProductosIngredientes().add(productoIngrediente);
             ingrediente.getProductosIngredientes().add(productoIngrediente);
             

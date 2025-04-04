@@ -45,7 +45,7 @@ public class Ingrediente implements Serializable {
     private Integer cantidadStock;
     
     @OneToMany(mappedBy = "ingrediente", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
-    private List<ProductosIngredientes> productosIngredientes;
+    private List<ProductoIngrediente> productosIngredientes;
 
     public Ingrediente() {
         this.productosIngredientes = new ArrayList<>();
@@ -89,11 +89,11 @@ public class Ingrediente implements Serializable {
         this.cantidadStock = cantidadStock;
     }
 
-    public List<ProductosIngredientes> getProductosIngredientes() {
+    public List<ProductoIngrediente> getProductosIngredientes() {
         return productosIngredientes;
     }
 
-    public void setProductosIngredientes(List<ProductosIngredientes> productosIngredientes) {
+    public void setProductosIngredientes(List<ProductoIngrediente> productosIngredientes) {
         this.productosIngredientes = productosIngredientes;
     }
 

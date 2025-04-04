@@ -6,6 +6,8 @@ package modulo_clientes;
 
 import DTOs.ClienteDTO;
 import coordinadores.CoordinadorAplicacion;
+import enums.TipoCliente;
+import excepciones.DatosInvalidosException;
 import excepciones.PresentacionException;
 import exception.NegocioException;
 import javax.swing.JOptionPane;
@@ -249,7 +251,7 @@ public class RegistrarClientes extends javax.swing.JFrame {
             clienteDTO.setApellidoMaterno(FieldApellidoM.getText().trim());  // FieldApellidoM
             clienteDTO.setTelefono(FieldTelefono.getText().trim());  // FieldTelefono
             clienteDTO.setCorreo(FieldCorreo.getText().trim());  // FieldCorreo
-            clienteDTO.setTipo(RadioClienteF.isSelected() ? "Frecuente" : null);
+            clienteDTO.setTipo(RadioClienteF.isSelected() ? TipoCliente.FRECUENTE : null);
 
             int confirmacion = JOptionPane.showConfirmDialog(
                 this, 
@@ -266,7 +268,7 @@ public class RegistrarClientes extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
                 limpiarCampos();
             }
-        } catch (PresentacionException | NegocioException e) {
+        } catch (DatosInvalidosException | PresentacionException e) {
             JOptionPane.showMessageDialog(
                 this, 
                 e.getMessage(), 
@@ -275,7 +277,7 @@ public class RegistrarClientes extends javax.swing.JFrame {
         }
     }
     
-    private void validarCampos() throws PresentacionException {
+    private void validarCampos() throws DatosInvalidosException {
         Validaciones.validarTexto(Fieldnombre.getText().trim(), "nombre");  
         Validaciones.validarTexto(FieldApellidoP.getText().trim(), "apellido paterno");  
         Validaciones.validarTelefono(FieldTelefono.getText().trim()); 

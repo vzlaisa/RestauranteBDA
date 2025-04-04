@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "productos_ingredientes")
-public class ProductosIngredientes implements Serializable {
+public class ProductoIngrediente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +37,17 @@ public class ProductosIngredientes implements Serializable {
     @JoinColumn(name = "id_ingrediente", nullable = false)
     private Ingrediente ingrediente;
 
-    public ProductosIngredientes() {
+    public ProductoIngrediente() {
     }
 
-    public ProductosIngredientes(Integer cantidad, Producto producto, Ingrediente ingrediente) {
+    public ProductoIngrediente(Long id, Integer cantidad, Producto producto, Ingrediente ingrediente) {
+        this.id = id;
+        this.cantidad = cantidad;
+        this.producto = producto;
+        this.ingrediente = ingrediente;
+    }
+
+    public ProductoIngrediente(Integer cantidad, Producto producto, Ingrediente ingrediente) {
         this.cantidad = cantidad;
         this.producto = producto;
         this.ingrediente = ingrediente;
@@ -81,8 +88,5 @@ public class ProductosIngredientes implements Serializable {
     @Override
     public String toString() {
         return "ProductosIngredientes{" + "id=" + id + ", cantidad=" + cantidad + ", ingrediente=" + ingrediente + '}';
-    }
-    
-    
-    
+    } 
 }

@@ -186,8 +186,6 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
             guardar();
-        } catch (NegocioException ex) {
-            Logger.getLogger(RegistrarIngredienteFrm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PresentacionException ex) {
             Logger.getLogger(RegistrarIngredienteFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -237,7 +235,7 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
      * Guardar registro de ingrediente. Método para el botón de "Guardar", que
      * muestra un mensaje de confirmación antes de guardar el nuevo ingrediente.
      */
-    private void guardar() throws NegocioException, PresentacionException {
+    private void guardar() throws PresentacionException {
         int opcion = JOptionPane.showConfirmDialog(this,
                 "¿Está seguro que desea registrar el ingrediente?", "Confirmar registro",
                 JOptionPane.YES_NO_OPTION);
@@ -262,8 +260,6 @@ public class RegistrarIngredienteFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ingrediente registrado con éxito: " + ingredienteRegistrado.getNombre(),
                     "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error en registro", JOptionPane.ERROR_MESSAGE);
         } catch (PresentacionException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error en registro", JOptionPane.ERROR_MESSAGE);
         }

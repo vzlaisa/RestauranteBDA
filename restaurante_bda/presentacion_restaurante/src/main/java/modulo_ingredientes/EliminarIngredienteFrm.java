@@ -6,6 +6,11 @@ package modulo_ingredientes;
 
 import coordinadores.CoordinadorAplicacion;
 import java.awt.BorderLayout;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -15,6 +20,10 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
 
     private CoordinadorAplicacion coordinador;
     private BuscadorIngredientesPanel buscadorPanel;
+    
+    private final DefaultTableModel tableModel;
+    private final TableRowSorter<DefaultTableModel> tableSorter;
+    
     /**
      * Creates new form EliminarIngredienteFrm
      */
@@ -22,6 +31,12 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.coordinador = CoordinadorAplicacion.getInstancia();
+        
+        tableModel = new DefaultTableModel(new Object[]{"Nombre", "Unidad de medida", "Cantidad en stock"}, 0);
+        tablaIngredienteSeleccionado.setModel(tableModel);
+        tablaIngredienteSeleccionado.setDefaultEditor(Object.class, null);
+        tableSorter = new TableRowSorter<>(tableModel);
+        tablaIngredienteSeleccionado.setRowSorter(tableSorter);
         
         insertarPanelBuscador();
     }
@@ -38,13 +53,13 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
         panelPrincipal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaIngredienteSeleccionado = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         panelBuscador = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,7 +68,7 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setText("Eliminar Ingrediente");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaIngredienteSeleccionado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -72,7 +87,7 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaIngredienteSeleccionado);
 
         btnAtras.setBackground(new java.awt.Color(0, 0, 0));
         btnAtras.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -84,10 +99,15 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Eliminar");
+        btnEliminar.setBackground(new java.awt.Color(0, 0, 0));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Ingrediente seleccionado");
@@ -106,10 +126,15 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButton2.setBackground(new java.awt.Color(0, 0, 0));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Seleccionar");
+        btnSeleccionar.setBackground(new java.awt.Color(0, 0, 0));
+        btnSeleccionar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnSeleccionar.setForeground(new java.awt.Color(255, 255, 255));
+        btnSeleccionar.setText("Seleccionar");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
@@ -123,7 +148,7 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnSeleccionar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
                         .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,7 +162,7 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
                         .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45))))
         );
         panelPrincipalLayout.setVerticalGroup(
@@ -157,10 +182,10 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelBuscador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(66, Short.MAX_VALUE))
         );
@@ -183,6 +208,14 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
         atras();
     }//GEN-LAST:event_btnAtrasActionPerformed
 
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        seleccionarIngrediente();
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        eliminar();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
     
     private void insertarPanelBuscador() {
         this.buscadorPanel = new BuscadorIngredientesPanel();
@@ -194,21 +227,67 @@ public class EliminarIngredienteFrm extends javax.swing.JFrame {
         panelBuscador.repaint();
     }
     
+    private void seleccionarIngrediente() {
+        String elementoSeleccionado = buscadorPanel.getlListaIngredientes().getSelectedValue();
+        if (elementoSeleccionado == null || elementoSeleccionado.isEmpty()) {
+            return;
+        }
+        
+        String nombre = "";
+        String unidad = "";
+        // Expresión regular para extraer "Nombre" y "UNIDAD"
+        Pattern pattern = Pattern.compile("^(.*?)\\s*\\((.*?)\\)$");
+        Matcher matcher = pattern.matcher(elementoSeleccionado);
+
+        if (matcher.matches()) {
+            nombre = matcher.group(1); // Captura el nombre
+            unidad = matcher.group(2); // Captura la unidad
+        }
+        // Buscar el elemento en la tabla y actualizar
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            if (tableModel.getValueAt(i, 0).equals(nombre)) {
+                return;
+            }
+        }
+
+        tableModel.addRow(new Object[]{nombre, unidad, "-", 1, "+"});
+    }
+    
+    private void limpiarCampos() {
+        this.buscadorPanel.getTxtNombreIngrediente().setText("");
+        this.buscadorPanel.getCbUnidadMedida().setSelectedIndex(0);
+        this.tableModel.setRowCount(0);
+    }
+    
+    private void eliminar() {
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro que desea eliminar el ingrediente seleccionado?", "Confirmar eliminación.",
+                JOptionPane.YES_NO_OPTION);
+        if (opcion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        JOptionPane.showMessageDialog(this, "Ingrediente eliminado con éxito.",
+                "Eliminación confirmada.", JOptionPane.INFORMATION_MESSAGE);
+        limpiarCampos();
+    }
+    
     private void atras() {
+        limpiarCampos();
         this.dispose();
         coordinador.mostrarAdministrarIngredientes();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel panelBuscador;
     private javax.swing.JPanel panelPrincipal;
+    private javax.swing.JTable tablaIngredienteSeleccionado;
     // End of variables declaration//GEN-END:variables
 }

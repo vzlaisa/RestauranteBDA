@@ -5,7 +5,24 @@
 package modulo_ingredientes;
 
 import coordinadores.CoordinadorAplicacion;
+import excepciones.PresentacionException;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
+import modulo_productos.RegistrarProductoFrm;
 
 /**
  *
@@ -15,6 +32,10 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
 
     private CoordinadorAplicacion coordinadorAplicacion;
     private BuscadorIngredientesPanel buscadorPanel;
+    
+    private final DefaultTableModel tableModel;
+    private final TableRowSorter<DefaultTableModel> tableSorter;
+    
     /**
      * Creates new form AumentarStockIngredienteFrm
      */
@@ -23,7 +44,19 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();
         
+        tableModel = new DefaultTableModel(new Object[]{"Ingrediente", "Unidad", "-", "Stock", "+"}, 0);
+        tablaIncrementoStock.setModel(tableModel);
+        tablaIncrementoStock.setDefaultEditor(Object.class, null);
+        tableSorter = new TableRowSorter<>(tableModel);
+        tablaIncrementoStock.setRowSorter(tableSorter);
+        
+        tablaIncrementoStock.getColumnModel().getColumn(2).setCellRenderer(new ActualizarStockIngredienteFrm.ButtonRenderer()); // Hace que las columnas se vean como botones
+        tablaIncrementoStock.getColumnModel().getColumn(4).setCellRenderer(new ActualizarStockIngredienteFrm.ButtonRenderer());
+        tablaIncrementoStock.getColumnModel().getColumn(2).setCellEditor(new ActualizarStockIngredienteFrm.ButtonEditor(new JCheckBox(), false)); // Botón "-"
+        tablaIncrementoStock.getColumnModel().getColumn(4).setCellEditor(new ActualizarStockIngredienteFrm.ButtonEditor(new JCheckBox(), true));  // Botón "+"
+        
         insertarPanelBuscador();
+        cargarListeners();
     }
 
     /**
@@ -42,7 +75,7 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
         btnAtras = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaIncrementoStock = new javax.swing.JTable();
         panelBuscador = new javax.swing.JPanel();
@@ -74,14 +107,24 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Ingrediente seleccionado");
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Seleccionar");
+        btnSeleccionar.setBackground(new java.awt.Color(0, 0, 0));
+        btnSeleccionar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnSeleccionar.setForeground(new java.awt.Color(255, 255, 255));
+        btnSeleccionar.setText("Seleccionar");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
 
         tablaIncrementoStock.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,11 +171,11 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
+                            .addComponent(btnSeleccionar)
                             .addComponent(panelBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
                             .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
                         .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,7 +202,7 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,7 +214,7 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 786, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,6 +228,77 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
         atras();
     }//GEN-LAST:event_btnAtrasActionPerformed
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try {
+            guardar();
+        } catch (PresentacionException ex) {
+            Logger.getLogger(ActualizarStockIngredienteFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        seleccionarIngrediente();
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+    // Renderizador para el botón en la tabla (solo apariencia)
+    class ButtonRenderer extends JButton implements TableCellRenderer {
+
+        public ButtonRenderer() {
+            setOpaque(true); // Hacer el botón no transparente
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            setText(value == null ? "" : value.toString()); // Establece el texto del botón basado en el valor de la celda
+            return this; // Devuelve el botón para mostrarlo en la celda de la tabla
+        }
+    }
+    
+    // Editor de botones para manejar incremento y decremento
+    class ButtonEditor extends DefaultCellEditor {
+
+        private JButton button;
+        private boolean isIncrement; // Determina si el botón es para incrementar o decrementar
+        private int row;
+
+        public ButtonEditor(JCheckBox checkBox, boolean isIncrement) {
+            super(checkBox);
+            this.isIncrement = isIncrement;
+
+            // Crear el botón con el texto adecuado para incrementar o decrementar
+            this.button = new JButton(isIncrement ? "+" : "-");
+            button.setOpaque(true);
+            button.addActionListener(e -> manejarCantidad()); // Asocia el evento de clic al método que maneja la cantidad
+        }
+
+        // Lógica común para incrementar o decrementar la cantidad
+        private void manejarCantidad() {
+            int cantidad = (int) tableModel.getValueAt(row, 3);  // Obtener la cantidad de la celda correspondiente
+            if (isIncrement) {
+                tableModel.setValueAt(cantidad + 1, row, 3); // Incrementar la cantidad
+            } else {
+                if (cantidad > 1) {
+                    tableModel.setValueAt(cantidad - 1, row, 3); // Decrementar la cantidad si es mayor que 1
+                } else {
+                    tableModel.removeRow(row); // Eliminar la fila si la cantidad es 0
+                    buscadorPanel.buscarIngredientes();
+                }
+            }
+            fireEditingStopped();  // Detener la edición después de hacer clic
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            this.row = row;
+            return button; // Mostrar el botón como componente de edición
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return isIncrement ? "+" : "-"; // Retornar el símbolo adecuado
+        }
+    }
+    
     private void insertarPanelBuscador() {
         this.buscadorPanel = new BuscadorIngredientesPanel();
         this.buscadorPanel.setVisible(true);
@@ -195,7 +309,78 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
         panelBuscador.repaint();
     }
     
+    private void seleccionarIngrediente() {
+        String elementoSeleccionado = buscadorPanel.getlListaIngredientes().getSelectedValue();
+        if (elementoSeleccionado == null || elementoSeleccionado.isEmpty()) {
+            return;
+        }
+        
+        String nombre = "";
+        String unidad = "";
+        // Expresión regular para extraer "Nombre" y "UNIDAD"
+        Pattern pattern = Pattern.compile("^(.*?)\\s*\\((.*?)\\)$");
+        Matcher matcher = pattern.matcher(elementoSeleccionado);
+
+        if (matcher.matches()) {
+            nombre = matcher.group(1); // Captura el nombre
+            unidad = matcher.group(2); // Captura la unidad
+        }
+        // Buscar el elemento en la tabla y actualizar
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            if (tableModel.getValueAt(i, 0).equals(nombre)) {
+                return;
+            }
+        }
+
+        tableModel.addRow(new Object[]{nombre, unidad, "-", 1, "+"});
+    }
+    
+    private void cargarListeners() {
+        // Agregar el listener a la lista
+        buscadorPanel.getlListaIngredientes().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                // Habilitar el botón si hay un elemento seleccionado
+                btnSeleccionar.setEnabled(!buscadorPanel.getlListaIngredientes().isSelectionEmpty());
+            }
+        });
+    }
+    
+    private boolean cambios() {
+        return tableModel.getRowCount() != 0;
+    }
+    
+    private void limpiarCampos() {
+        this.buscadorPanel.getTxtNombreIngrediente().setText("");
+        this.buscadorPanel.getCbUnidadMedida().setSelectedIndex(0);
+        this.tableModel.setRowCount(0);
+    }
+    
+    private void guardar() throws PresentacionException {
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro que desea guardar los cambios?", "Confirmar cambios",
+                JOptionPane.YES_NO_OPTION);
+        if (opcion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        JOptionPane.showMessageDialog(this, "Cantidad de stock actualizada con éxito.",
+                "Cambios guardados", JOptionPane.INFORMATION_MESSAGE);
+        limpiarCampos();
+    }
+    
     private void atras() {
+        if (cambios()) {
+            int opcion = JOptionPane.showConfirmDialog(this, 
+                "¿Está seguro que desea cancelar los cambios?",
+                "Cancelar cambios", JOptionPane.YES_NO_OPTION);
+            if (opcion != JOptionPane.YES_OPTION) {
+                return;
+            }
+            
+            JOptionPane.showMessageDialog(this, "No se guardaron los cambios", "Cancelación confirmada", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
+        }
         this.dispose();
         coordinadorAplicacion.mostrarAdministrarIngredientes();
     }
@@ -203,7 +388,7 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

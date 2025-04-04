@@ -4,8 +4,8 @@
  */
 package modulo_productos;
 
-import DTOs.ProductoIngredienteDTO;
-import entidades.ProductoIngrediente;
+import DTOs.ProductosIngredientesDTO;
+import entidades.ProductosIngredientes;
 import java.util.List;
 import java.util.stream.Collectors;
 import modulo_ingredientes.IngredienteMapper;
@@ -14,35 +14,34 @@ import modulo_ingredientes.IngredienteMapper;
  *
  * @author rocha
  */
-public class ProductoIngredienteMapper {
+public class ProductosIngredientesMapper {
     
-    public static ProductoIngredienteDTO toDTO(ProductoIngrediente productosIngredientes) {
+    public static ProductosIngredientesDTO toDTO(ProductosIngredientes productosIngredientes) {
         
-        return new ProductoIngredienteDTO(
+        return new ProductosIngredientesDTO(
                 productosIngredientes.getCantidad(),
                 ProductoMapper.toDTO(productosIngredientes.getProducto()),
                 IngredienteMapper.toDTO(productosIngredientes.getIngrediente())
         );
     }
     
-    public static ProductoIngrediente toEntity(ProductoIngredienteDTO productosIngredientesDTO) {
-        return new ProductoIngrediente(
+    public static ProductosIngredientes toEntity(ProductosIngredientesDTO productosIngredientesDTO) {
+        return new ProductosIngredientes(
                 productosIngredientesDTO.getCantidad(),
                 ProductoMapper.toEntity(productosIngredientesDTO.getProducto()),
                 IngredienteMapper.toEntity(productosIngredientesDTO.getIngrediente()));
     }
 
-    // Mapeo de la lista de ProductosIngredientes
-    public static List<ProductoIngrediente> toEntityList(List<ProductoIngredienteDTO> productosIngredientes) {
+    public static List<ProductosIngredientes> toEntityList(List<ProductosIngredientesDTO> productosIngredientes) {
         return productosIngredientes.stream()
-                .map(ProductoIngredienteMapper::toEntity)
+                .map(ProductosIngredientesMapper::toEntity)
                 .collect(Collectors.toList());
     }
-
-    public static List<ProductoIngredienteDTO> toDTOList(List<ProductoIngrediente> productosIngredientes) {
+    
+    public static List<ProductosIngredientesDTO> toDTOList(List<ProductosIngredientes> productosIngredientes) {
         return productosIngredientes.stream()
-                .map(ProductoIngredienteMapper::toDTO)
+                .map(ProductosIngredientesMapper::toDTO)
                 .collect(Collectors.toList());
     }
-
+    
 }

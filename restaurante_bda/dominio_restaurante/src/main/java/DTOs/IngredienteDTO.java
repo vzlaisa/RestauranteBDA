@@ -5,7 +5,6 @@
 package DTOs;
 
 import enums.UnidadMedida;
-import java.util.Objects;
 
 /**
  * DTO de entrada para entidad Ingrediente.
@@ -48,26 +47,6 @@ public class IngredienteDTO {
     public void setCantidadStock(Integer cantidadStock) {
         this.cantidadStock = cantidadStock;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        IngredienteDTO that = (IngredienteDTO) obj;
-        return Objects.equals(this.nombre, that.nombre) && Objects.equals(this.unidadMedida, that.unidadMedida);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nombre, unidadMedida);
-    }
-
-    @Override
-    public String toString() {
-        return "IngredienteDTO{" + "nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", cantidadStock=" + cantidadStock + '}';
-    }
+    
+    
 }

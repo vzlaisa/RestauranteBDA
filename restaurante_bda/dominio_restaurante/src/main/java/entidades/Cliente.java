@@ -5,7 +5,6 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -15,8 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,30 +25,28 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "clientes")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Cliente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-
-    @Column(name = "nombre", nullable = false)
+    @Column(nullable = false, length = 50)
     private String nombre;
     
-    @Column(name = "apellido_paterno", nullable = false)
+    @Column(name = "apellido_paterno", nullable = false, length = 50)
     private String apellidoPaterno;
     
-    @Column(name ="apellido_materno", nullable = false)
+    @Column(name = "apellido_materno", length = 50)
     private String apellidoMaterno;
     
-    @Column(name="telefono", nullable = false, unique = true)
+    @Column(nullable = false, length = 10, unique = true)
     private String telefono;
     
-    @Column(name="email", nullable = true)
-    private String email;
+    @Column(length = 100, unique = true)
+    private String correo;
     
-    @Column (name="fecha_registro")
+    @Column(name = "fecha_registro", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
     
@@ -60,31 +55,19 @@ public class Cliente implements Serializable {
     
     @OneToMany(mappedBy = "cliente")
     private List<Comanda> comandas;
-    
-    @OneToMany(mappedBy = "comanda", fetch = FetchType.LAZY)
-    private List<DetalleComanda> detallesComandas;
 
     public Cliente() {
         this.fechaRegistro = new Date();
-        this.comandas = new ArrayList<>();
-        this.detallesComandas = new ArrayList<>();
-
     }
 
     public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, 
-                  String telefono, String email, String tipo, Date fechaRegistro) {
+                  String telefono, String correo, String tipo) {
         this();
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
-        this.email = email;
-        this.fechaRegistro = fechaRegistro;
-        this.comandas = new ArrayList<>();
-        this.detallesComandas = new ArrayList<>();
-
-
-
+        this.correo = correo;
         this.tipo = tipo;
     }
 
@@ -93,7 +76,7 @@ public class Cliente implements Serializable {
         return nombre + " " + apellidoPaterno + 
                (apellidoMaterno != null && !apellidoMaterno.isEmpty() ? " " + apellidoMaterno : "");
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -134,12 +117,12 @@ public class Cliente implements Serializable {
         this.telefono = telefono;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public Date getFechaRegistro() {
@@ -165,18 +148,4 @@ public class Cliente implements Serializable {
     public void setComandas(List<Comanda> comandas) {
         this.comandas = comandas;
     }
-
-    public List<DetalleComanda> getDetallesComandas() {
-        return detallesComandas;
-    }
-
-    public void setDetallesComandas(List<DetalleComanda> detallesComandas) {
-        this.detallesComandas = detallesComandas;
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" + "id=" + id + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", telefono=" + telefono + ", email=" + email + ", fechaRegistro=" + fechaRegistro + ", comandas=" + comandas + ", detallesComandas=" + detallesComandas + '}';
-    }
-
 }

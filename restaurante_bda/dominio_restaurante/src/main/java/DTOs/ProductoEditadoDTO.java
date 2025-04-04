@@ -21,7 +21,7 @@ public class ProductoEditadoDTO {
 
     private String nombre;
     private Double precio;
-    private List<ProductoIngredienteDTO> ingredientes;
+    private List<ProductosIngredientesDTO> ingredientes;
 
     /**
      * Constructor por defecto. Inicializa la lista de ProductosIngredientes.
@@ -84,7 +84,7 @@ public class ProductoEditadoDTO {
      *
      * @return Lista de ingredientes asociados al producto.
      */
-    public List<ProductoIngredienteDTO> getIngredientes() {
+    public List<ProductosIngredientesDTO> getIngredientes() {
         return ingredientes;
     }
 
@@ -94,7 +94,7 @@ public class ProductoEditadoDTO {
      * @param ingredientes Lista de ingreadientes asociados a establecer al
      * producto.
      */
-    public void setIngredientes(List<ProductoIngredienteDTO> ingredientes) {
+    public void setIngredientes(List<ProductosIngredientesDTO> ingredientes) {
         this.ingredientes = ingredientes;
     }
 

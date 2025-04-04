@@ -36,9 +36,8 @@ public class ClienteBO implements IClienteBO {
                 clienteDTO.getApellidoPaterno(),
                 clienteDTO.getApellidoMaterno(),
                 clienteDTO.getTelefono(),
-                clienteDTO.getEmail(),
-                clienteDTO.getTipo(),
-                clienteDTO.getFechaRegistro()
+                clienteDTO.getCorreo(),
+                clienteDTO.getTipo()
             );
             
             cliente = clientesDAO.registrarCliente(cliente);
@@ -80,7 +79,7 @@ public class ClienteBO implements IClienteBO {
             cliente.getApellidoPaterno(),
             cliente.getApellidoMaterno(),
             cliente.getTelefono(),
-            cliente.getEmail(),
+            cliente.getCorreo(),
             cliente.getFechaRegistro(),
             cliente.getTipo()
         );

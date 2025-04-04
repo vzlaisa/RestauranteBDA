@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 utilerias\Utilerias.class
 modulo_productos\ProductoMapper.class
 modulo_clientes\ClienteBO.class
@@ -12,17 +11,4 @@ modulo_clientes\ClienteMapper.class
 dependencyInjector\DependencyInjector.class
 modulo_productos\ProductosIngredientesMapper.class
 com\mycompany\negocio_restaurante\Negocio_restaurante.class
-=======
-modulo_productos\ProductoIngredienteMapper.class
-Clientes\ClienteBO.class
-modulo_productos\ProductoMapper.class
-dependencyInjector\DependencyInjector.class
-modulo_ingredientes\IngredienteBO.class
-modulo_ingredientes\IngredienteMapper.class
-modulo_ingredientes\IIngredienteBO.class
-com\mycompany\negocio_restaurante\Negocio_restaurante.class
-exception\NegocioException.class
-Clientes\IClienteBO.class
-modulo_productos\IProductoBO.class
->>>>>>> 5970af113f593fbd4d9ce9f27181fb85f015f59e
 modulo_productos\ProductoBO.class

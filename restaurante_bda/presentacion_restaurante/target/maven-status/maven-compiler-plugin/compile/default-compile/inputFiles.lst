@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\presentacion\IncioSistema.java
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\excepciones\PresentacionException.java
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\main\Presentacion_restaurante.java
@@ -13,24 +12,3 @@ C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\present
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_productos\RegistrarProductoFrm.java
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\utilerias\Utilerias.java
 C:\Users\dario\OneDrive\Documentos\GitHub\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\presentacion\Menu.java
-=======
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\coordinadores\CoordinadorAplicacion.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\excepciones\DatosInvalidosException.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\excepciones\PresentacionException.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\main\Presentacion_restaurante.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_clientes\ConsultarClientes.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_clientes\RegistrarClientes.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\ActualizarStockIngredienteFrm.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\AdministrarIngredientesFrm.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\BuscadorIngredientesPanel.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\EliminarIngredienteFrm.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\PruebaBuscador.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_ingredientes\RegistrarIngredienteFrm.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_productos\AdministrarProductosFrm.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_productos\EditarProductoFrm.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\modulo_productos\RegistrarProductoFrm.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\presentacion\InicioSistema.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\presentacion\Menu.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\utilerias\Utilerias.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\presentacion_restaurante\src\main\java\validaciones\Validaciones.java
->>>>>>> 5970af113f593fbd4d9ce9f27181fb85f015f59e

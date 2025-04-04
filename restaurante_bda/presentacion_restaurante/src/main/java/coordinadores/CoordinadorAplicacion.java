@@ -6,10 +6,7 @@ package coordinadores;
 
 import DTOs.ClienteDTO;
 import DTOs.IngredienteDTO;
-import DTOs.ProductoDTO;
 import dependencyInjector.DependencyInjector;
-import enums.UnidadMedida;
-import excepciones.PresentacionException;
 import exception.NegocioException;
 import java.util.List;
 import modulo_clientes.ConsultarClientes;
@@ -17,12 +14,11 @@ import modulo_clientes.IClienteBO;
 import modulo_clientes.RegistrarClientes;
 import modulo_ingredientes.AdministrarIngredientesFrm;
 import modulo_ingredientes.IIngredienteBO;
-import modulo_ingredientes.ActualizarStockIngredienteFrm;
-import modulo_ingredientes.EliminarIngredienteFrm;
+import modulo_ingredientes.IIngredienteDAO;
+import modulo_ingredientes.IncrementarStockIngredienteFrm;
+import modulo_ingredientes.IngredienteBO;
+import modulo_ingredientes.IngredienteDAO;
 import modulo_ingredientes.RegistrarIngredienteFrm;
-import modulo_productos.AdministrarProductosFrm;
-import modulo_productos.EditarProductoFrm;
-import modulo_productos.IProductoBO;
 import modulo_productos.RegistrarProductoFrm;
 import presentacion.Menu;
 
@@ -36,25 +32,19 @@ public class CoordinadorAplicacion {
     
     private IIngredienteBO ingredienteBO;
     private IClienteBO clienteBO;
-    private IProductoBO productoBO;
     
     // Pantallas
     private Menu menu;
     private RegistrarProductoFrm registrarProductoFrm;
-    private AdministrarProductosFrm administrarProductosFrm;
-    private EditarProductoFrm editarProductoFrm;
     private RegistrarIngredienteFrm registrarIngredienteFrm;
     private AdministrarIngredientesFrm administrarIngredientesFrm;
-    private ActualizarStockIngredienteFrm actualizarStockIngredienteFrm;
-    private EliminarIngredienteFrm eliminarIngredienteFrm;
-   //  private IncrementarStockIngredienteFrm incrementarStockIngredienteFrm; ///No se si desaparecio es te form asi que lo comentarie
+    private IncrementarStockIngredienteFrm incrementarStockIngredienteFrm;
     private RegistrarClientes registrarClientes;
     private ConsultarClientes consultarClientes;
     
     private CoordinadorAplicacion() {
         this.ingredienteBO = DependencyInjector.crearIngredienteBO();
         this.clienteBO = DependencyInjector.crearClienteBO();
-        this.productoBO = DependencyInjector.crearProductoBO();
     }
     
     // Método para obtener una única instancia
@@ -73,22 +63,6 @@ public class CoordinadorAplicacion {
         registrarProductoFrm.setVisible(true);
     }
     
-    public void mostrarAdministrarProductosFrm() {
-        if (this.administrarProductosFrm == null) {
-            this.administrarProductosFrm = new AdministrarProductosFrm();
-        }
-        
-        administrarProductosFrm.setVisible(true);
-    }
-    
-    public void mostrarEditarProductoFrm() {
-        if (this.editarProductoFrm == null) {
-            this.editarProductoFrm = new EditarProductoFrm();
-        }
-        
-        editarProductoFrm.setVisible(true);
-    }
-    
     public void mostrarRegistrarIngredienteFrm() {
         if (this.registrarIngredienteFrm == null) {
             this.registrarIngredienteFrm = new RegistrarIngredienteFrm();
@@ -96,18 +70,11 @@ public class CoordinadorAplicacion {
         registrarIngredienteFrm.setVisible(true);
     }
     
-    public void mostrarActualizarStockIngredienteFrm() {
-        if (this.actualizarStockIngredienteFrm == null) {
-            this.actualizarStockIngredienteFrm = new ActualizarStockIngredienteFrm();
+    public void mostrarIncrementarStockIngredienteFrm() {
+        if (this.incrementarStockIngredienteFrm == null) {
+            this.incrementarStockIngredienteFrm = new IncrementarStockIngredienteFrm();
         }
-        actualizarStockIngredienteFrm.setVisible(true);
-    }
-    
-    public void mostrarEliminarIngredienteFrm() {
-        if (this.eliminarIngredienteFrm == null) {
-            this.eliminarIngredienteFrm = new EliminarIngredienteFrm();
-        }
-        eliminarIngredienteFrm.setVisible(true);
+        incrementarStockIngredienteFrm.setVisible(true);
     }
     
     public void mostrarAdministrarIngredientes() {
@@ -141,34 +108,8 @@ public class CoordinadorAplicacion {
     }
     
     // Método para registrar un ingrediente nuevo
-    public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws PresentacionException {
-        try {
-            
-            return ingredienteBO.registrarIngrediente(ingrediente);
-        } catch (NegocioException e) {
-            throw new PresentacionException(e.getMessage(), e);
-        }
-        
-    }
-    
-    public List<IngredienteDTO> filtrarIngredientes(String nombre, UnidadMedida unidad) throws PresentacionException {
-        try {
-            return ingredienteBO.filtroBuscarIngredientes(nombre, unidad);
-        } catch (NegocioException e) {
-            throw new PresentacionException(e.getMessage(), e);
-        }
-    }
-    
-    public ProductoDTO registrarProducto(ProductoDTO producto) throws PresentacionException {
-        if (producto == null) {
-            throw new PresentacionException("El producto no puede ser nulo.");
-        }
-        
-        try {
-            return productoBO.registrarProducto(producto);
-        } catch (NegocioException e) {
-            throw new PresentacionException(e.getMessage(), e);
-        }
+    public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws NegocioException {
+        return ingredienteBO.registrarIngrediente(ingrediente);
     }
 
           // Métodos para operaciones con clientes

@@ -6,13 +6,11 @@ package com.mycompany.negocio_restaurante;
 
 import DTOs.IngredienteDTO;
 import DTOs.ProductoDTO;
-import DTOs.ProductoIngredienteDTO;
+import DTOs.ProductosIngredientesDTO;
 import dependencyInjector.DependencyInjector;
 import enums.TipoProducto;
 import enums.UnidadMedida;
 import exception.NegocioException;
-import java.util.List;
-import javax.persistence.PersistenceException;
 import modulo_ingredientes.IIngredienteBO;
 import modulo_productos.IProductoBO;
 
@@ -26,14 +24,13 @@ public class Negocio_restaurante {
     
     public static void main(String[] args) throws NegocioException {
         // registrarProducto();
-        // registrarIngrediente();
-        obtenerIngredientes();
+        registrarIngrediente();
     }
     
     private static void registrarProducto() throws NegocioException {
         IngredienteDTO ingrediente = new IngredienteDTO("Pan", UnidadMedida.PIEZAS, 20);
         ProductoDTO producto = new ProductoDTO("Sandwich", 30.0, TipoProducto.PLATILLO);
-        ProductoIngredienteDTO productoIngrediente = new ProductoIngredienteDTO(2, producto, ingrediente);
+        ProductosIngredientesDTO productoIngrediente = new ProductosIngredientesDTO(2, producto, ingrediente);
         producto.getIngredientes().add(productoIngrediente);
         
         try {
@@ -52,22 +49,6 @@ public class Negocio_restaurante {
             System.out.println(ingredienteRegistrado);
         } catch (NegocioException e) {
             throw new NegocioException("Error al registrar ingrediente: " + e.getMessage());
-        }
-    }
-    
-    private static void obtenerIngredientes() throws NegocioException {
-        try {
-            List<IngredienteDTO> ingredientes = ingredienteBO.filtroBuscarIngredientes(null, null);
-            for (IngredienteDTO i : ingredientes) {
-                System.out.println("Nombre: " + i.getNombre() + " - Unidad medida: "
-                        + i.getUnidadMedida() + " - Stock: " + i.getCantidadStock());
-            }
-            
-            if (ingredientes.isEmpty()) {
-                System.out.println("No hay ingredientes");
-            }
-        } catch (NegocioException e) {
-            throw new NegocioException("Error al obtener ingredientes: " + e.getMessage());
         }
     }
 }

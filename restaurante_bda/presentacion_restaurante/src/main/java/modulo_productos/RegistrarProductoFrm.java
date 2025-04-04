@@ -4,30 +4,25 @@
  */
 package modulo_productos;
 
-import DTOs.IngredienteDTO;
-import DTOs.ProductoDTO;
-import DTOs.ProductoIngredienteDTO;
 import coordinadores.CoordinadorAplicacion;
 import enums.TipoProducto;
 import enums.UnidadMedida;
-import excepciones.DatosInvalidosException;
 import excepciones.PresentacionException;
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import modulo_ingredientes.BuscadorIngredientesPanel;
+import javax.swing.table.TableRowSorter;
+import utilerias.Utilerias;
 import validaciones.Validaciones;
 
 /**
@@ -38,10 +33,10 @@ public class RegistrarProductoFrm extends JFrame {
     
     private CoordinadorAplicacion coordinadorAplicacion;
     
-    private BuscadorIngredientesPanel buscadorPanel;
-    
     private final DefaultTableModel tableModel;
-    private List<IngredienteDTO> ingredientes; // Lista con los ingredientes seleccionados
+    private final TableRowSorter<DefaultTableModel> tableSorter; // Filtro para la tabla
+    private DefaultListModel<String> listModel; // Modelo para la lista
+    private List<String> ingredientes; // PROVISIONAL
     
     /**
      * Creates new form RegistrarProductoFrm
@@ -52,20 +47,28 @@ public class RegistrarProductoFrm extends JFrame {
         this.setTitle("Registrar Producto");
         this.setLocationRelativeTo(null);
         this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();
-        this.ingredientes = new ArrayList<>();
+        
+        listModel = new DefaultListModel<>();
+        listBuscarIngrediente.setModel(listModel);
         
         tableModel = new DefaultTableModel(new Object[]{"Ingrediente", "Unidad", "-", "Cantidad", "+"}, 0);
         tblIngredientes.setModel(tableModel);
         tblIngredientes.setDefaultEditor(Object.class, null);
+        tableSorter = new TableRowSorter<>(tableModel);
+        tblIngredientes.setRowSorter(tableSorter);
         
         tblIngredientes.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer()); // Hace que las columnas se vean como botones
         tblIngredientes.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
         tblIngredientes.getColumnModel().getColumn(2).setCellEditor(new ButtonEditor(new JCheckBox(), false)); // Botón "-"
         tblIngredientes.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox(), true));  // Botón "+"
         
-        insertarPanelBuscador();
-        cargarListeners();
+        // PROVISIONAL PARA PRUEBAS
+        this.ingredientes = new ArrayList<>(Arrays.asList("Jamón de pavo", "Jamón serrano", "Lechuga"));
+        
         cargarTipos();
+        cargarUnidades();
+        cargarListeners();
+        buscarIngrediente();
     }
 
     /**
@@ -77,7 +80,7 @@ public class RegistrarProductoFrm extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelPrincipal = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         lbTitulo = new javax.swing.JLabel();
         lbDatosGenerales = new javax.swing.JLabel();
         lbNombreProducto = new javax.swing.JLabel();
@@ -87,17 +90,22 @@ public class RegistrarProductoFrm extends JFrame {
         lbCategoria = new javax.swing.JLabel();
         cbTipo = new javax.swing.JComboBox<>();
         lbSeleccionarIngredientes = new javax.swing.JLabel();
+        txtBuscarIngrediente = new javax.swing.JTextField();
+        lbBuscarIngrediente = new javax.swing.JLabel();
+        lbUnidadMedida = new javax.swing.JLabel();
+        cbUnidadMedida = new javax.swing.JComboBox<>();
+        scBuscarIngrediente = new javax.swing.JScrollPane();
+        listBuscarIngrediente = new javax.swing.JList<>();
         scTablaIngredientes = new javax.swing.JScrollPane();
         tblIngredientes = new javax.swing.JTable();
         lbTablaIngredientes = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         btnAtras = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
-        panelBuscar = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lbTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         lbTitulo.setText("Registrar Producto");
@@ -123,6 +131,27 @@ public class RegistrarProductoFrm extends JFrame {
 
         lbSeleccionarIngredientes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lbSeleccionarIngredientes.setText("Seleccionar ingredientes");
+
+        txtBuscarIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtBuscarIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarIngredienteKeyReleased(evt);
+            }
+        });
+
+        lbBuscarIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbBuscarIngrediente.setText("Ingrese el nombre del ingrediente");
+
+        lbUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbUnidadMedida.setText("Filtrar por unidad de medida");
+
+        cbUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbUnidadMedida.setMaximumRowCount(5);
+
+        listBuscarIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        listBuscarIngrediente.setMinimumSize(new java.awt.Dimension(13, 20));
+        listBuscarIngrediente.setVisibleRowCount(5);
+        scBuscarIngrediente.setViewportView(listBuscarIngrediente);
 
         tblIngredientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -182,26 +211,23 @@ public class RegistrarProductoFrm extends JFrame {
             }
         });
 
-        panelBuscar.setBackground(new java.awt.Color(255, 255, 255));
-        panelBuscar.setLayout(new java.awt.BorderLayout());
-
-        javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
-        panelPrincipal.setLayout(panelPrincipalLayout);
-        panelPrincipalLayout.setHorizontalGroup(
-            panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(69, 69, 69)
                 .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(73, 73, 73))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbTitulo)
                 .addGap(325, 325, 325))
-            .addGroup(panelPrincipalLayout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lbDatosGenerales)
                     .addComponent(lbNombreProducto)
                     .addComponent(txtPrecio)
@@ -209,79 +235,94 @@ public class RegistrarProductoFrm extends JFrame {
                     .addComponent(txtNombre)
                     .addComponent(lbCategoria)
                     .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelPrincipalLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(btnAgregar))
-                            .addGroup(panelPrincipalLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(lbSeleccionarIngredientes)))
-                        .addGap(0, 44, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbTablaIngredientes)
-                    .addComponent(scTablaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37))
+                .addGap(38, 38, 38)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbSeleccionarIngredientes)
+                            .addComponent(lbBuscarIngrediente)
+                            .addComponent(txtBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbUnidadMedida))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scTablaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbTablaIngredientes))
+                        .addGap(37, 37, 37))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAgregar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
-        panelPrincipalLayout.setVerticalGroup(
-            panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPrincipalLayout.createSequentialGroup()
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addComponent(lbTitulo)
                 .addGap(48, 48, 48)
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbDatosGenerales)
                     .addComponent(lbSeleccionarIngredientes))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbNombreProducto)
                             .addComponent(lbTablaIngredientes))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(scTablaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(43, 43, 43))
-                    .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbPrecio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
-                        .addComponent(lbCategoria)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(231, 231, 231))
-                    .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addComponent(panelBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                                .addGap(12, 12, 12)
+                                .addComponent(lbPrecio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(24, 24, 24)
+                                .addComponent(lbCategoria)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(83, 83, 83))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lbUnidadMedida)
+                                .addGap(4, 4, 4)
+                                .addComponent(cbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lbBuscarIngrediente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(scBuscarIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(110, 110, 110))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelPrincipal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtBuscarIngredienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarIngredienteKeyReleased
+        buscarIngrediente();
+    }//GEN-LAST:event_txtBuscarIngredienteKeyReleased
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         guardar();
@@ -292,7 +333,7 @@ public class RegistrarProductoFrm extends JFrame {
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        agregarIngredienteATabla();
+        agregarIngrediente();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     // Renderizador para el botón en la tabla (solo apariencia)
@@ -335,9 +376,8 @@ public class RegistrarProductoFrm extends JFrame {
                 if (cantidad > 1) {
                     tableModel.setValueAt(cantidad - 1, row, 3); // Decrementar la cantidad si es mayor que 1
                 } else {
-                    quitarIngrediente(tableModel.getValueAt(row, 0).toString(), tableModel.getValueAt(row, 1).toString());
                     tableModel.removeRow(row); // Eliminar la fila si la cantidad es 0
-                    buscadorPanel.buscarIngredientes();
+                    buscarIngrediente();
                 }
             }
             fireEditingStopped();  // Detener la edición después de hacer clic
@@ -355,23 +395,29 @@ public class RegistrarProductoFrm extends JFrame {
         }
     }
 
-    // Método para agregar el panel secundario después de la creación
-    private void insertarPanelBuscador() {
-        this.buscadorPanel = new BuscadorIngredientesPanel();
-        this.buscadorPanel.setVisible(true);
-        
-        panelBuscar.setLayout(new BorderLayout());
-        panelBuscar.add(buscadorPanel, BorderLayout.CENTER);
-        panelBuscar.revalidate();
-        panelBuscar.repaint();
-    }
-    
     private void cargarListeners() {
-        // Agregar el listener a la lista
-        buscadorPanel.getlListaIngredientes().addListSelectionListener((ListSelectionEvent e) -> {
-            // Habilitar el botón si hay un elemento seleccionado
-            btnAgregar.setEnabled(!buscadorPanel.getlListaIngredientes().isSelectionEmpty());
+        // Listener para la lista de ingredientws
+        listBuscarIngrediente.addListSelectionListener(evt -> {
+            if (!evt.getValueIsAdjusting()) {
+                // Verifica si hay un elemento seleccionado en la lista
+                if (listBuscarIngrediente.getSelectedValue() != null && !listBuscarIngrediente.getSelectedValue().isEmpty()) {
+                    cbUnidadMedida.setEnabled(true); // Habilita el combobox de unidades
+                } else {
+                    cbUnidadMedida.setEnabled(false); // Deshabilita el combobox si no hay selección
+                    btnAgregar.setEnabled(false); // Deshabilita el botón si no hay selección en el combobox
+                }
+            }
         });
+
+//        // Listener para el combobox de unidades
+//        cbUnidadMedida.addActionListener(evt -> {
+//            // Verifica si el combobox tiene un ítem válido seleccionado
+//            if (cbUnidadMedida.getSelectedIndex() != 0) { // Si tiene seleccionado una opción válida
+//                btnAgregar.setEnabled(true); // Habilita el botón de agregar ingrediente
+//            } else {
+//                btnAgregar.setEnabled(false); // Deshabilita el botón si el combobox no tiene una selección válida
+//            }
+//        });
     }
 
     /**
@@ -389,60 +435,33 @@ public class RegistrarProductoFrm extends JFrame {
         cbTipo.setSelectedIndex(0); // Asignar el valor por defecto como seleccionado
     }
 
+    // CAMBIAR A QUE SOLO SE CARGUEN LAS UNIDADES DE MEDIDA DEL INGREDIENTE
+    private void cargarUnidades() {
+        cbUnidadMedida.addItem("No seleccionado");
+
+        for (UnidadMedida unidad : UnidadMedida.values()) {
+            cbUnidadMedida.addItem(unidad.name());
+        }
+
+        cbUnidadMedida.setSelectedIndex(0);
+    }
+
+    /**
+     * Actualizar la lista de ingredientes del buscador. Este método actualiza
+     * la lista de ingredientes con base en el texto ingresado en el campo de
+     * búsqueda. Hace uso del método estático de Utilerias.
+     */
+    private void buscarIngrediente() {
+        Utilerias.actualizarListaBuscador(listBuscarIngrediente, listModel, ingredientes, scBuscarIngrediente, txtBuscarIngrediente);
+    }
+
     /**
      * Método para agregar un ingrediente seleccionado. Agrega el ingrediente
-     * seleccionado a la tabla de ingredientes. 
+     * seleccionado a la tabla de ingredientes. Hace uso del método estático de
+     * Utilerías.
      */
-    private void agregarIngredienteATabla() {
-        String elementoSeleccionado = buscadorPanel.getlListaIngredientes().getSelectedValue();
-
-        if (elementoSeleccionado == null || elementoSeleccionado.isEmpty()) {
-            return;
-        }
-        
-        String nombre = obtenerNombreIngrediente(elementoSeleccionado);
-        String unidad = obtenerUnidadIngrediente(elementoSeleccionado);
-
-        // Buscar el elemento en la tabla y actualizar
-        for (int i = 0; i < tableModel.getRowCount(); i++) {
-            if (tableModel.getValueAt(i, 0).equals(nombre)) {
-                return;
-            }
-        }
-        
-        if (agregarIngrediente(nombre, unidad)) {
-            tableModel.addRow(new Object[]{nombre, unidad, "-", 1, "+"});
-        }
-    }
-    
-    private boolean agregarIngrediente(String nombre, String unidad) {
-        try {
-            ingredientes.add(coordinadorAplicacion.filtrarIngredientes(nombre, UnidadMedida.valueOf(unidad)).getFirst());
-        } catch (PresentacionException e) {
-            JOptionPane.showMessageDialog(this, "Error al agregar ingrediente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        return true;
-    }
-    
-    private void quitarIngrediente(String nombre, String unidad) {
-        try {
-            ingredientes.remove(coordinadorAplicacion.filtrarIngredientes(nombre, UnidadMedida.valueOf(unidad)).getFirst());
-        } catch (PresentacionException e) {
-            JOptionPane.showMessageDialog(this, "Error al quitar ingrediente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private String obtenerNombreIngrediente(String elemento) {
-        Pattern pattern = Pattern.compile("^(.*?)\\s*\\((.*?)\\)$");
-        Matcher matcher = pattern.matcher(elemento);
-        return matcher.matches() ? matcher.group(1) : "";
-    }
-    
-    private String obtenerUnidadIngrediente(String elemento) {
-        Pattern pattern = Pattern.compile("^(.*?)\\s*\\((.*?)\\)$");
-        Matcher matcher = pattern.matcher(elemento);
-        return matcher.matches() ? matcher.group(2) : "";
+    private void agregarIngrediente() {
+        Utilerias.agregarElementoDesdeBoton(listBuscarIngrediente, cbUnidadMedida, tableModel, this);
     }
 
     /**
@@ -452,33 +471,13 @@ public class RegistrarProductoFrm extends JFrame {
      * @throws PresentacionException Si un dato ingresado no es válido o si hubo
      * un error al intentar el registro.
      */
-    private void registrarProducto() throws DatosInvalidosException, PresentacionException {
+    private void registrarProducto() throws PresentacionException {
         try {
             validarCamposProducto();
 
-            ProductoDTO productoNuevo = new ProductoDTO(
-                    txtNombre.getText(),
-                    Double.valueOf(txtPrecio.getText()),
-                    TipoProducto.valueOf(cbTipo.getSelectedItem().toString().toUpperCase())
-            );
-
-            List<ProductoIngredienteDTO> productosIngredientes = new ArrayList<>();
-
-            for (int i = 0; i < tableModel.getRowCount(); i++) {
-                ProductoIngredienteDTO productoIngrediente = new ProductoIngredienteDTO(
-                        Integer.valueOf(tableModel.getValueAt(i, 3).toString()),
-                        productoNuevo,
-                        ingredientes.get(i)
-                );
-                
-                productosIngredientes.add(productoIngrediente);
-            }
-            
-            productoNuevo.setIngredientes(productosIngredientes);
-            
-            coordinadorAplicacion.registrarProducto(productoNuevo);
+            // FALTA LOGICA PARA REGISTRAR EL PRODUCTO. VALIDAR QUE NO ESTE REPETIDO
         } catch (PresentacionException e) {
-            throw new PresentacionException(e.getMessage(), e);
+            throw new PresentacionException("Error al registrar producto: " + e.getMessage(), e);
         }
     }
 
@@ -488,7 +487,7 @@ public class RegistrarProductoFrm extends JFrame {
      * @throws PresentacionException Si algún campo ingresado no es válido (a
      * nivel presentación).
      */
-    private void validarCamposProducto() throws DatosInvalidosException {
+    private void validarCamposProducto() throws PresentacionException {
         Validaciones.validarTexto(txtNombre.getText().trim(), "nombre del producto");
         Validaciones.validarNumero(txtPrecio.getText().trim(), "precio del producto");
         Validaciones.validarCombobox(cbTipo, "tipo de producto");
@@ -502,10 +501,10 @@ public class RegistrarProductoFrm extends JFrame {
         this.txtNombre.setText("");
         this.txtPrecio.setText("");
         this.cbTipo.setSelectedIndex(0);
-        this.buscadorPanel.getTxtNombreIngrediente().setText("");
+        this.txtBuscarIngrediente.setText("");
+        this.listModel.clear();
+        this.cbUnidadMedida.setSelectedIndex(0);
         this.tableModel.setRowCount(0);
-        
-        this.ingredientes.clear();
     }
 
     /**
@@ -525,9 +524,7 @@ public class RegistrarProductoFrm extends JFrame {
             JOptionPane.showMessageDialog(this, "Producto registrado con éxito.", "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
         } catch (PresentacionException e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (DatosInvalidosException e) {
-            JOptionPane.showMessageDialog(this, "Error por datos no válidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -536,7 +533,7 @@ public class RegistrarProductoFrm extends JFrame {
      * @return True si encontró al menos un campo con información, false en caso contrario.
      */
     private boolean camposIngresados() {
-        return !txtNombre.getText().isBlank() || !txtPrecio.getText().isBlank() || cbTipo.getSelectedIndex() != 0 || tableModel.getRowCount() != 0;
+        return !txtNombre.getText().isBlank() || !txtPrecio.getText().isBlank() || cbTipo.getSelectedIndex() != 0 || cbUnidadMedida.getSelectedIndex() != 0 || tableModel.getRowCount() != 0;
     }
 
     /**
@@ -560,11 +557,16 @@ public class RegistrarProductoFrm extends JFrame {
         coordinadorAplicacion.mostrarMenu();
     }
     
+    // PRIMERO VA A SELECCIONAR UNA UNIDAD, LA LISTA SE CARGA CON LOS DE ESA UNIDAD. SI NO SELECCIONA UNIDAD, MUESTRA TODOS LOS PRODUCTOS
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<String> cbTipo;
+    private javax.swing.JComboBox<String> cbUnidadMedida;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbBuscarIngrediente;
     private javax.swing.JLabel lbCategoria;
     private javax.swing.JLabel lbDatosGenerales;
     private javax.swing.JLabel lbNombreProducto;
@@ -572,10 +574,12 @@ public class RegistrarProductoFrm extends JFrame {
     private javax.swing.JLabel lbSeleccionarIngredientes;
     private javax.swing.JLabel lbTablaIngredientes;
     private javax.swing.JLabel lbTitulo;
-    private javax.swing.JPanel panelBuscar;
-    private javax.swing.JPanel panelPrincipal;
+    private javax.swing.JLabel lbUnidadMedida;
+    private javax.swing.JList<String> listBuscarIngrediente;
+    private javax.swing.JScrollPane scBuscarIngrediente;
     private javax.swing.JScrollPane scTablaIngredientes;
     private javax.swing.JTable tblIngredientes;
+    private javax.swing.JTextField txtBuscarIngrediente;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables

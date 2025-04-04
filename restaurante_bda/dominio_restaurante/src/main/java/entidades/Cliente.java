@@ -5,6 +5,7 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -14,8 +15,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -23,29 +28,41 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "clientes")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Cliente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
     private String nombre;
-    @Column(name = "apellido Paterno")
+    
+    @Column(name = "apellido_paterno", nullable = false)
     private String apellidoPaterno;
-    @Column(name ="apellido Materno")
+    
+    @Column(name ="apellido_materno", nullable = false)
     private String apellidoMaterno;
-    @Column(name="telefono")
+    
+    @Column(name="telefono", nullable = false, unique = true)
     private String telefono;
-    @Column(name="Email")
+    
+    @Column(name="email", nullable = true)
     private String email;
-    @Column (name="Fecha Registro")
+    
+    @Column (name="fecha_registro")
+    @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
     
     @OneToMany(mappedBy= "cliente", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     private List<Comanda> comandas;
+    
+    @OneToMany(mappedBy = "comanda", fetch = FetchType.LAZY)
+    private List<DetalleComanda> detallesComandas;
 
     public Cliente() {
+        this.comandas = new ArrayList<>();
+        this.detallesComandas = new ArrayList<>();
     }
 
     public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, Date fechaRegistro) {
@@ -55,19 +72,11 @@ public class Cliente implements Serializable {
         this.telefono = telefono;
         this.email = email;
         this.fechaRegistro = fechaRegistro;
+        this.comandas = new ArrayList<>();
+        this.detallesComandas = new ArrayList<>();
     }
 
     
-    public Cliente(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, Date fechaRegistro) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.telefono = telefono;
-        this.email = email;
-        this.fechaRegistro = fechaRegistro;
-    }
-
     public Long getId() {
         return id;
     }
@@ -132,9 +141,17 @@ public class Cliente implements Serializable {
         this.comandas = comandas;
     }
 
+    public List<DetalleComanda> getDetallesComandas() {
+        return detallesComandas;
+    }
+
+    public void setDetallesComandas(List<DetalleComanda> detallesComandas) {
+        this.detallesComandas = detallesComandas;
+    }
+
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", telefono=" + telefono + ", email=" + email + ", fechaRegistro=" + fechaRegistro + ", comandas=" + comandas + '}';
+        return "Cliente{" + "id=" + id + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", telefono=" + telefono + ", email=" + email + ", fechaRegistro=" + fechaRegistro + ", comandas=" + comandas + ", detallesComandas=" + detallesComandas + '}';
     }
-  
+    
 }

@@ -8,6 +8,7 @@ import enums.EstadoComanda;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,7 +43,7 @@ public class Comanda implements Serializable {
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "fecha_hora", nullable = false)
-    private LocalDateTime fechaHora;
+    private Date fechaHora;
     
     @Column(name = "estado", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -65,7 +66,7 @@ public class Comanda implements Serializable {
         this.detallesComanda = new ArrayList<>();
     }
 
-    public Comanda(Long id, String folio, LocalDateTime fechaHora, EstadoComanda estado, Double totalVenta, Mesa mesa, Cliente cliente, List<DetalleComanda> detallesComanda) {
+    public Comanda(Long id, String folio, Date fechaHora, EstadoComanda estado, Double totalVenta, Mesa mesa, Cliente cliente, List<DetalleComanda> detallesComanda) {
         this.id = id;
         this.folio = folio;
         this.fechaHora = fechaHora;
@@ -76,7 +77,7 @@ public class Comanda implements Serializable {
         this.detallesComanda = detallesComanda;
     }
 
-    public Comanda(String folio, LocalDateTime fechaHora, EstadoComanda estado, Double totalVenta, Mesa mesa, Cliente cliente, List<DetalleComanda> detallesComanda) {
+    public Comanda(String folio, Date fechaHora, EstadoComanda estado, Double totalVenta, Mesa mesa, Cliente cliente, List<DetalleComanda> detallesComanda) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.estado = estado;
@@ -102,11 +103,11 @@ public class Comanda implements Serializable {
         this.folio = folio;
     }
 
-    public LocalDateTime getFechaHora() {
+    public Date getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(LocalDateTime fechaHora) {
+    public void setFechaHora(Date fechaHora) {
         this.fechaHora = fechaHora;
     }
 

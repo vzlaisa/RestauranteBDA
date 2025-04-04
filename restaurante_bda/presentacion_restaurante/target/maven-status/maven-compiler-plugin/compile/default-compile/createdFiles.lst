@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 modulo_ingredientes\RegistrarIngredienteFrm$3.class
 modulo_clientes\ConsultarClientes$1.class
 modulo_clientes\RegistrarClientes$5.class
@@ -7,41 +6,19 @@ presentacion\IncioSistema$1.class
 modulo_productos\RegistrarProductoFrm$3.class
 validaciones\Validaciones.class
 presentacion\Menu$5.class
-=======
-modulo_productos\AdministrarProductosFrm$4.class
-modulo_ingredientes\RegistrarIngredienteFrm$3.class
-modulo_clientes\ConsultarClientes$1.class
-modulo_ingredientes\AdministrarIngredientesFrm$1.class
-modulo_ingredientes\AdministrarIngredientesFrm$4.class
-modulo_ingredientes\ActualizarStockIngredienteFrm$1.class
-modulo_productos\AdministrarProductosFrm.class
-modulo_productos\EditarProductoFrm$1.class
-modulo_productos\RegistrarProductoFrm$3.class
-validaciones\Validaciones.class
-presentacion\Menu$5.class
-modulo_ingredientes\ActualizarStockIngredienteFrm$4.class
->>>>>>> 5970af113f593fbd4d9ce9f27181fb85f015f59e
 modulo_productos\RegistrarProductoFrm$4.class
+modulo_ingredientes\IncrementarStockIngredienteFrm$2.class
 coordinadores\CoordinadorAplicacion.class
 modulo_clientes\RegistrarClientes$2.class
-<<<<<<< HEAD
 modulo_productos\RegistrarProductoFrm$ButtonEditor.class
-=======
-modulo_productos\AdministrarProductosFrm$3.class
-modulo_productos\RegistrarProductoFrm$ButtonEditor.class
-modulo_ingredientes\EliminarIngredienteFrm$2.class
-modulo_productos\EditarProductoFrm$2.class
->>>>>>> 5970af113f593fbd4d9ce9f27181fb85f015f59e
 excepciones\PresentacionException.class
 presentacion\Menu$2.class
 presentacion\Menu$6.class
 modulo_ingredientes\AdministrarIngredientesFrm$2.class
 modulo_ingredientes\BuscadorIngredientesPanel.class
-modulo_ingredientes\BuscadorIngredientesPanel$1.class
 presentacion\Menu.class
 modulo_ingredientes\AdministrarIngredientesFrm.class
 modulo_productos\RegistrarProductoFrm$2.class
-<<<<<<< HEAD
 presentacion\IncioSistema.class
 modulo_ingredientes\IncrementarStockIngredienteFrm$1.class
 modulo_ingredientes\RegistrarIngredienteFrm.class
@@ -70,47 +47,3 @@ modulo_clientes\RegistrarClientes$1.class
 modulo_ingredientes\IncrementarStockIngredienteFrm.class
 presentacion\Menu$1.class
 presentacion\Menu$4.class
-=======
-modulo_ingredientes\RegistrarIngredienteFrm.class
-modulo_ingredientes\ActualizarStockIngredienteFrm$3.class
-modulo_clientes\ConsultarClientes.class
-modulo_ingredientes\EliminarIngredienteFrm$1.class
-modulo_ingredientes\ActualizarStockIngredienteFrm.class
-presentacion\Menu$3.class
-main\Presentacion_restaurante.class
-modulo_ingredientes\RegistrarIngredienteFrm$5.class
-modulo_productos\EditarProductoFrm$ButtonRenderer.class
-modulo_productos\AdministrarProductosFrm$6.class
-modulo_productos\AdministrarProductosFrm$2.class
-modulo_ingredientes\EliminarIngredienteFrm$4.class
-modulo_ingredientes\PruebaBuscador$1.class
-modulo_ingredientes\RegistrarIngredienteFrm$1.class
-modulo_productos\RegistrarProductoFrm$ButtonRenderer.class
-modulo_ingredientes\BuscadorIngredientesPanel$3.class
-modulo_ingredientes\ActualizarStockIngredienteFrm$2.class
-excepciones\DatosInvalidosException.class
-modulo_ingredientes\ActualizarStockIngredienteFrm$ButtonEditor.class
-modulo_productos\AdministrarProductosFrm$5.class
-modulo_productos\EditarProductoFrm$ButtonEditor.class
-presentacion\InicioSistema.class
-modulo_clientes\RegistrarClientes.class
-modulo_ingredientes\AdministrarIngredientesFrm$3.class
-modulo_productos\EditarProductoFrm$3.class
-modulo_productos\RegistrarProductoFrm$1.class
-modulo_ingredientes\ActualizarStockIngredienteFrm$ButtonRenderer.class
-modulo_ingredientes\RegistrarIngredienteFrm$4.class
-modulo_productos\EditarProductoFrm.class
-utilerias\Utilerias.class
-modulo_ingredientes\PruebaBuscador.class
-modulo_productos\RegistrarProductoFrm.class
-modulo_ingredientes\ActualizarStockIngredienteFrm$5.class
-modulo_ingredientes\EliminarIngredienteFrm.class
-modulo_ingredientes\RegistrarIngredienteFrm$2.class
-modulo_ingredientes\BuscadorIngredientesPanel$2.class
-modulo_productos\AdministrarProductosFrm$1.class
-modulo_clientes\RegistrarClientes$1.class
-presentacion\Menu$1.class
-modulo_productos\EditarProductoFrm$4.class
-presentacion\Menu$4.class
-modulo_ingredientes\EliminarIngredienteFrm$3.class
->>>>>>> 5970af113f593fbd4d9ce9f27181fb85f015f59e

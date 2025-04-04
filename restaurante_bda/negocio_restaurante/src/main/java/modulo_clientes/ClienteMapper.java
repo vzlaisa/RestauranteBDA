@@ -19,7 +19,7 @@ public class ClienteMapper {
         cliente.setApellidoPaterno(dto.getApellidoPaterno());
         cliente.setApellidoMaterno(dto.getApellidoMaterno());
         cliente.setTelefono(dto.getTelefono());
-        cliente.setEmail(dto.getEmail());
+        cliente.setCorreo(dto.getCorreo());
         cliente.setTipo(dto.getTipo());
         return cliente;
     }
@@ -31,7 +31,7 @@ public class ClienteMapper {
         dto.setApellidoPaterno(entity.getApellidoPaterno());
         dto.setApellidoMaterno(entity.getApellidoMaterno());
         dto.setTelefono(entity.getTelefono());
-        dto.setEmail(entity.getEmail());
+        dto.setCorreo(entity.getCorreo());
         dto.setFechaRegistro(entity.getFechaRegistro());
         dto.setTipo(entity.getTipo());
         return dto;

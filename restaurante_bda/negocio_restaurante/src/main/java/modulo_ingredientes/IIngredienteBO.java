@@ -5,9 +5,7 @@
 package modulo_ingredientes;
 
 import DTOs.IngredienteDTO;
-import enums.UnidadMedida;
 import exception.NegocioException;
-import java.util.List;
 
 /**
  *
@@ -17,10 +15,4 @@ public interface IIngredienteBO {
     
     public IngredienteDTO registrarIngrediente(IngredienteDTO ingredienteNuevo) throws NegocioException;
     
-    public boolean eliminarIngrediente(String nombre, UnidadMedida unidad) throws NegocioException;
-    
-    // Método de prueba para usar filtro de búsqueda en presentación
-    public List<IngredienteDTO> filtroBuscarIngredientes(String nombre, UnidadMedida unidad) throws NegocioException;
-    
-    public boolean actualizarIngrediente(String nombre, UnidadMedida unidad, Integer nuevoStock) throws NegocioException;
 }

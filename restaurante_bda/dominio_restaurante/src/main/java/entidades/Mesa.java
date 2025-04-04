@@ -5,11 +5,9 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,26 +27,19 @@ public class Mesa implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "numero", nullable = false, unique = true)
-    private Integer numero;
+    @Column(name = "numero", nullable = false, length = 10, unique = true)
+    private String numero;
     
-    @OneToMany(mappedBy = "mesa", fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "mesa")
     private List<Comanda> comandas;
 
     public Mesa() {
-        this.comandas = new ArrayList<>();
     }
 
-    public Mesa(Long id, Integer numero, List<Comanda> comandas) {
-        this.id = id;
+    public Mesa(String numero) {
         this.numero = numero;
-        this.comandas = comandas;
     }
     
-    public Mesa(Integer numero) {
-        this.numero = numero;
-        this.comandas = new ArrayList<>();
-    }
 
     public Long getId() {
         return id;
@@ -58,20 +49,12 @@ public class Mesa implements Serializable {
         this.id = id;
     }
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
-    }
-
-    public List<Comanda> getComandas() {
-        return comandas;
-    }
-
-    public void setComandas(List<Comanda> comandas) {
-        this.comandas = comandas;
     }
 
     @Override

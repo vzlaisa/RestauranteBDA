@@ -33,10 +33,9 @@ public class DependencyInjector {
     public static IProductoBO crearProductoBO() {
         // Crear instancia del DAO  utilizar. Se obtiene la instancia única
         IProductoDAO productoDAO = ProductoDAO.getInstance();
-        IIngredienteDAO ingredienteDAO = IngredienteDAO.getInstancia();
         
         // Crear la instancia del BO, se inyecta el DAO como dependencia
-        IProductoBO productoBO = new ProductoBO(productoDAO, ingredienteDAO);
+        IProductoBO productoBO = new ProductoBO(productoDAO);
         
         // Regresar la instancia del BO
         return productoBO;

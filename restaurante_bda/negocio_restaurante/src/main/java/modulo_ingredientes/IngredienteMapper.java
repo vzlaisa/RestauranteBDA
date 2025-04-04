@@ -5,10 +5,7 @@
 package modulo_ingredientes;
 
 import DTOs.IngredienteDTO;
-import DTOs.IngredienteNombreUnidadDTO;
 import entidades.Ingrediente;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -32,13 +29,6 @@ public class IngredienteMapper {
                 ingredienteDTO.getUnidadMedida(),
                 ingredienteDTO.getCantidadStock()
         );
-    }
-    
-    // Convertir una lista Entity a lista DTO
-    public static List<IngredienteDTO> toDTOList(List<Ingrediente> ingredientes) {
-        return ingredientes.stream()
-                .map(IngredienteMapper::toDTO)
-                .collect(Collectors.toList());
     }
     
 }

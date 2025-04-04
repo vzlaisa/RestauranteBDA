@@ -8,6 +8,7 @@ com\mycompany\dominio_restaurante\Dominio_restaurante.class
 enums\EstadoComanda.class
 enums\UnidadMedida.class
 entidades\Mesa.class
+entidades\ClienteFrecuente.class
 entidades\ProductoIngrediente.class
 entidades\Producto.class
 DTOs\ProductoEditadoDTO.class

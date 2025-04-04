@@ -32,6 +32,9 @@ public class DetalleComanda implements Serializable {
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
     
+    @Column (name = "importe_total")
+    private Double importeTotal;
+    
     @Column(name = "notas", nullable = true)
     private String notas;
     
@@ -46,18 +49,20 @@ public class DetalleComanda implements Serializable {
     public DetalleComanda() {
     }
 
-    public DetalleComanda(Long id, Double precio, Integer cantidad, String notas, Comanda comanda, Producto producto) {
+    public DetalleComanda(Long id, Double precio, Integer cantidad, Double importeTotal, String notas, Comanda comanda, Producto producto) {
         this.id = id;
         this.precio = precio;
         this.cantidad = cantidad;
+        this.importeTotal = importeTotal;
         this.notas = notas;
         this.comanda = comanda;
         this.producto = producto;
     }
 
-    public DetalleComanda(Double precio, Integer cantidad, String notas, Comanda comanda, Producto producto) {
+    public DetalleComanda(Double precio, Integer cantidad, Double importeTotal, String notas, Comanda comanda, Producto producto) {
         this.precio = precio;
         this.cantidad = cantidad;
+        this.importeTotal = importeTotal;
         this.notas = notas;
         this.comanda = comanda;
         this.producto = producto;
@@ -87,6 +92,14 @@ public class DetalleComanda implements Serializable {
         this.cantidad = cantidad;
     }
 
+    public Double getImporteTotal() {
+        return importeTotal;
+    }
+
+    public void setImporteTotal(Double importeTotal) {
+        this.importeTotal = importeTotal;
+    }
+
     public String getNotas() {
         return notas;
     }
@@ -110,13 +123,11 @@ public class DetalleComanda implements Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    
-    public Double getImporteTotal() {
-        return precio * cantidad;
-    }
 
     @Override
     public String toString() {
-        return "DetalleComanda{" + "id=" + id + ", precio=" + precio + ", cantidad=" + cantidad + ", notas=" + notas + ", producto=" + producto + '}';
+        return "DetalleComanda{" + "id=" + id + ", precio=" + precio + ", cantidad=" + cantidad + ", importeTotal=" + importeTotal + ", notas=" + notas + ", comanda=" + comanda + ", producto=" + producto + '}';
     }
+
+    
 }

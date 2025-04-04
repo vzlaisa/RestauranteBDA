@@ -10,16 +10,14 @@ import dependencyInjector.DependencyInjector;
 import enums.UnidadMedida;
 import excepciones.PresentacionException;
 import exception.NegocioException;
-import java.util.ArrayList;
 import java.util.List;
 import modulo_ingredientes.AdministrarIngredientesFrm;
 import modulo_ingredientes.IIngredienteBO;
-import modulo_ingredientes.IIngredienteDAO;
 import modulo_ingredientes.ActualizarStockIngredienteFrm;
 import modulo_ingredientes.EliminarIngredienteFrm;
-import modulo_ingredientes.IngredienteBO;
-import modulo_ingredientes.IngredienteDAO;
 import modulo_ingredientes.RegistrarIngredienteFrm;
+import modulo_productos.AdministrarProductosFrm;
+import modulo_productos.EditarProductoFrm;
 import modulo_productos.IProductoBO;
 import modulo_productos.RegistrarProductoFrm;
 import presentacion.Menu;
@@ -38,6 +36,8 @@ public class CoordinadorAplicacion {
     // Pantallas
     private Menu menu;
     private RegistrarProductoFrm registrarProductoFrm;
+    private AdministrarProductosFrm administrarProductosFrm;
+    private EditarProductoFrm editarProductoFrm;
     private RegistrarIngredienteFrm registrarIngredienteFrm;
     private AdministrarIngredientesFrm administrarIngredientesFrm;
     private ActualizarStockIngredienteFrm actualizarStockIngredienteFrm;
@@ -62,6 +62,22 @@ public class CoordinadorAplicacion {
         }
         
         registrarProductoFrm.setVisible(true);
+    }
+    
+    public void mostrarAdministrarProductosFrm() {
+        if (this.administrarProductosFrm == null) {
+            this.administrarProductosFrm = new AdministrarProductosFrm();
+        }
+        
+        administrarProductosFrm.setVisible(true);
+    }
+    
+    public void mostrarEditarProductoFrm() {
+        if (this.editarProductoFrm == null) {
+            this.editarProductoFrm = new EditarProductoFrm();
+        }
+        
+        editarProductoFrm.setVisible(true);
     }
     
     public void mostrarRegistrarIngredienteFrm() {

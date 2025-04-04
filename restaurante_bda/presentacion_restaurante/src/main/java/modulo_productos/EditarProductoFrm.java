@@ -34,25 +34,28 @@ import validaciones.Validaciones;
  *
  * @author rocha
  */
-public class RegistrarProductoFrm extends JFrame {
+public class EditarProductoFrm extends JFrame {
     
     private CoordinadorAplicacion coordinadorAplicacion;
     
     private BuscadorIngredientesPanel buscadorPanel;
     
     private final DefaultTableModel tableModel;
+    
+    private ProductoDTO productoElegido;
     private List<IngredienteDTO> ingredientes; // Lista con los ingredientes seleccionados
     
     /**
      * Creates new form RegistrarProductoFrm
      */
-    public RegistrarProductoFrm() {
+    public EditarProductoFrm() {
         initComponents();
         getContentPane().setBackground(java.awt.Color.WHITE);
-        this.setTitle("Registrar Producto");
+        this.setTitle("Editar Producto");
         this.setLocationRelativeTo(null);
         this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();
         this.ingredientes = new ArrayList<>();
+        this.productoElegido = new ProductoDTO();
         
         tableModel = new DefaultTableModel(new Object[]{"Ingrediente", "Unidad", "-", "Cantidad", "+"}, 0);
         tblIngredientes.setModel(tableModel);
@@ -65,7 +68,11 @@ public class RegistrarProductoFrm extends JFrame {
         
         insertarPanelBuscador();
         cargarListeners();
-        cargarTipos();
+        cargarInformacion();
+    }
+    
+    public void setProductoElegido(ProductoDTO producto) {
+        this.productoElegido = producto;
     }
 
     /**
@@ -85,7 +92,6 @@ public class RegistrarProductoFrm extends JFrame {
         lbPrecio = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         lbCategoria = new javax.swing.JLabel();
-        cbTipo = new javax.swing.JComboBox<>();
         lbSeleccionarIngredientes = new javax.swing.JLabel();
         scTablaIngredientes = new javax.swing.JScrollPane();
         tblIngredientes = new javax.swing.JTable();
@@ -94,13 +100,14 @@ public class RegistrarProductoFrm extends JFrame {
         btnAtras = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         panelBuscar = new javax.swing.JPanel();
+        txtTipo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
 
         lbTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        lbTitulo.setText("Registrar Producto");
+        lbTitulo.setText("Editar Producto");
 
         lbDatosGenerales.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lbDatosGenerales.setText("Datos generales");
@@ -113,13 +120,11 @@ public class RegistrarProductoFrm extends JFrame {
         lbPrecio.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lbPrecio.setText("Precio");
 
+        txtNombre.setEditable(false);
         txtNombre.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         lbCategoria.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lbCategoria.setText("Tipo / Categoría");
-
-        cbTipo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cbTipo.setMaximumRowCount(5);
 
         lbSeleccionarIngredientes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lbSeleccionarIngredientes.setText("Seleccionar ingredientes");
@@ -185,6 +190,9 @@ public class RegistrarProductoFrm extends JFrame {
         panelBuscar.setBackground(new java.awt.Color(255, 255, 255));
         panelBuscar.setLayout(new java.awt.BorderLayout());
 
+        txtTipo.setEditable(false);
+        txtTipo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
@@ -204,11 +212,11 @@ public class RegistrarProductoFrm extends JFrame {
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lbDatosGenerales)
                     .addComponent(lbNombreProducto)
-                    .addComponent(txtPrecio)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
                     .addComponent(lbPrecio)
                     .addComponent(txtNombre)
                     .addComponent(lbCategoria)
-                    .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTipo))
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
                         .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,7 +268,7 @@ public class RegistrarProductoFrm extends JFrame {
                         .addGap(24, 24, 24)
                         .addComponent(lbCategoria)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(231, 231, 231))
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
                         .addComponent(panelBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -379,14 +387,20 @@ public class RegistrarProductoFrm extends JFrame {
      * productos obteniendolos directamente del enum. Agrega elemeto "No
      * seleccionado" como default.
      */
-    private void cargarTipos() {
-        cbTipo.addItem("No seleccionado"); // Opción por defecto
-
-        for (TipoProducto tipo : TipoProducto.values()) {
-            cbTipo.addItem(tipo.name()); // Agregar valores del Enum
+    private void cargarInformacion() {
+        // Cargar los datos generales
+        txtNombre.setText(productoElegido.getNombre());
+        txtPrecio.setText(String.valueOf(productoElegido.getPrecio()));
+        txtTipo.setText(productoElegido.getTipo().name());
+        
+        // Cargar los ingredientes
+        for (ProductoIngredienteDTO productoIngrediente : productoElegido.getIngredientes()) {
+            // Agregar el DTO a la lista
+            this.ingredientes.add(productoIngrediente.getIngrediente());
+            
+            // Agregarlo a la tabla
+            tableModel.addRow(new Object[]{productoIngrediente.getIngrediente().getNombre(), productoIngrediente.getIngrediente().getUnidadMedida(), "-", productoIngrediente.getCantidad(), "+"});
         }
-
-        cbTipo.setSelectedIndex(0); // Asignar el valor por defecto como seleccionado
     }
 
     /**
@@ -452,14 +466,14 @@ public class RegistrarProductoFrm extends JFrame {
      * @throws PresentacionException Si un dato ingresado no es válido o si hubo
      * un error al intentar el registro.
      */
-    private void registrarProducto() throws DatosInvalidosException, PresentacionException {
+    private void editarProducto() throws DatosInvalidosException, PresentacionException {
         try {
             validarCamposProducto();
 
-            ProductoDTO productoNuevo = new ProductoDTO(
+            ProductoDTO productoEditado = new ProductoDTO(
                     txtNombre.getText(),
                     Double.valueOf(txtPrecio.getText()),
-                    TipoProducto.valueOf(cbTipo.getSelectedItem().toString().toUpperCase())
+                    TipoProducto.valueOf(txtTipo.getText().toUpperCase())
             );
 
             List<ProductoIngredienteDTO> productosIngredientes = new ArrayList<>();
@@ -467,16 +481,16 @@ public class RegistrarProductoFrm extends JFrame {
             for (int i = 0; i < tableModel.getRowCount(); i++) {
                 ProductoIngredienteDTO productoIngrediente = new ProductoIngredienteDTO(
                         Integer.valueOf(tableModel.getValueAt(i, 3).toString()),
-                        productoNuevo,
+                        productoEditado,
                         ingredientes.get(i)
                 );
                 
                 productosIngredientes.add(productoIngrediente);
             }
             
-            productoNuevo.setIngredientes(productosIngredientes);
+            productoEditado.setIngredientes(productosIngredientes);
             
-            coordinadorAplicacion.registrarProducto(productoNuevo);
+            coordinadorAplicacion.registrarProducto(productoEditado);
         } catch (PresentacionException e) {
             throw new PresentacionException(e.getMessage(), e);
         }
@@ -489,9 +503,7 @@ public class RegistrarProductoFrm extends JFrame {
      * nivel presentación).
      */
     private void validarCamposProducto() throws DatosInvalidosException {
-        Validaciones.validarTexto(txtNombre.getText().trim(), "nombre del producto");
         Validaciones.validarNumero(txtPrecio.getText().trim(), "precio del producto");
-        Validaciones.validarCombobox(cbTipo, "tipo de producto");
         Validaciones.validarSeleccionTabla(tableModel, "ingrediente");
     }
 
@@ -501,7 +513,7 @@ public class RegistrarProductoFrm extends JFrame {
     private void limpiarCampos() {
         this.txtNombre.setText("");
         this.txtPrecio.setText("");
-        this.cbTipo.setSelectedIndex(0);
+        this.txtTipo.setText("");
         this.buscadorPanel.getTxtNombreIngrediente().setText("");
         this.tableModel.setRowCount(0);
         
@@ -514,18 +526,18 @@ public class RegistrarProductoFrm extends JFrame {
      */
     private void guardar() {
         int opcion = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro que desea registrar el producto?",
+                "¿Está seguro que desea editar el producto?",
                 "Confirmar registro", JOptionPane.YES_NO_OPTION);
         if (opcion != JOptionPane.YES_OPTION) {
             return;
         }
 
         try {
-            registrarProducto();
-            JOptionPane.showMessageDialog(this, "Producto registrado con éxito.", "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
+            editarProducto();
+            JOptionPane.showMessageDialog(this, "Producto editado con éxito.", "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
         } catch (PresentacionException e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al editar producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (DatosInvalidosException e) {
             JOptionPane.showMessageDialog(this, "Error por datos no válidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -536,7 +548,7 @@ public class RegistrarProductoFrm extends JFrame {
      * @return True si encontró al menos un campo con información, false en caso contrario.
      */
     private boolean camposIngresados() {
-        return !txtNombre.getText().isBlank() || !txtPrecio.getText().isBlank() || cbTipo.getSelectedIndex() != 0 || tableModel.getRowCount() != 0;
+        return !txtPrecio.getText().isBlank() || tableModel.getRowCount() != 0;
     }
 
     /**
@@ -546,25 +558,24 @@ public class RegistrarProductoFrm extends JFrame {
     private void atras() {
         if (camposIngresados()) {
             int opcion = JOptionPane.showConfirmDialog(this,
-                    "¿Está seguro que desea cancelar el registro del producto?",
+                    "¿Está seguro que desea cancelar la edición del producto?",
                     "Confirmar cancelación de registro", JOptionPane.YES_NO_OPTION);
             if (opcion != JOptionPane.YES_OPTION) {
                 return;
             }
 
-            JOptionPane.showMessageDialog(this, "No se registró el producto.", "Cancelación confirmada", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se editó el producto.", "Cancelación confirmada", JOptionPane.INFORMATION_MESSAGE);
             limpiarCampos();
         }
         
         this.dispose();
-        coordinadorAplicacion.mostrarMenu();
+        coordinadorAplicacion.mostrarAdministrarProductosFrm();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cbTipo;
     private javax.swing.JLabel lbCategoria;
     private javax.swing.JLabel lbDatosGenerales;
     private javax.swing.JLabel lbNombreProducto;
@@ -578,5 +589,6 @@ public class RegistrarProductoFrm extends JFrame {
     private javax.swing.JTable tblIngredientes;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 }

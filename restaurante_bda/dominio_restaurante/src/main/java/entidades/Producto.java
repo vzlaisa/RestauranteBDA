@@ -32,7 +32,12 @@ import javax.persistence.Table;
     @NamedQuery(
         name = "Producto.getNombres",
         query = "SELECT p.nombre FROM Producto p"
+    ),
+    @NamedQuery(
+        name = "Producto.getTodos",
+        query = "SELECT p FROM Producto p"
     )
+        
 })
 public class Producto implements Serializable {
 

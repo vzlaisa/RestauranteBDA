@@ -41,13 +41,16 @@ public class Comanda implements Serializable {
     @Column(name = "folio", nullable = false, unique = true, length = 15)
     private String folio;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "fecha_hora", nullable = false)
-    private Date fechaHora;
+    private LocalDateTime fechaHora;
     
     @Column(name = "estado", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private EstadoComanda estado;
+    
+    @Column (name = "total_venta", nullable = false)
+    private Double totalVenta;
     
     @ManyToOne
     @JoinColumn(name = "id_mesa", nullable = false)
@@ -63,22 +66,25 @@ public class Comanda implements Serializable {
         this.detallesComanda = new ArrayList<>();
     }
 
-    public Comanda(Long id, String folio, Date fechaHora, EstadoComanda estado, Mesa mesa, List<DetalleComanda> detallesComanda, Cliente cliente) {
+    public Comanda(Long id, String folio, LocalDateTime fechaHora, EstadoComanda estado, Double totalVenta, Mesa mesa, Cliente cliente, List<DetalleComanda> detallesComanda) {
         this.id = id;
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.estado = estado;
+        this.totalVenta = totalVenta;
         this.mesa = mesa;
-        this.detallesComanda = detallesComanda;
         this.cliente = cliente;
+        this.detallesComanda = detallesComanda;
     }
 
-    public Comanda(Date fechaHora, EstadoComanda estado, Mesa mesa, Cliente cliente) {
+    public Comanda(String folio, LocalDateTime fechaHora, EstadoComanda estado, Double totalVenta, Mesa mesa, Cliente cliente, List<DetalleComanda> detallesComanda) {
+        this.folio = folio;
         this.fechaHora = fechaHora;
         this.estado = estado;
+        this.totalVenta = totalVenta;
         this.mesa = mesa;
         this.cliente = cliente;
-        this.detallesComanda = new ArrayList<>();
+        this.detallesComanda = detallesComanda;
     }
 
     public Long getId() {
@@ -97,11 +103,11 @@ public class Comanda implements Serializable {
         this.folio = folio;
     }
 
-    public Date getFechaHora() {
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(Date fechaHora) {
+    public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -136,15 +142,17 @@ public class Comanda implements Serializable {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
+
     public Double getTotalVenta() {
-        return this.detallesComanda.stream()
-                .mapToDouble(DetalleComanda::getImporteTotal)
-                .sum();
+        return totalVenta;
+    }
+
+    public void setTotalVenta(Double totalVenta) {
+        this.totalVenta = totalVenta;
     }
 
     @Override
     public String toString() {
-        return "Comanda{" + "id=" + id + ", folio=" + folio + ", fechaHora=" + fechaHora + ", estado=" + estado + ", mesa=" + mesa + ", detallesComanda=" + detallesComanda + ", cliente=" + cliente + '}';
+        return "Comanda{" + "id=" + id + ", folio=" + folio + ", fechaHora=" + fechaHora + ", estado=" + estado + ", totalVenta=" + totalVenta + ", mesa=" + mesa + ", cliente=" + cliente + ", detallesComanda=" + detallesComanda + '}';
     }
 }

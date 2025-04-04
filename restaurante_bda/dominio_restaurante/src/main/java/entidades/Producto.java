@@ -24,7 +24,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Ximena
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 @Entity
 @Table(name = "productos")
@@ -51,22 +51,26 @@ public class Producto implements Serializable {
     private TipoProducto tipo;
     
     // Usar remove ya que es una relación fuerte (composición)
-    // Usar merge para actualizar lista de ingredientes cuando se actualice el producto
-    // orphanRemoval como true para eliminar los ProductosIngredientes si se elimina al modificar el producto
-    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<ProductosIngredientes> productosIngredientes;
+    // orphanRemoval como true para eliminar los ProductosIngredientes si se elimina el producto
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ProductoIngrediente> productosIngredientes;
     
-    // FALTA AGREGAR LA RELACIÓN CON LAS COMANDAS
+    // orphanRemoval como false para no perder los detalles de la comanda si se elimina el producto
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<DetalleComanda> detallesComandas;
 
     public Producto() {
         this.productosIngredientes = new ArrayList<>();
+        this.detallesComandas = new ArrayList<>();
     }
 
-    public Producto(String nombre, Double precio, TipoProducto tipo, List<ProductosIngredientes> productosIngredientes) {
+    public Producto(Long id, String nombre, Double precio, TipoProducto tipo, List<ProductoIngrediente> productosIngredientes, List<DetalleComanda> detallesComandas) {
+        this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
         this.productosIngredientes = productosIngredientes;
+        this.detallesComandas = detallesComandas;
     }
 
     public Producto(String nombre, Double precio, TipoProducto tipo) {
@@ -74,6 +78,7 @@ public class Producto implements Serializable {
         this.precio = precio;
         this.tipo = tipo;
         this.productosIngredientes = new ArrayList<>();
+        this.detallesComandas = new ArrayList<>();
     }
     
     public Long getId() {
@@ -108,17 +113,24 @@ public class Producto implements Serializable {
         this.tipo = tipo;
     }
 
-    public List<ProductosIngredientes> getProductosIngredientes() {
+    public List<ProductoIngrediente> getProductosIngredientes() {
         return productosIngredientes;
     }
 
-    public void setProductosIngredientes(List<ProductosIngredientes> productosIngredientes) {
+    public void setProductosIngredientes(List<ProductoIngrediente> productosIngredientes) {
         this.productosIngredientes = productosIngredientes;
+    }
+
+    public List<DetalleComanda> getDetallesComandas() {
+        return detallesComandas;
+    }
+
+    public void setDetallesComandas(List<DetalleComanda> detallesComandas) {
+        this.detallesComandas = detallesComandas;
     }
 
     @Override
     public String toString() {
         return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", productosIngredientes=" + productosIngredientes + '}';
     }
-      
 }

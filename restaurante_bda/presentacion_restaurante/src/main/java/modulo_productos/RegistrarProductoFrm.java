@@ -6,7 +6,7 @@ package modulo_productos;
 
 import DTOs.IngredienteDTO;
 import DTOs.ProductoDTO;
-import DTOs.ProductosIngredientesDTO;
+import DTOs.ProductoIngredienteDTO;
 import coordinadores.CoordinadorAplicacion;
 import enums.TipoProducto;
 import enums.UnidadMedida;
@@ -473,10 +473,10 @@ public class RegistrarProductoFrm extends JFrame {
                     TipoProducto.valueOf(cbTipo.getSelectedItem().toString().toUpperCase())
             );
 
-            List<ProductosIngredientesDTO> productosIngredientes = new ArrayList<>();
+            List<ProductoIngredienteDTO> productosIngredientes = new ArrayList<>();
 
             for (int i = 0; i < tableModel.getRowCount(); i++) {
-                ProductosIngredientesDTO productoIngrediente = new ProductosIngredientesDTO(
+                ProductoIngredienteDTO productoIngrediente = new ProductoIngredienteDTO(
                         Integer.valueOf(tableModel.getValueAt(i, 3).toString()),
                         productoNuevo,
                         ingredientes.get(i)

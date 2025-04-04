@@ -16,7 +16,7 @@ public class ClienteBO implements IClienteBO{
     @Override
     public double calcularTotalGastado(Cliente cliente){
         List<Comanda> comandas =cliente.getComandas();
-        return(comandas !=null)? comandas.stream().mapToDouble(Comanda::getTotal).sum():0.0;
+        return(comandas !=null)? comandas.stream().mapToDouble(Comanda::getTotalVenta).sum():0.0;
     } 
     @Override
     public int obtenerNumeroVisitas(Cliente cliente){

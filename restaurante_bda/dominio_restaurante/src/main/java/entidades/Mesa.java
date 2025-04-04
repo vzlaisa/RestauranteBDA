@@ -5,9 +5,11 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,16 +32,23 @@ public class Mesa implements Serializable {
     @Column(name = "numero", nullable = false, length = 10, unique = true)
     private String numero;
     
-    @OneToMany(mappedBy = "mesa")
+    @OneToMany(mappedBy = "mesa", fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Comanda> comandas;
 
     public Mesa() {
+        this.comandas = new ArrayList<>();
     }
 
-    public Mesa(String numero) {
+    public Mesa(Long id, String numero, List<Comanda> comandas) {
+        this.id = id;
         this.numero = numero;
+        this.comandas = comandas;
     }
     
+    public Mesa(String numero) {
+        this.numero = numero;
+        this.comandas = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -55,6 +64,14 @@ public class Mesa implements Serializable {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public List<Comanda> getComandas() {
+        return comandas;
+    }
+
+    public void setComandas(List<Comanda> comandas) {
+        this.comandas = comandas;
     }
 
     @Override

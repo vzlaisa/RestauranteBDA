@@ -8,7 +8,7 @@ import DTOs.ProductoDTO;
 import DTOs.ProductoEditadoDTO;
 import entidades.Ingrediente;
 import entidades.Producto;
-import entidades.ProductosIngredientes;
+import entidades.ProductoIngrediente;
 import enums.TipoProducto;
 import enums.UnidadMedida;
 import exception.NegocioException;
@@ -102,9 +102,9 @@ public class ProductoBO implements IProductoBO {
         // Intentar registrar el producto
         try {
             Producto producto = ProductoMapper.toEntity(productoNuevo);
-            List<ProductosIngredientes> productosIngredientes = ProductosIngredientesMapper.toEntityList(productoNuevo.getIngredientes());
+            List<ProductoIngrediente> productosIngredientes = ProductoIngredienteMapper.toEntityList(productoNuevo.getIngredientes());
 
-            for (ProductosIngredientes productoIngrediente : productosIngredientes) {
+            for (ProductoIngrediente productoIngrediente : productosIngredientes) {
                 // Obtener el Ingrediente del contexto de persistencia
                 Ingrediente ingrediente = ingredienteDAO.obtenerIngredientePorId(
                         ingredienteDAO.obtenerIdPorNombreYUnidad(
@@ -218,7 +218,7 @@ public class ProductoBO implements IProductoBO {
 
             // Settear los datos editados
             producto.setPrecio(productoEditado.getPrecio());
-            producto.setProductosIngredientes(ProductosIngredientesMapper.toEntityList(productoEditado.getIngredientes()));
+            producto.setProductosIngredientes(ProductoIngredienteMapper.toEntityList(productoEditado.getIngredientes()));
 
             // Actualizar el producto mediante la DAO
             return ProductoMapper.toDTO(productoDAO.actualizarProducto(producto));

@@ -6,6 +6,8 @@ package modulo_productos;
 
 import DTOs.ProductoDTO;
 import entidades.Producto;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -26,5 +28,11 @@ public class ProductoMapper {
                 productoDTO.getNombre(),
                 productoDTO.getPrecio(),
                 productoDTO.getTipo());
+    }
+    
+    public static List<ProductoDTO> toDTOList(List<Producto> productos) {
+        return productos.stream().
+                map(ProductoMapper::toDTO).
+                collect(Collectors.toList());
     }
 }

@@ -72,6 +72,8 @@ public interface IProductoDAO {
     
     public List<Producto> obtenerTodos() throws PersistenciaException;
     
+    public List<Producto> obtenerProductosConIngredientes() throws PersistenciaException;
+    
     /**
      * Obtiene los nombres de todos los productos registrados.
      *

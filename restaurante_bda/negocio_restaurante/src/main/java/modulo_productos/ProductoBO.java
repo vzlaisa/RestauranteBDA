@@ -6,6 +6,7 @@ package modulo_productos;
 
 import DTOs.ProductoDTO;
 import DTOs.ProductoEditadoDTO;
+import DTOs.ProductoIngredienteDTO;
 import entidades.Ingrediente;
 import entidades.Producto;
 import entidades.ProductoIngrediente;
@@ -13,6 +14,7 @@ import enums.TipoProducto;
 import enums.UnidadMedida;
 import exception.NegocioException;
 import exception.PersistenciaException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import modulo_ingredientes.IIngredienteDAO;
@@ -224,6 +226,44 @@ public class ProductoBO implements IProductoBO {
             return ProductoMapper.toDTO(productoDAO.actualizarProducto(producto));
         } catch (PersistenciaException e) {
             throw new NegocioException("No se pudo eliminar el producto.", e);
+        }
+    }
+    
+    @Override
+    public List<ProductoDTO> obtenerTodos() throws NegocioException {
+        try {
+            return ProductoMapper.toDTOList(productoDAO.obtenerTodos());
+        } catch (PersistenciaException e) {
+            throw new NegocioException("No se pudo obtener todos los productos.", e);
+        }
+    }
+    
+    @Override
+    public List<ProductoDTO> obtenerProductosConIngredientes() throws NegocioException {
+        try {
+            List<Producto> productos = productoDAO.obtenerProductosConIngredientes();
+            
+            List<ProductoDTO> productosDTO = new ArrayList<>();
+            
+            for (Producto producto : productos) {
+                ProductoDTO productoDTO = ProductoMapper.toDTO(producto);
+                List<ProductoIngredienteDTO> productosIngredientesDTO = ProductoIngredienteMapper.toDTOList(producto.getProductosIngredientes());
+                productoDTO.setIngredientes(productosIngredientesDTO);
+                productosDTO.add(productoDTO);
+            }
+            
+            return productosDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException("No se pudo obtener todos los productos con ingredientes.", e);
+        }
+    }
+    
+    @Override
+    public boolean hayProductosRegistrados() throws NegocioException {
+        try {
+            return !productoDAO.obtenerTodos().isEmpty();
+        } catch (PersistenciaException e) {
+            throw new NegocioException("No se pudo verificar si hay productos registrados.", e);
         }
     }
 

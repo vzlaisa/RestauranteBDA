@@ -7,6 +7,7 @@ package modulo_productos;
 import DTOs.ProductoDTO;
 import DTOs.ProductoEditadoDTO;
 import exception.NegocioException;
+import java.util.List;
 
 /**
  * Interfaz de la capa de negocio para la gestión de productos.
@@ -56,4 +57,10 @@ public interface IProductoBO {
      * de actualización.
      */
     public ProductoDTO actualizarProducto(ProductoEditadoDTO productoEditado) throws NegocioException;
+    
+    public List<ProductoDTO> obtenerTodos() throws NegocioException;
+    
+    public List<ProductoDTO> obtenerProductosConIngredientes() throws NegocioException;
+    
+    public boolean hayProductosRegistrados() throws NegocioException;
 }

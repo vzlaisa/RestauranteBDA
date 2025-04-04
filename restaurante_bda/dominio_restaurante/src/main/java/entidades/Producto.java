@@ -30,14 +30,17 @@ import javax.persistence.Table;
 @Table(name = "productos")
 @NamedQueries({
     @NamedQuery(
-        name = "Producto.getNombres",
-        query = "SELECT p.nombre FROM Producto p"
+            name = "Producto.getNombres",
+            query = "SELECT p.nombre FROM Producto p"
     ),
     @NamedQuery(
-        name = "Producto.getTodos",
-        query = "SELECT p FROM Producto p"
+            name = "Producto.getTodos",
+            query = "SELECT p FROM Producto p"
+    ),
+    @NamedQuery(
+            name = "Producto.getProductosConIngredientes",
+            query = "SELECT DISTINCT p FROM Producto p JOIN FETCH p.productosIngredientes"
     )
-        
 })
 public class Producto implements Serializable {
 

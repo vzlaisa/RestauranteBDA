@@ -216,6 +216,20 @@ public class ProductoDAO implements IProductoDAO {
             throw new PersistenciaException("No se pudo obtener todos los productos: " + e.getMessage());
         }
     }
+    
+    @Override
+    public List<Producto> obtenerProductosConIngredientes() throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+
+        try {
+            return em.createNamedQuery("Producto.getProductosConIngredientes", Producto.class).getResultList();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new PersistenciaException("No se pudo obtener todos los productos con ingredientes: " + e.getMessage());
+        }
+    }
+    
+    
 
     /**
      * Obtiene los nombres de todos los productos registrados.

@@ -167,7 +167,7 @@ public class ProductoDAO implements IProductoDAO {
         try {
             return em.find(Producto.class, id);
         } catch (Exception e) {
-            throw new PersistenciaException("No se pudo eliminar el producto: " + e.getMessage());
+            throw new PersistenciaException("No se pudo obtener el producto por id: " + e.getMessage());
         } finally {
             em.close();
         }
@@ -218,18 +218,27 @@ public class ProductoDAO implements IProductoDAO {
     }
     
     @Override
-    public List<Producto> obtenerProductosConIngredientes() throws PersistenciaException {
+    public Producto obtenerProductoPorNombre(String nombre) throws PersistenciaException {
+        if (nombre == null) {
+            throw new PersistenciaException("El nombre no puede ser nulo");
+        }
+
         EntityManager em = Conexion.crearConexion();
+        String sentenciaJPQL = "SELECT p FROM Producto p WHERE p.nombre = :nombre";
 
         try {
-            return em.createNamedQuery("Producto.getProductosConIngredientes", Producto.class).getResultList();
+            TypedQuery<Producto> query = em.createQuery(sentenciaJPQL, Producto.class);
+            query.setParameter("nombre", nombre);
+
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Si no encuentra el producto, retorna null
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            throw new PersistenciaException("No se pudo obtener todos los productos con ingredientes: " + e.getMessage());
+            throw new PersistenciaException("No se pudo obtener el producto por nombre: " + e.getMessage());
+        } finally {
+            em.close();
         }
     }
-    
-    
 
     /**
      * Obtiene los nombres de todos los productos registrados.
@@ -249,4 +258,5 @@ public class ProductoDAO implements IProductoDAO {
             throw new PersistenciaException("No se pudo obtener los nombres de los productos: " + e.getMessage());
         }
     }
+
 }

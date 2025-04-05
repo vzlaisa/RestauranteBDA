@@ -47,10 +47,10 @@ public class Cliente implements Serializable {
     @Column(name = "apellido_materno", length = 50)
     private String apellidoMaterno;
     
-    @Column(name = "telefono", nullable = false, length = 10, unique = true)
+    @Column(name = "telefono", nullable = false, length = 70)
     private String telefono;
     
-    @Column(name = "email", length = 100, unique = true)
+    @Column(name = "email", length = 100, nullable = true)
     private String email;
     
     @Column(name = "fecha_registro", nullable = false)

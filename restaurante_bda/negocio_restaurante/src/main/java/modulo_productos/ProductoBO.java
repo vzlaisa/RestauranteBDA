@@ -5,7 +5,6 @@
 package modulo_productos;
 
 import DTOs.ProductoDTO;
-import DTOs.ProductoEditadoDTO;
 import DTOs.ProductoIngredienteDTO;
 import entidades.Ingrediente;
 import entidades.Producto;
@@ -179,7 +178,7 @@ public class ProductoBO implements IProductoBO {
      * de actualización.
      */
     @Override
-    public ProductoDTO actualizarProducto(ProductoEditadoDTO productoEditado) throws NegocioException {
+    public ProductoDTO actualizarProducto(ProductoDTO productoEditado) throws NegocioException {
         // Validar que el producto no sea nulo
         if (productoEditado == null) {
             throw new NegocioException("El producto no puede ser nulo.");
@@ -205,43 +204,42 @@ public class ProductoBO implements IProductoBO {
             throw new NegocioException("El producto debe tener al menos 1 ingrediente.");
         }
 
-        // Intentar eliminar el producto
+        // Intentar actualizar el producto
         try {
             // Obtiene el producto mediante la DAO
-            Long idProducto = productoDAO.obtenerIdPorNombre(productoEditado.getNombre());
+            Producto producto = productoDAO.obtenerProductoPorNombre(productoEditado.getNombre());
 
             // Si el producto no existe
-            if (idProducto == null) {
+            if (producto == null) {
                 throw new NegocioException("El producto con nombre " + productoEditado.getNombre() + " no existe.");
             }
 
-            // Obtener el producto que se quiere editar
-            Producto producto = productoDAO.obtenerProductoPorId(idProducto);
-
-            // Settear los datos editados
+            // Settear los datos editados (solo se puede precio o productos ingredientes
             producto.setPrecio(productoEditado.getPrecio());
-            producto.setProductosIngredientes(ProductoIngredienteMapper.toEntityList(productoEditado.getIngredientes()));
+            producto.setProductosIngredientes(ProductoIngredienteMapper.toEntityList(productoEditado.getIngredientes())); // settear la lista convertida
+            
+            // Obtener el ingrediente de la persistencia y setearselo a cada uno (al convertirse no se hace esto)
+            for (ProductoIngrediente productoIngrediente : producto.getProductosIngredientes()) {
+                // Obtener el ingrediente del contexto de persistencia
+                Ingrediente ingrediente = ingredienteDAO.obtenerIngredientePorNombreYUnidad(productoIngrediente.getIngrediente().getNombre(), productoIngrediente.getIngrediente().getUnidadMedida());
+                System.out.println(ingrediente);
+                
+                // Establecer las relaciones
+                productoIngrediente.setProducto(producto);
+                productoIngrediente.setIngrediente(ingrediente);
+            }
 
             // Actualizar el producto mediante la DAO
             return ProductoMapper.toDTO(productoDAO.actualizarProducto(producto));
         } catch (PersistenciaException e) {
-            throw new NegocioException("No se pudo eliminar el producto.", e);
+            throw new NegocioException("No se pudo actualizar el producto.", e);
         }
     }
     
     @Override
     public List<ProductoDTO> obtenerTodos() throws NegocioException {
         try {
-            return ProductoMapper.toDTOList(productoDAO.obtenerTodos());
-        } catch (PersistenciaException e) {
-            throw new NegocioException("No se pudo obtener todos los productos.", e);
-        }
-    }
-    
-    @Override
-    public List<ProductoDTO> obtenerProductosConIngredientes() throws NegocioException {
-        try {
-            List<Producto> productos = productoDAO.obtenerProductosConIngredientes();
+            List<Producto> productos = productoDAO.obtenerTodos();
             
             List<ProductoDTO> productosDTO = new ArrayList<>();
             
@@ -254,7 +252,31 @@ public class ProductoBO implements IProductoBO {
             
             return productosDTO;
         } catch (PersistenciaException e) {
-            throw new NegocioException("No se pudo obtener todos los productos con ingredientes.", e);
+            throw new NegocioException("No se pudo obtener todos los productos", e);
+        }
+    }
+    
+    @Override
+    public ProductoDTO obtenerProductoPorNombre(String nombre) throws NegocioException {
+        // Validar que el nombre no sea nulo
+        if (nombre == null) {
+            throw new NegocioException("El nombre no puede ser nulo.");
+        }
+        
+        try {
+            Producto producto = productoDAO.obtenerProductoPorNombre(nombre);
+            
+            if (producto == null) {
+                throw new NegocioException("No se encontró producto con nombre " + nombre);
+            }
+            
+            ProductoDTO productoDTO = ProductoMapper.toDTO(producto);
+            
+            productoDTO.setIngredientes(ProductoIngredienteMapper.toDTOList(producto.getProductosIngredientes()));
+            
+            return productoDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException("No se pudo obtener el producto " + nombre + ".", e);
         }
     }
     

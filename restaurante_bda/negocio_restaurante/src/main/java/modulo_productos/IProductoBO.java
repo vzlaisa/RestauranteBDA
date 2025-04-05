@@ -5,7 +5,6 @@
 package modulo_productos;
 
 import DTOs.ProductoDTO;
-import DTOs.ProductoEditadoDTO;
 import exception.NegocioException;
 import java.util.List;
 
@@ -56,11 +55,11 @@ public interface IProductoBO {
      * @throws NegocioException Si hay un error en la validación o en el proceso
      * de actualización.
      */
-    public ProductoDTO actualizarProducto(ProductoEditadoDTO productoEditado) throws NegocioException;
+    public ProductoDTO actualizarProducto(ProductoDTO productoEditado) throws NegocioException;
     
     public List<ProductoDTO> obtenerTodos() throws NegocioException;
     
-    public List<ProductoDTO> obtenerProductosConIngredientes() throws NegocioException;
+    public ProductoDTO obtenerProductoPorNombre(String nombre) throws NegocioException;
     
     public boolean hayProductosRegistrados() throws NegocioException;
 }

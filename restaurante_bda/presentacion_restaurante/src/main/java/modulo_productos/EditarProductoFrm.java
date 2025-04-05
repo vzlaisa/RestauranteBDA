@@ -68,7 +68,6 @@ public class EditarProductoFrm extends JFrame {
         
         insertarPanelBuscador();
         cargarListeners();
-        cargarInformacion();
     }
     
     public void setProductoElegido(ProductoDTO producto) {
@@ -387,7 +386,7 @@ public class EditarProductoFrm extends JFrame {
      * productos obteniendolos directamente del enum. Agrega elemeto "No
      * seleccionado" como default.
      */
-    private void cargarInformacion() {
+    public void cargarInformacion() {
         // Cargar los datos generales
         txtNombre.setText(productoElegido.getNombre());
         txtPrecio.setText(String.valueOf(productoElegido.getPrecio()));
@@ -490,7 +489,7 @@ public class EditarProductoFrm extends JFrame {
             
             productoEditado.setIngredientes(productosIngredientes);
             
-            coordinadorAplicacion.registrarProducto(productoEditado);
+            coordinadorAplicacion.actualizarProducto(productoEditado);
         } catch (PresentacionException e) {
             throw new PresentacionException(e.getMessage(), e);
         }

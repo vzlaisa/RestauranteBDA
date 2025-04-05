@@ -36,10 +36,6 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "Producto.getTodos",
             query = "SELECT p FROM Producto p"
-    ),
-    @NamedQuery(
-            name = "Producto.getProductosConIngredientes",
-            query = "SELECT DISTINCT p FROM Producto p JOIN FETCH p.productosIngredientes"
     )
 })
 public class Producto implements Serializable {
@@ -60,7 +56,7 @@ public class Producto implements Serializable {
     
     // Usar remove ya que es una relación fuerte (composición)
     // orphanRemoval como true para eliminar los ProductosIngredientes si se elimina el producto
-    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProductoIngrediente> productosIngredientes;
     // cascada merge ??
     

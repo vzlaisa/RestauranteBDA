@@ -31,23 +31,17 @@ public class Mesa implements Serializable {
     
     @Column(name = "numero", nullable = false, unique = true)
     private Integer numero;
-    
-    @OneToMany(mappedBy = "mesa", fetch = FetchType.LAZY, orphanRemoval = false)
-    private List<Comanda> comandas;
 
     public Mesa() {
-        this.comandas = new ArrayList<>();
     }
 
-    public Mesa(Long id, Integer numero, List<Comanda> comandas) {
+    public Mesa(Long id, Integer numero) {
         this.id = id;
         this.numero = numero;
-        this.comandas = comandas;
     }
     
     public Mesa(Integer numero) {
         this.numero = numero;
-        this.comandas = new ArrayList<>();
     }
 
     public Long getId() {
@@ -65,15 +59,7 @@ public class Mesa implements Serializable {
     public void setNumero(Integer numero) {
         this.numero = numero;
     }
-
-    public List<Comanda> getComandas() {
-        return comandas;
-    }
-
-    public void setComandas(List<Comanda> comandas) {
-        this.comandas = comandas;
-    }
-
+    
     @Override
     public String toString() {
         return "Mesa{" + "id=" + id + ", numero=" + numero + '}';

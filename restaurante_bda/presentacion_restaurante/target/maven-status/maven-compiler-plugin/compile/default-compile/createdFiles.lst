@@ -42,7 +42,6 @@ main\Presentacion_restaurante.class
 modulo_clientes\RegistrarClientes$3.class
 modulo_ingredientes\RegistrarIngredienteFrm$5.class
 modulo_productos\EditarProductoFrm$ButtonRenderer.class
-modulo_productos\AdministrarProductosFrm$6.class
 modulo_productos\AdministrarProductosFrm$2.class
 modulo_ingredientes\EliminarIngredienteFrm$4.class
 modulo_ingredientes\PruebaBuscador$1.class

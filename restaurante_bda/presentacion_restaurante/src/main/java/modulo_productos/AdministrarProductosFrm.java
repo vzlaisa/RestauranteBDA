@@ -4,7 +4,11 @@
  */
 package modulo_productos;
 
+import DTOs.ProductoDTO;
 import coordinadores.CoordinadorAplicacion;
+import excepciones.PresentacionException;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,11 +27,10 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
      */
     public AdministrarProductosFrm() {
         initComponents();
+        this.coordinadorAplicacion = CoordinadorAplicacion.getInstancia();
         
         tableModel = new DefaultTableModel(new Object[]{"Nombre", "Categoría", "Precio ($)"}, 0);
         tblProductos.setModel(tableModel);
-        
-        cargarProductos();
     }
 
     /**
@@ -56,6 +59,7 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -257,49 +261,48 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
     private void txtFiltroNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroNombreKeyReleased
         
     }//GEN-LAST:event_txtFiltroNombreKeyReleased
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    
+    public void cargarProductos() {
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+            List<ProductoDTO> productos = coordinadorAplicacion.obtenerProductosConIngredientes();
+
+            for (ProductoDTO producto : productos) {
+                boolean yaExiste = false;
+
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    if (tableModel.getValueAt(i, 0).equals(producto.getNombre())) {
+                        yaExiste = true;
+                        break;
+                    }
+                }
+
+                if (!yaExiste) {
+                    tableModel.addRow(new Object[]{producto.getNombre(), producto.getTipo(), producto.getPrecio()});
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdministrarProductosFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdministrarProductosFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdministrarProductosFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdministrarProductosFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (PresentacionException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            atras();
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdministrarProductosFrm().setVisible(true);
-            }
-        });
     }
     
-    private void cargarProductos() {
+    private ProductoDTO obtenerProductoElegido() throws PresentacionException {
+        int row = tblProductos.getSelectedRow();
+        String nombre = String.valueOf(tableModel.getValueAt(row, 0));
         
+        return coordinadorAplicacion.obtenerProductoPorNombre(nombre);
     }
     
     private void mostrarEditarProducto() {
-        this.dispose();
-        coordinadorAplicacion.mostrarEditarProductoFrm();
+        try {
+            ProductoDTO productoElegido = obtenerProductoElegido();
+            
+            coordinadorAplicacion.establecerProductoElegido(productoElegido);
+            this.dispose();
+            coordinadorAplicacion.mostrarEditarProductoFrm();
+        } catch (PresentacionException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     private void atras() {

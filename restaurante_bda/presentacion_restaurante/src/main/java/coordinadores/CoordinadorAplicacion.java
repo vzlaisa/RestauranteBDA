@@ -19,10 +19,6 @@ import modulo_ingredientes.ActualizarStockIngredienteFrm;
 import modulo_ingredientes.AdministrarIngredientesFrm;
 import modulo_ingredientes.EliminarIngredienteFrm;
 import modulo_ingredientes.IIngredienteBO;
-import modulo_ingredientes.IIngredienteDAO;
-import modulo_ingredientes.IncrementarStockIngredienteFrm;
-import modulo_ingredientes.IngredienteBO;
-import modulo_ingredientes.IngredienteDAO;
 import modulo_ingredientes.RegistrarIngredienteFrm;
 import modulo_productos.AdministrarProductosFrm;
 import modulo_productos.EditarProductoFrm;
@@ -68,6 +64,7 @@ public class CoordinadorAplicacion {
         return instance;
     }
     
+    // --------- FLUJO ENTRE PANTALLAS ---------
     public void mostrarRegistrarProductoFrm() {
         if (this.registrarProductoFrm == null) {
             this.registrarProductoFrm = new RegistrarProductoFrm();
@@ -81,6 +78,7 @@ public class CoordinadorAplicacion {
             this.administrarProductosFrm = new AdministrarProductosFrm();
         }
         
+        administrarProductosFrm.cargarProductos();
         administrarProductosFrm.setVisible(true);
     }
     
@@ -89,7 +87,9 @@ public class CoordinadorAplicacion {
             this.editarProductoFrm = new EditarProductoFrm();
         }
         
+        editarProductoFrm.cargarInformacion();
         editarProductoFrm.setVisible(true);
+        
     }
     
     public void mostrarRegistrarIngredienteFrm() {
@@ -142,7 +142,8 @@ public class CoordinadorAplicacion {
         
         menu.setVisible(true);
     }
-
+    
+    // --------- INGREDIENTES ---------
     // Método para registrar un ingrediente nuevo
     public IngredienteDTO registrarIngrediente(IngredienteDTO ingrediente) throws PresentacionException {
         try {
@@ -162,6 +163,7 @@ public class CoordinadorAplicacion {
         }
     }
     
+    // --------- PRODUCTOS ---------
     public ProductoDTO registrarProducto(ProductoDTO producto) throws PresentacionException {
         if (producto == null) {
             throw new PresentacionException("El producto no puede ser nulo.");
@@ -173,8 +175,48 @@ public class CoordinadorAplicacion {
             throw new PresentacionException(e.getMessage(), e);
         }
     }
-
-    // Métodos para operaciones con clientes
+    
+    public void establecerProductoElegido(ProductoDTO productoElegido) throws PresentacionException {
+        if (productoElegido == null) {
+            throw new PresentacionException("Es necesario elegir un producto para editar.");
+        }
+        
+        if (editarProductoFrm == null) {
+            this.editarProductoFrm = new EditarProductoFrm();
+        }
+        
+        editarProductoFrm.setProductoElegido(productoElegido);
+    }
+    
+    public List<ProductoDTO> obtenerProductosConIngredientes() throws PresentacionException {
+        try {
+            return productoBO.obtenerTodos();
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage());
+        }
+    }
+    
+    public ProductoDTO obtenerProductoPorNombre(String nombre) throws PresentacionException {
+        try {
+            return productoBO.obtenerProductoPorNombre(nombre);
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage());
+        }
+    }
+    
+    public boolean actualizarProducto(ProductoDTO productoEditado) throws PresentacionException {
+        if (productoEditado == null) {
+            throw new PresentacionException("El producto no puede ser nulo.");
+        }
+        
+        try {
+            return productoBO.actualizarProducto(productoEditado) != null;
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage(), e);
+        }
+    }
+    
+    // --------- CLIENTES ---------
     public ClienteDTO registrarClientes(ClienteDTO clienteDTO) throws PresentacionException {
         try {
             return clienteBO.registrarCliente(clienteDTO);

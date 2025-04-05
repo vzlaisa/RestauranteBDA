@@ -5,6 +5,7 @@
 package modulo_productos;
 
 import DTOs.ProductoIngredienteDTO;
+import entidades.Producto;
 import entidades.ProductoIngrediente;
 import java.util.List;
 import java.util.stream.Collectors;

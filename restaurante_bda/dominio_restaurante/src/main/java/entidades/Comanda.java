@@ -56,10 +56,12 @@ public class Comanda implements Serializable {
     @JoinColumn(name = "id_mesa", nullable = false)
     private Mesa mesa;
     
-    private Cliente cliente; // FALTA MAPPEAR
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", nullable = true)
+    private Cliente cliente;
     
     // Cascada Persist para guardar los detalles de la comanda al guardar la comanda.
-    @OneToMany(mappedBy = "comanda", cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "comanda", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY, orphanRemoval = false)
     private List<DetalleComanda> detallesComanda;
 
     public Comanda() {

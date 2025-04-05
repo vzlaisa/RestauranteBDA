@@ -180,29 +180,37 @@ public class IngredienteBO implements IIngredienteBO {
     }
 
     @Override
-    public boolean actualizarIngrediente(String nombre, UnidadMedida unidad, Integer nuevoStock) throws NegocioException {
-        // Validar que se hayan ingresado los datos
-        if (nombre == null || nombre.trim().isEmpty() || unidad == null) {
-            throw new NegocioException("Es necesario el nombre y unidad de medida del ingrediente");
-        }
-        // Validar que la cantidad de stock no sea nula
-        if (nuevoStock == null) {
-            throw new NegocioException("No hubo cambios.");
-        }
+    public void actualizarIngrediente(String nombre, UnidadMedida unidad, Integer nuevoStock) throws NegocioException {
         // Validar que la cantidad del stock sea mayor a 0
-        if (nuevoStock <= 0) {
+        if (nuevoStock < 0) {
             throw new NegocioException("El stock del ingrediente debe ser mayor a 0.");
         }
         
         try {
-            Long idIngrediente = ingredienteDAO.obtenerIdPorNombreYUnidad(nombre, unidad);
+            Ingrediente ingredienteEncontrado = ingredienteDAO.obtenerIngredientePorNombreYUnidad(nombre, unidad);
             // Valida que se haya encontrado un ingrediente
-            if (idIngrediente == null) {
+            if (ingredienteEncontrado == null) {
                 throw new NegocioException("El ingrediente con nombre " + nombre + " y unidad " + unidad + " no existe.");
             } 
-            return ingredienteDAO.actualizarStock(idIngrediente, nuevoStock);
+            ingredienteEncontrado.setCantidadStock(nuevoStock);
+            Ingrediente ingredienteActualizado = ingredienteDAO.actualizar(ingredienteEncontrado);
+            IngredienteMapper.toDTO(ingredienteDAO.actualizar(ingredienteActualizado));
         } catch (PersistenciaException e) {
             throw new NegocioException("No se actualizó el ingrediente.", e);
+        }
+    }
+
+    @Override
+    public IngredienteDTO ingredientePorNombreYUnidad(String nombre, UnidadMedida unidad) throws NegocioException {
+        try {
+            Ingrediente ingredienteEncontrado = ingredienteDAO.obtenerIngredientePorNombreYUnidad(nombre, unidad);
+            if (ingredienteEncontrado == null) {
+                throw new NegocioException("El ingrediente con nombre " + nombre + " y unidad " + unidad + " no existe.");
+            }
+            
+            return IngredienteMapper.toDTO(ingredienteEncontrado);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("No se obtuvo el ingrediente.", e);
         }
     }
 

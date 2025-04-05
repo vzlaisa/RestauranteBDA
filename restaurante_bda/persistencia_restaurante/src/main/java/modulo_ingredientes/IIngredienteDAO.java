@@ -99,8 +99,6 @@ public interface IIngredienteDAO {
      */
     public Long obtenerIdPorNombreYUnidad(String nombre, UnidadMedida unidad) throws PersistenciaException;
     
-    public boolean actualizarStock(Long id, Integer nuevoStock) throws PersistenciaException;
-    
     public Ingrediente actualizar(Ingrediente ingrediente) throws PersistenciaException;
     
 }

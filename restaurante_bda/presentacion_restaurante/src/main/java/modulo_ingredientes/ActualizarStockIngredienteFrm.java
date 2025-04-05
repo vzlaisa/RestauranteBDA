@@ -5,6 +5,7 @@
 package modulo_ingredientes;
 
 import coordinadores.CoordinadorAplicacion;
+import enums.UnidadMedida;
 import excepciones.PresentacionException;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -268,11 +269,17 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
             // Crear el botón con el texto adecuado para incrementar o decrementar
             this.button = new JButton(isIncrement ? "+" : "-");
             button.setOpaque(true);
-            button.addActionListener(e -> manejarCantidad()); // Asocia el evento de clic al método que maneja la cantidad
+            button.addActionListener(e -> {
+                try {
+                    manejarCantidad();
+                } catch (PresentacionException ex) {
+                    Logger.getLogger(ActualizarStockIngredienteFrm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }); // Asocia el evento de clic al método que maneja la cantidad
         }
 
         // Lógica común para incrementar o decrementar la cantidad
-        private void manejarCantidad() {
+        private void manejarCantidad() throws PresentacionException {
             int cantidad = (int) tableModel.getValueAt(row, 3);  // Obtener la cantidad de la celda correspondiente
             if (isIncrement) {
                 tableModel.setValueAt(cantidad + 1, row, 3); // Incrementar la cantidad
@@ -284,6 +291,13 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
                     buscadorPanel.buscarIngredientes();
                 }
             }
+            
+            // Asegurarse de que los cambios se guarden en la base de datos o lógica de negocio
+            String nombre = (String) tableModel.getValueAt(row, 0);
+            String unidad = (String) tableModel.getValueAt(row, 1);
+            UnidadMedida unidadMedida = UnidadMedida.valueOf(unidad);
+            coordinadorAplicacion.actualizarStockIngrediente(nombre, unidadMedida, cantidad);
+            
             fireEditingStopped();  // Detener la edición después de hacer clic
         }
 
@@ -315,16 +329,9 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
             return;
         }
         
-        String nombre = "";
-        String unidad = "";
-        // Expresión regular para extraer "Nombre" y "UNIDAD"
-        Pattern pattern = Pattern.compile("^(.*?)\\s*\\((.*?)\\)$");
-        Matcher matcher = pattern.matcher(elementoSeleccionado);
-
-        if (matcher.matches()) {
-            nombre = matcher.group(1); // Captura el nombre
-            unidad = matcher.group(2); // Captura la unidad
-        }
+        String nombre = obtenerNombreIngrediente(elementoSeleccionado);
+        String unidad = obtenerUnidadIngrediente(elementoSeleccionado);
+        
         // Buscar el elemento en la tabla y actualizar
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (tableModel.getValueAt(i, 0).equals(nombre)) {
@@ -333,6 +340,18 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
         }
 
         tableModel.addRow(new Object[]{nombre, unidad, "-", 1, "+"});
+    }
+    
+    private String obtenerNombreIngrediente(String elemento) {
+        Pattern pattern = Pattern.compile("^(.*?)\\s*\\((.*?)\\)$");
+        Matcher matcher = pattern.matcher(elemento);
+        return matcher.matches() ? matcher.group(1) : "";
+    }
+    
+    private String obtenerUnidadIngrediente(String elemento) {
+        Pattern pattern = Pattern.compile("^(.*?)\\s*\\((.*?)\\)$");
+        Matcher matcher = pattern.matcher(elemento);
+        return matcher.matches() ? matcher.group(2) : "";
     }
     
     private void cargarListeners() {
@@ -362,6 +381,17 @@ public class ActualizarStockIngredienteFrm extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION);
         if (opcion != JOptionPane.YES_OPTION) {
             return;
+        }
+        
+        // Recorrer la tabla para actualizar cada ingrediente
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            String nombre = (String) tableModel.getValueAt(i, 0);
+            String unidad = (String) tableModel.getValueAt(i, 1);
+            int stock = (int) tableModel.getValueAt(i, 3);
+
+            UnidadMedida unidadMedida = UnidadMedida.valueOf(unidad); // Asumí que es un enum, asegúrate de ajustarlo
+            // Llamada al coordinador para actualizar la base de datos
+            coordinadorAplicacion.actualizarStockIngrediente(nombre, unidadMedida, stock);
         }
         
         JOptionPane.showMessageDialog(this, "Cantidad de stock actualizada con éxito.",

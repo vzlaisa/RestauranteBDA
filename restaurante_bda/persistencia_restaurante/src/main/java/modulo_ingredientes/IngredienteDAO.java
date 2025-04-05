@@ -210,24 +210,6 @@ public class IngredienteDAO implements IIngredienteDAO {
     }
 
     @Override
-    public boolean actualizarStock(Long id, Integer nuevoStock) throws PersistenciaException {
-        EntityManager em = Conexion.crearConexion();
-        try {
-            em.getTransaction().begin();
-            Query query = em.createQuery("UPDATE Ingrediente i SET i.cantidadStock = :nuevoStock WHERE i.id = :id", Ingrediente.class);
-            query.setParameter("id", id);
-            query.setParameter("nuevoStock", nuevoStock);
-            int filasActualizadas = query.executeUpdate();
-            
-            return filasActualizadas > 0;
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al actualizar stock: " + e.getMessage());
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
     public Ingrediente actualizar(Ingrediente ingrediente) throws PersistenciaException {
         if (ingrediente == null) {
             throw new PersistenciaException("El ingrediente no puede ser nulo");

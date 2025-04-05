@@ -22,5 +22,7 @@ public interface IIngredienteBO {
     // Método de prueba para usar filtro de búsqueda en presentación
     public List<IngredienteDTO> filtroBuscarIngredientes(String nombre, UnidadMedida unidad) throws NegocioException;
     
-    public boolean actualizarIngrediente(String nombre, UnidadMedida unidad, Integer nuevoStock) throws NegocioException;
+    public void actualizarIngrediente(String nombre, UnidadMedida unidad, Integer nuevoStock) throws NegocioException;
+    
+    public IngredienteDTO ingredientePorNombreYUnidad(String nombre, UnidadMedida unidad) throws NegocioException;
 }

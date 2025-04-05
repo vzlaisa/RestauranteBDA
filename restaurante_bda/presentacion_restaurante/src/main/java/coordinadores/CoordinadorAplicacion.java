@@ -163,6 +163,14 @@ public class CoordinadorAplicacion {
         }
     }
     
+    public void actualizarStockIngrediente(String nombre, UnidadMedida unidad, Integer nuevoStock) throws PresentacionException {
+        try {
+            ingredienteBO.actualizarIngrediente(nombre, unidad, nuevoStock);
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage(), e);
+        }
+    }
+    
     // --------- PRODUCTOS ---------
     public ProductoDTO registrarProducto(ProductoDTO producto) throws PresentacionException {
         if (producto == null) {

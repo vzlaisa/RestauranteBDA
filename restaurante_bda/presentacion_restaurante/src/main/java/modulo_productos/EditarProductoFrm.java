@@ -418,7 +418,7 @@ public class EditarProductoFrm extends JFrame {
 
         // Buscar el elemento en la tabla y actualizar
         for (int i = 0; i < tableModel.getRowCount(); i++) {
-            if (tableModel.getValueAt(i, 0).equals(nombre)) {
+            if (tableModel.getValueAt(i, 0).equals(nombre) && tableModel.getValueAt(i, 1).equals(unidad)) {
                 return;
             }
         }

@@ -9,6 +9,7 @@ import coordinadores.CoordinadorAplicacion;
 import excepciones.PresentacionException;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,6 +32,8 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
         
         tableModel = new DefaultTableModel(new Object[]{"Nombre", "Categoría", "Precio ($)"}, 0);
         tblProductos.setModel(tableModel);
+        
+        cargarListeners();
     }
 
     /**
@@ -116,6 +119,7 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
         btnEditar.setForeground(new java.awt.Color(255, 255, 255));
         btnEditar.setText("Editar Producto");
         btnEditar.setBorderPainted(false);
+        btnEditar.setEnabled(false);
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -127,6 +131,7 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
         btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminar.setText("Eliminar Producto");
         btnEliminar.setBorderPainted(false);
+        btnEliminar.setEnabled(false);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -255,7 +260,7 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        eliminar();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtFiltroNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroNombreKeyReleased
@@ -286,11 +291,42 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
         }
     }
     
+    private void cargarListeners() {
+        tblProductos.getSelectionModel().addListSelectionListener((ListSelectionEvent evt) -> {
+            // Habilitar el botón si hay una fila seleccionada
+            if (!tblProductos.getSelectionModel().isSelectionEmpty()) {
+                btnEditar.setEnabled(true);
+                btnEliminar.setEnabled(true);
+            } else {
+                btnEditar.setEnabled(false);
+                btnEliminar.setEnabled(false);
+            }
+        });
+    }
+    
     private ProductoDTO obtenerProductoElegido() throws PresentacionException {
         int row = tblProductos.getSelectedRow();
         String nombre = String.valueOf(tableModel.getValueAt(row, 0));
         
         return coordinadorAplicacion.obtenerProductoPorNombre(nombre);
+    }
+    
+    private void eliminar() {
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro que desea eliminar el producto?",
+                "Confirmar registro", JOptionPane.YES_NO_OPTION);
+        if (opcion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        try {
+            ProductoDTO productoElegido = obtenerProductoElegido();
+            
+            JOptionPane.showMessageDialog(this, "Producto editado con éxito.", "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (PresentacionException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     private void mostrarEditarProducto() {

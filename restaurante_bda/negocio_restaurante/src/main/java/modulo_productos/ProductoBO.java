@@ -218,6 +218,7 @@ public class ProductoBO implements IProductoBO {
             producto.setPrecio(productoEditado.getPrecio());
             producto.setProductosIngredientes(ProductoIngredienteMapper.toEntityList(productoEditado.getIngredientes())); // settear la lista convertida
             
+            System.out.println(producto.getProductosIngredientes().size());
             // Obtener el ingrediente de la persistencia y setearselo a cada uno (al convertirse no se hace esto)
             for (ProductoIngrediente productoIngrediente : producto.getProductosIngredientes()) {
                 // Obtener el ingrediente del contexto de persistencia
@@ -232,7 +233,7 @@ public class ProductoBO implements IProductoBO {
             // Actualizar el producto mediante la DAO
             return ProductoMapper.toDTO(productoDAO.actualizarProducto(producto));
         } catch (PersistenciaException e) {
-            throw new NegocioException("No se pudo actualizar el producto.", e);
+            throw new NegocioException("No se pudo actualizar el producto " + e.getMessage(), e);
         }
     }
     

@@ -9,12 +9,18 @@ import coordinadores.CoordinadorAplicacion;
 import enums.UnidadMedida;
 import excepciones.PresentacionException;
 import exception.NegocioException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * Filtro de búsqueda para ingredientes.
@@ -39,6 +45,7 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
         this.lListaIngredientes.setModel(listModel);
         
         cargarUnidades();
+        configurarEventos();
     }
 
     /**
@@ -64,20 +71,9 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
         jLabel1.setText("Nombre");
 
         txtNombreIngrediente.setPreferredSize(new java.awt.Dimension(64, 26));
-        txtNombreIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNombreIngredienteKeyReleased(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Unidad de medida");
-
-        cbUnidadMedida.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbUnidadMedidaActionPerformed(evt);
-            }
-        });
 
         jScrollPane3.setViewportView(lListaIngredientes);
 
@@ -126,15 +122,58 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
-
-    private void txtNombreIngredienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreIngredienteKeyReleased
-        buscarIngredientes();
-    }//GEN-LAST:event_txtNombreIngredienteKeyReleased
-
-    private void cbUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbUnidadMedidaActionPerformed
-        buscarIngredientes();
-    }//GEN-LAST:event_cbUnidadMedidaActionPerformed
-
+    
+    // Configurar eventos para el buscador
+    private void configurarEventos() {
+        // Detectar cambios en el campo de texto mientras se escribe
+        txtNombreIngrediente.getDocument().addDocumentListener(new DocumentListener() {
+            // Llamar al método de búsqueda al escribir
+            public void insertUpdate(DocumentEvent e) {
+                buscarIngredientes();
+            }
+            // Llamar al método de búsqueda al borrar
+            public void removeUpdate(DocumentEvent e) {
+                buscarIngredientes();  
+            }
+            // Llamar al método de búsqueda al cambiar el texto
+            public void changedUpdate(DocumentEvent e) {
+                buscarIngredientes(); 
+            }
+        });
+        
+        // Detectar cuando se presiona "Enter" en el campo de texto
+        txtNombreIngrediente.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (listModel.getSize() == 0) {
+                        JOptionPane.showMessageDialog(BuscadorIngredientesPanel.this, "No hay ingredientes registrados.", "Error de consulta.", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+        
+        // Detectar cuando se cambia la unidad de medida
+        cbUnidadMedida.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarIngredientes();  // Llamar al método de búsqueda al seleccionar una unidad
+            }
+        });
+        
+        // Detectar cuando se presiona Enter en el JComboBox
+        cbUnidadMedida.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (listModel.getSize() == 0) {
+                        JOptionPane.showMessageDialog(BuscadorIngredientesPanel.this, "No hay ingredientes registrados.", "Error de consulta.", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+    }
+    
     private void cargarUnidades() {
         cbUnidadMedida.addItem("No seleccionado");
         
@@ -152,21 +191,16 @@ public class BuscadorIngredientesPanel extends javax.swing.JPanel {
         String selectedItem = cbUnidadMedida.getSelectedItem().toString();
         if (!selectedItem.equals("No seleccionado")) {
             unidad = UnidadMedida.valueOf(selectedItem);
-
         }
 
         try {
             List<IngredienteDTO> ingredientes = coordinador.filtrarIngredientes(nombre, unidad);
-            actualizarListaIngredientes(ingredientes);
+            listModel.clear(); // Limpiar antes de buscar
+            for (IngredienteDTO ing : ingredientes) {
+                listModel.addElement(ing.getNombre() + " (" + ing.getUnidadMedida() + ")");
+            }
         } catch (PresentacionException e) {
-            JOptionPane.showMessageDialog(this, "Error al buscar ingredientes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    private void actualizarListaIngredientes(List<IngredienteDTO> ingredientesFiltrados) {
-        listModel.clear();
-        for (IngredienteDTO ing : ingredientesFiltrados) {
-            listModel.addElement(ing.getNombre() + " (" + ing.getUnidadMedida() + ")");
+            listModel.clear(); // Limpiar lista si no se encontraron resultados
         }
     }
     

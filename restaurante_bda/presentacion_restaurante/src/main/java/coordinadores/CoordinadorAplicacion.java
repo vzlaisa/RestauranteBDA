@@ -15,6 +15,7 @@ import java.util.List;
 import modulo_clientes.ConsultarClientes;
 import modulo_clientes.IClienteBO;
 import modulo_clientes.RegistrarClientes;
+import modulo_comandas.IDetalleComandaBO;
 import modulo_ingredientes.ActualizarStockIngredienteFrm;
 import modulo_ingredientes.AdministrarIngredientesFrm;
 import modulo_ingredientes.EliminarIngredienteFrm;
@@ -34,9 +35,11 @@ public class CoordinadorAplicacion {
     // Instancia única estática del coordinador
     private static CoordinadorAplicacion instance;
     
+    // BOs
     private IIngredienteBO ingredienteBO;
     private IClienteBO clienteBO;
     private IProductoBO productoBO;
+    private IDetalleComandaBO detalleComandaBO;
     
     // Pantallas
     private Menu menu;
@@ -54,6 +57,7 @@ public class CoordinadorAplicacion {
         this.ingredienteBO = DependencyInjector.crearIngredienteBO();
         this.clienteBO = DependencyInjector.crearClienteBO();
         this.productoBO = DependencyInjector.crearProductoBO();
+        this.detalleComandaBO = DependencyInjector.crearDetalleComandaBO();
     }
     
     // Método para obtener una única instancia
@@ -212,13 +216,44 @@ public class CoordinadorAplicacion {
         }
     }
     
-    public boolean actualizarProducto(ProductoDTO productoEditado) throws PresentacionException {
+    
+    public void actualizarProducto(ProductoDTO productoEditado) throws PresentacionException {
         if (productoEditado == null) {
             throw new PresentacionException("El producto no puede ser nulo.");
         }
         
         try {
-            return productoBO.actualizarProducto(productoEditado) != null;
+            productoBO.actualizarProducto(productoEditado);
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage(), e);
+        }
+    }
+    
+    public void verificarProductoEnComandaAbierta(String nombre) throws PresentacionException {
+        if (nombre == null) {
+            throw new PresentacionException("El nombre para eliminar no puede ser nulo.");
+        }
+        
+        try {
+            if (detalleComandaBO.verificarProductoEnComandaAbierta(nombre)) {
+                throw new PresentacionException("No es posible eliminar productos que estén en comandas abiertas.");
+            }
+        } catch (NegocioException e) {
+            throw new PresentacionException(e.getMessage(), e);
+        }
+    }
+    
+    public void eliminarProducto(String nombre) throws PresentacionException {
+        if (nombre == null) {
+            throw new PresentacionException("El nombre para eliminar no puede ser nulo.");
+        }
+        
+        try {
+            if (detalleComandaBO.verificarProductoEnComandaAbierta(nombre)) {
+                throw new PresentacionException("No es posible eliminar productos que estén en comandas abiertas.");
+            }
+            
+            productoBO.eliminarProducto(nombre);
         } catch (NegocioException e) {
             throw new PresentacionException(e.getMessage(), e);
         }

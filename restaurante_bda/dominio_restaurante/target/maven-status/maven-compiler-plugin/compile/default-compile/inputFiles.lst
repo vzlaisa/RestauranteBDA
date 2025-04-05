@@ -3,7 +3,8 @@ C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restauran
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\DTOs\IngredienteDTO.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\DTOs\IngredienteNombreUnidadDTO.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\DTOs\ProductoDTO.java
-C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\DTOs\ProductoEditadoDTO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\DTOs\ProductoEditarDTO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\DTOs\ProductoIngredienteConIdDTO.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\DTOs\ProductoIngredienteDTO.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\entidades\Cliente.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\dominio_restaurante\src\main\java\entidades\ClienteFrecuente.java

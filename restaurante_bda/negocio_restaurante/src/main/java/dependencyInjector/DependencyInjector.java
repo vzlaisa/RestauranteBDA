@@ -8,6 +8,10 @@ import modulo_clientes.ClienteBO;
 import modulo_clientes.ClientesDAO;
 import modulo_clientes.IClienteBO;
 import modulo_clientes.IClientesDAO;
+import modulo_comandas.DetalleComandaBO;
+import modulo_comandas.DetalleComandaDAO;
+import modulo_comandas.IDetalleComandaBO;
+import modulo_comandas.IDetalleComandaDAO;
 import modulo_ingredientes.IIngredienteBO;
 import modulo_ingredientes.IIngredienteDAO;
 import modulo_ingredientes.IngredienteBO;
@@ -55,10 +59,18 @@ public class DependencyInjector {
         IIngredienteBO ingredienteBO = new IngredienteBO(ingredienteDAO);
         // Regresar instancia del BO
         return ingredienteBO;
-    }   
+    }
+    
     public static IClienteBO crearClienteBO() {
         IClientesDAO clientesDAO = ClientesDAO.getInstancia();
         return new ClienteBO(clientesDAO);
     }
     
+    public static IDetalleComandaBO crearDetalleComandaBO() {
+        IDetalleComandaDAO detalleComandaDAO = DetalleComandaDAO.getInstance();
+        
+        IDetalleComandaBO detalleComandaBO = new DetalleComandaBO(detalleComandaDAO);
+        
+        return detalleComandaBO;
+    }
 }

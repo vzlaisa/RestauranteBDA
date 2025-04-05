@@ -269,6 +269,7 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
     
     public void cargarProductos() {
         try {
+            limpiar();
             List<ProductoDTO> productos = coordinadorAplicacion.obtenerProductosConIngredientes();
 
             for (ProductoDTO producto : productos) {
@@ -311,7 +312,23 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
         return coordinadorAplicacion.obtenerProductoPorNombre(nombre);
     }
     
+    private String obtenerNombreProductoElegido()  {
+        int row = tblProductos.getSelectedRow();
+        return String.valueOf(tableModel.getValueAt(row, 0));
+    }
+    
     private void eliminar() {
+        String nombre = obtenerNombreProductoElegido();
+        
+        // Verificar que no esté en comandas abiertas
+        try {
+            coordinadorAplicacion.verificarProductoEnComandaAbierta(nombre);
+        } catch (PresentacionException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Pedir confirmación para eliminar
         int opcion = JOptionPane.showConfirmDialog(this,
                 "¿Está seguro que desea eliminar el producto?",
                 "Confirmar registro", JOptionPane.YES_NO_OPTION);
@@ -319,14 +336,20 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
             return;
         }
         
+        // Eliminar el producto
         try {
-            ProductoDTO productoElegido = obtenerProductoElegido();
-            
-            JOptionPane.showMessageDialog(this, "Producto editado con éxito.", "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
-            
+            coordinadorAplicacion.eliminarProducto(nombre);
+            JOptionPane.showMessageDialog(this, "Producto eliminado con éxito.", "Registro confirmado", JOptionPane.INFORMATION_MESSAGE);
+
+            cargarProductos();
         } catch (PresentacionException e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    private void limpiar() {
+        tableModel.setRowCount(0);
+        tblProductos.clearSelection();
     }
     
     private void mostrarEditarProducto() {
@@ -334,6 +357,7 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
             ProductoDTO productoElegido = obtenerProductoElegido();
             
             coordinadorAplicacion.establecerProductoElegido(productoElegido);
+            limpiar();
             this.dispose();
             coordinadorAplicacion.mostrarEditarProductoFrm();
         } catch (PresentacionException e) {
@@ -342,6 +366,7 @@ public class AdministrarProductosFrm extends javax.swing.JFrame {
     }
     
     private void atras() {
+        limpiar();
         this.dispose();
         coordinadorAplicacion.mostrarMenu();
     }

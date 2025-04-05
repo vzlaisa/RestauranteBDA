@@ -24,7 +24,7 @@ public class Negocio_restaurante {
     
     public static void main(String[] args) throws NegocioException {
         // registrarProducto();
-        registrarIngrediente();
+        // registrarIngrediente();
     }
     
     private static void registrarProducto() throws NegocioException {

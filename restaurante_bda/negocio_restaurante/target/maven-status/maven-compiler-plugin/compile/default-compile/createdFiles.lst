@@ -7,7 +7,9 @@ modulo_ingredientes\IIngredienteBO.class
 exception\NegocioException.class
 modulo_productos\IProductoBO.class
 modulo_clientes\IClienteBO.class
+modulo_comandas\IDetalleComandaBO.class
 modulo_clientes\ClienteMapper.class
 dependencyInjector\DependencyInjector.class
 com\mycompany\negocio_restaurante\Negocio_restaurante.class
+modulo_comandas\DetalleComandaBO.class
 modulo_productos\ProductoBO.class

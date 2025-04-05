@@ -4,6 +4,8 @@ C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restauran
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_clientes\ClienteBO.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_clientes\ClienteMapper.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_clientes\IClienteBO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_comandas\DetalleComandaBO.java
+C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_comandas\IDetalleComandaBO.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_ingredientes\IIngredienteBO.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_ingredientes\IngredienteBO.java
 C:\Users\rocha\Documents\github\RestauranteBDA\restaurante_bda\negocio_restaurante\src\main\java\modulo_ingredientes\IngredienteMapper.java
